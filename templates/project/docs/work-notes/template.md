@@ -23,7 +23,17 @@
 - Completed task IDs:
 - Remaining task IDs:
 - Issue state: open / closed / partial
+- GitHub state re-fetched before comment/merge/close:
+- Closed Issue comment avoided:
 - Mismatch rationale:
+
+## Real-use Gate
+
+- Real user path validated:
+- Real provider/API/data path:
+- User-facing fallback:
+- Test doubles used:
+- Mock-only drift check:
 
 ## 内容
 

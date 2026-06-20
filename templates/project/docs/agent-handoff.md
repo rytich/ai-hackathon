@@ -27,4 +27,7 @@
 - Do not revert unrelated changes.
 - Keep changes mapped to an Issue.
 - Keep Spec Kit task completion synchronized with GitHub Issue state/comment/close.
+- Re-fetch GitHub state before comment, merge, or close.
+- Do not comment on closed Issues.
+- Do not hand off mock-only or fixture-only success as real-use completion.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.

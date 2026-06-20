@@ -100,6 +100,8 @@ Agent は作業開始前に GitHub で次を確認する。
 - work notes
 - decision log
 
+GitHub 操作の直前にも再確認する。開始時に見た状態、thread 内の記憶、local checkout の情報だけで Issue comment、PR merge、Issue close を実行しない。
+
 着手可能条件:
 
 - `in-progress` が付いていない。
@@ -194,10 +196,31 @@ Expected GitHub operations:
 Required safeguards:
 
 - The script must not run from the stable base branch.
+- The script must re-fetch Issue state before PR creation, merge, and Issue close.
+- The script must re-fetch PR state before objective review comment and merge.
+- The script must not comment on closed Issues.
+- PR body must use `Refs #<issue>` rather than auto-closing keywords unless the close path is intentionally delegated to GitHub.
 - The script must not stage `.serena/`, `outputs/`, `.env*`, or `.ai/backups`.
 - The script must fail on staged secret-looking files.
 - Human-approval-required areas must stop at PR + objective review.
 - Issue close requires successful merge.
+
+## Real-use Gate
+
+GitHub completion state must reflect product reality, not only test surrogate success.
+
+Rules:
+
+- mock、fixture、stub、fake、demo は validation/support tool であり、product completion evidence ではない。
+- milestone / v1.0 / usable / production-ready を close する前に、real external integration path または明示された user-facing fallback を検証する。
+- mock mode の成功を `real import succeeded` のように表現しない。
+- mock mode は UI、docs、final report、Issue/PR comment で明示する。
+- real path が未実装なら、Issue を close せず、残 task または follow-up Issue を作る。
+
+Issue / PR template must separate:
+
+- Test doubles: mock, fixture, fake, stub, demo.
+- Product acceptance: real API, real provider, real data path, real fallback.
 
 ## Human Approval Required
 

@@ -35,6 +35,9 @@ Replace with real commands.
 - Before final handoff, compare `tasks.md` pending count with open GitHub Issues and document any intentional mismatch.
 - When a task is complete, run `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue`.
 - For human-approval-required changes, omit `--merge --close-issue` and stop at PR plus objective review.
+- Re-fetch GitHub Issue/PR state immediately before commenting, merging, or closing. Do not rely only on thread memory or local checkout.
+- Do not comment on closed Issues; create a new Issue, reopen, or comment on an open PR instead.
+- Mock, fixture, stub, fake, and demo success is not product acceptance evidence. Validate the real user path or an explicit user-facing fallback before closing.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
 
@@ -43,3 +46,4 @@ Replace with real commands.
 - Committing real secrets.
 - Committing production data.
 - Auto-merging auth, secret, permission, billing, infrastructure, privacy, or destructive migration changes.
+- Treating mock-only or fixture-only success as real-use completion.

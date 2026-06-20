@@ -212,6 +212,7 @@ handoff 前:
 - `tasks.md` の pending count と open GitHub Issues を照合する。
 - mismatch がある場合は、意図的な理由を final report と work note に書く。
 - close できない Issue には blocker、残 task、次の validation をコメントする。
+- mock-only / fixture-only の成功は completion evidence として扱わず、real-use evidence または fallback tracking を確認する。
 
 ## Task Completion Automation
 
@@ -233,7 +234,9 @@ scripts/complete-task.sh --issue <number> --stage-all
 
 - local validation を実行する。
 - staged diff から objective review report を生成する。
+- mock/fixture/stub/fake/demo と product acceptance の混同を review で確認する。
 - secret/env/local artifact の混入を機械的に確認する。
+- GitHub 操作の直前に Issue/PR の実状態を再取得する。
 - work note として objective review を保存する。
 - commit を作成する。
 - branch を push する。
@@ -241,12 +244,35 @@ scripts/complete-task.sh --issue <number> --stage-all
 - objective review を PR comment として投稿する。
 - `--merge` 指定時は PR を merge する。
 - `--close-issue` 指定時は対応 Issue を completed として close する。
+- Issue が既に closed の場合はコメントも close も再実行しない。
 
 禁止事項:
 
 - destructive migration、auth/secret/permission、billing、production deploy、privacy/legal は自動 merge しない。
 - objective review が blocker を出した場合は merge しない。
 - Spec Kit task と GitHub Issue の completion mismatch を説明なしで残さない。
+- closed Issue にコメントしない。
+- thread 内の情報だけを前提に GitHub 操作しない。
+
+## Real-use Completion Gate
+
+agent は test surrogate を product acceptance と誤認しない。
+
+mock、fixture、stub、fake client、demo data は validation/support tool であって、実利用完了の証跡ではない。
+
+milestone / v1.0 / usable / production-ready を名乗る場合:
+
+- 少なくとも 1 つの real external integration path を検証する。
+- real path が不可能な場合は、明示された real user-facing fallback を検証する。
+- mock mode を UI、docs、final report に明示する。
+- real provider path が未実装なら、Issue を close せず残 task / follow-up Issue で追跡する。
+
+completion challenge:
+
+```text
+Did we validate the real user path, or only a mock/demo path?
+If using mock data, where is the real provider path or user-facing fallback tracked?
+```
 
 ## Auto Merge
 

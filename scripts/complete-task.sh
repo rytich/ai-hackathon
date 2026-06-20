@@ -22,7 +22,8 @@ Environment:
   REVIEW_OUTPUT_DIR         Optional review output directory. Default: docs/work-notes.
 
 The script is intentionally explicit: no auto-detection of task identity,
-no merge without --merge, and no issue close without --close-issue.
+no merge without --merge, no issue close without --close-issue, and no
+commenting on closed Issues.
 USAGE
 }
 
@@ -122,7 +123,40 @@ cd "$REPO_ROOT"
 
 CURRENT_BRANCH="$(git branch --show-current)"
 REPO_FULL_NAME="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
-ISSUE_JSON="$(gh issue view "$ISSUE" --repo "$REPO_FULL_NAME" --json title,state,labels,assignees,url)"
+
+fetch_issue_json() {
+  gh issue view "$ISSUE" --repo "$REPO_FULL_NAME" --json title,state,stateReason,labels,assignees,url,updatedAt
+}
+
+fetch_pr_json() {
+  gh pr view "$1" --repo "$REPO_FULL_NAME" --json number,state,mergedAt,headRefOid,url
+}
+
+ensure_issue_open() {
+  local context="$1"
+  local json state reason
+  json="$(fetch_issue_json)"
+  state="$(printf "%s" "$json" | jq -r .state)"
+  reason="$(printf "%s" "$json" | jq -r '.stateReason // "-"')"
+  if [ "$state" != "OPEN" ]; then
+    echo "Issue #$ISSUE is not open during $context: $state ($reason)" >&2
+    return 1
+  fi
+}
+
+ensure_pr_open() {
+  local pr_number="$1"
+  local context="$2"
+  local json state
+  json="$(fetch_pr_json "$pr_number")"
+  state="$(printf "%s" "$json" | jq -r .state)"
+  if [ "$state" != "OPEN" ]; then
+    echo "PR #$pr_number is not open during $context: $state" >&2
+    return 1
+  fi
+}
+
+ISSUE_JSON="$(fetch_issue_json)"
 ISSUE_TITLE="$(printf "%s" "$ISSUE_JSON" | jq -r .title)"
 ISSUE_STATE="$(printf "%s" "$ISSUE_JSON" | jq -r .state)"
 ISSUE_URL="$(printf "%s" "$ISSUE_JSON" | jq -r .url)"
@@ -195,6 +229,12 @@ contains_blocker() {
   printf "%s\n" "$CHANGED_FILES" | grep -E "$1" >/dev/null 2>&1
 }
 
+STAGED_DIFF="$(git diff --cached)"
+SURROGATE_TERMS=false
+if printf "%s" "$STAGED_DIFF" | grep -Eiq 'mock|fixture|stub|fake|demo'; then
+  SURROGATE_TERMS=true
+fi
+
 {
   echo "# Objective Review: Issue #$ISSUE"
   echo
@@ -252,6 +292,21 @@ contains_blocker() {
     echo "- Pending/open mismatch: not applicable"
   fi
   echo
+  echo "## Real-use Gate"
+  if [ "$SURROGATE_TERMS" = true ]; then
+    echo "- Surrogate terms detected in staged diff: mock/fixture/stub/fake/demo"
+    echo "- Reviewer must confirm test doubles are not being used as product acceptance evidence."
+  else
+    echo "- No surrogate validation terms detected in staged diff."
+  fi
+  echo "- Completion challenge: did we validate the real user path, or only a mock/demo path?"
+  echo "- If using mock data, the real provider path or user-facing fallback must be tracked."
+  echo
+  echo "## GitHub State Freshness"
+  echo "- Issue state was fetched from GitHub before local validation."
+  echo "- Script re-fetches GitHub state before PR comment, merge, and Issue close."
+  echo "- Script does not comment on closed Issues."
+  echo
   echo "## Decision"
   if [ "$BLOCKERS" -eq 0 ]; then
     echo "PASS: no mechanical blockers found."
@@ -274,7 +329,7 @@ PR_BODY_FILE="$(mktemp)"
 cat > "$PR_BODY_FILE" <<EOF
 ## Summary
 
-- Completes #$ISSUE.
+- Refs #$ISSUE.
 - Adds task completion automation and documentation for PR creation, objective review, merge, and Issue closure.
 - Keeps Spec Kit task completion synchronized with GitHub Issue state/comment/close.
 
@@ -290,6 +345,11 @@ cat > "$PR_BODY_FILE" <<EOF
 - tasks.md completion and Issue state/comment/close synchronized by completion pipeline.
 - Open Issues vs pending tasks checked or documented as not applicable.
 
+## Real-use Gate
+
+- Real user path validated or not applicable.
+- Mock/fixture/stub/fake/demo evidence is not treated as product acceptance unless explicitly stated as fallback.
+
 ## Auto Merge
 
 - Required checks pass locally.
@@ -303,13 +363,17 @@ if [ "$DRY_RUN" = true ]; then
   exit 0
 fi
 
+ensure_issue_open "PR creation"
 PR_URL="$(gh pr create --repo "$REPO_FULL_NAME" --base "$BASE_BRANCH" --head "$CURRENT_BRANCH" --title "$TITLE" --body-file "$PR_BODY_FILE")"
 PR_NUMBER="${PR_URL##*/}"
 echo "Created PR: $PR_URL"
 
+ensure_pr_open "$PR_NUMBER" "objective review comment"
 gh pr comment "$PR_NUMBER" --repo "$REPO_FULL_NAME" --body-file "$REVIEW_FILE"
 
 if [ "$MERGE" = true ]; then
+  ensure_pr_open "$PR_NUMBER" "merge"
+  ensure_issue_open "pre-merge issue state check"
   gh pr merge "$PR_NUMBER" --repo "$REPO_FULL_NAME" --squash --delete-branch --subject "$TITLE" --body "Merged after objective review passed."
   echo "Merged PR #$PR_NUMBER"
 fi
@@ -319,6 +383,12 @@ if [ "$CLOSE_ISSUE" = true ]; then
     echo "--close-issue requires --merge in this script" >&2
     exit 1
   fi
-  gh issue close "$ISSUE" --repo "$REPO_FULL_NAME" --reason completed --comment "Completed by PR #$PR_NUMBER. Objective review passed: \`$REVIEW_FILE\`."
-  echo "Closed Issue #$ISSUE"
+  ISSUE_JSON="$(fetch_issue_json)"
+  ISSUE_STATE="$(printf "%s" "$ISSUE_JSON" | jq -r .state)"
+  if [ "$ISSUE_STATE" = "OPEN" ]; then
+    gh issue close "$ISSUE" --repo "$REPO_FULL_NAME" --reason completed
+    echo "Closed Issue #$ISSUE"
+  else
+    echo "Issue #$ISSUE is already $ISSUE_STATE after merge; not commenting or closing again."
+  fi
 fi

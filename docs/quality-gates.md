@@ -19,6 +19,7 @@ contract/schema validation if applicable
 secret scan or secret checklist
 open GitHub issues vs tasks.md pending check if Spec Kit is used
 objective review report generated and posted to PR
+real-use path or explicit user-facing fallback validated for usable/v1/production-ready claims
 ```
 
 ## Reviewer Checklist
@@ -32,7 +33,24 @@ objective review report generated and posted to PR
 - Spec Kit task と GitHub Issue の完了状態が同期されている。
 - open GitHub Issues と `tasks.md` pending count の mismatch が説明されている。
 - `scripts/complete-task.sh` の objective review が PASS している。
+- mock、fixture、stub、fake、demo が product acceptance evidence として扱われていない。
+- real API、real provider、real data path、または明示された user-facing fallback が検証されている。
 - rollback または migration recovery の考慮がある。
+
+## Real-use Gate
+
+milestone、v1.0、usable、production-ready を名乗る場合、mock-only completion を禁止する。
+
+必ず分けて記録する。
+
+- Test doubles: mock、fixture、fake、stub、demo。
+- Product acceptance: real API、real provider、real data path、real user-facing fallback。
+
+Issue / PR close 前の challenge:
+
+- Did we validate the real user path, or only a mock/demo path?
+- If using mock data, where is the real provider path or user-facing fallback tracked?
+- Is mock mode disclosed in UI, docs, and final report?
 
 ## Human Approval Required
 

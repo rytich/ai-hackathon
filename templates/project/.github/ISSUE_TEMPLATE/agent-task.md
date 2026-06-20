@@ -13,6 +13,14 @@ assignees: ""
 
 - [ ] 
 
+## Real-use Gate
+
+- Real user path:
+- Real external integration path:
+- User-facing fallback, if real integration is unavailable:
+- Test doubles used: mock / fixture / stub / fake / demo / none
+- [ ] Acceptance is not based only on mock/fixture/stub/fake/demo success
+
 ## Non-goals
 
 - 

@@ -47,6 +47,8 @@
 - 可能なら assignee を設定する。
 - Issue comment に branch、worktree、scope、dependency decision を書く。
 
+コメント直前に Issue state を再取得する。Issue が既に closed の場合はコメントしない。
+
 着手コメント例:
 
 ```text
@@ -117,6 +119,7 @@ Spec Kit tasks と GitHub Issues は同じ作業セッションで同期する�
 - 部分完了の Issue は open のまま、完了 task ID と残 task ID をコメントする。
 - `tasks.md` pending count と open GitHub Issues を照合する。
 - mismatch がある場合は、work note と final report に理由を書く。
+- real-use evidence を確認する。mock/fixture/stub/fake/demo の成功だけなら Issue を close しない。
 
 標準コマンド:
 
@@ -125,6 +128,8 @@ scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue
 ```
 
 人間承認が必要な変更では merge/close を自動化しない。
+
+closed Issue にはコメントしない。必要な追加フィードバックは新 Issue、reopen、または open PR comment として扱う。
 
 ## Commit And PR
 

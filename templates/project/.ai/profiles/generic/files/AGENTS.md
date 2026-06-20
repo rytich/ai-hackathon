@@ -20,5 +20,8 @@ AI profile: generic
 - Use one branch and one PR per Issue.
 - Keep Spec Kit task completion synchronized with GitHub Issue state/comment/close.
 - Run `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` when a task is complete, unless human approval is required.
+- Re-fetch GitHub state immediately before comment, merge, or close.
+- Do not comment on closed Issues.
+- Do not treat mock/fixture/stub/fake/demo success as real-use completion.
 - Do not commit secrets or production data.
 - Record AI profile in work notes.

@@ -41,6 +41,7 @@ AI エージェントや人間が途中参加しても、repository 内の情報
 - 次に見るべき file/path
 - 実行済み validation
 - Spec Kit task と GitHub Issue の同期状態
+- real-use evidence と mock-only drift check の結果
 - 失敗した command と原因
 - 触ってはいけない unrelated changes
 
@@ -51,5 +52,7 @@ AI エージェントや人間が途中参加しても、repository 内の情報
 - 小さい差分を保つ。
 - runtime、scope、secret、permission が変わったら docs を更新する。
 - Spec Kit task と GitHub Issue の completion mismatch を残したまま handoff しない。残す場合は理由を書く。
+- GitHub 操作前に実際の Issue/PR state を再取得する。thread 内の情報だけで close/comment/merge しない。
+- mock-only / fixture-only の成功を real-use completion として handoff しない。
 - 大量出力は context-mode や script で要約する。
 - 不明な危険領域は Human Approver に渡す。
