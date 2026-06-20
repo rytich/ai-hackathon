@@ -1,0 +1,45 @@
+# AGENTS.md
+
+この repository では、AI エージェントが並行して作業しても品質と再現性を落とさないことを最優先にします。
+
+## Mandatory Routing
+
+- 大量出力、ログ、広い検索、集計、比較、parse は context-mode で処理する。
+- コード理解と refactor は、利用できる場合 Serena の symbol-aware tools を優先する。
+- 仕様や product intent は Spec Kit の specify/plan/tasks/implement flow に寄せる。
+- raw secret、個人情報、production data を会話、ログ、fixture、commit に出さない。
+
+## Agent Roles
+
+- Coordinator: Issue readiness、scope、依存関係、担当分割を決める。
+- Implementer: 小さい差分で実装し、必要なテストと docs を更新する。
+- Reviewer: bug、regression、missing test、secret leak、acceptance criteria 対応を確認する。
+- Human Approver: destructive migration、auth、secret、billing、production deploy、legal/privacy を承認する。
+
+## Work Rules
+
+- 1 Issue = 1 branch = 1 PR を基本にする。
+- 並列作業は isolated worktree を使う。
+- 利用する AI 環境は `.ai/active-profile` と `docs/ai-environment-profiles.md` で明示する。
+- AI 環境別の設定差分は `.ai/profiles/<profile>/files/` に置き、手作業で混ぜない。
+- PR には検証結果、関連 Issue、作業サマリー path、既知の未対応を必ず書く。
+- 変更理由が後から議論になりそうなものは `docs/decision-log/` に残す。
+- 作業終了時は `docs/work-notes/` に短いサマリーを残す。
+
+## Quality Gates
+
+プロジェクトごとに検証コマンドを定義する。最低限:
+
+- format または lint
+- typecheck または static analysis
+- unit test
+- integration/e2e test if applicable
+- build/package
+- secret scan or manual secret checklist
+
+## Safe Continuation
+
+- 不明な前提は repository 内の README、spec、plan、tasks、docs から確認する。
+- 大きな設計変更の前に Decision log を作る。
+- 他エージェントや人間の未関連変更を revert しない。
+- runtime、secret、deployment、permission が変わる場合は docs を同時に更新する。

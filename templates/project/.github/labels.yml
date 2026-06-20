@@ -1,0 +1,21 @@
+- name: ready
+  color: "2da44e"
+  description: Ready for an agent to start.
+- name: in-progress
+  color: "fbca04"
+  description: Someone is actively working on this.
+- name: blocked
+  color: "d1242f"
+  description: Waiting on dependency, external decision, or blocker.
+- name: needs-human
+  color: "8250df"
+  description: Human approval or judgment is required.
+- name: review-ready
+  color: "0969da"
+  description: Ready for PR review.
+- name: auto-merge-ok
+  color: "1a7f37"
+  description: Candidate for auto merge after checks pass.
+- name: manual-merge-required
+  color: "bf3989"
+  description: Must be merged manually by a human approver.
