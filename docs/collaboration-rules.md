@@ -98,11 +98,33 @@ shared files を触る場合は、Coordinator が他 branch との競合を先�
 1. Issue、spec、tasks、related docs を読む。
 2. scope、acceptance criteria、non-goals を確認する。
 3. GitHub coordination state を確認する。
-4. dependency decision を `Proceed` / `Proceed with guardrails` / `Wait` / `Split` で決める。
-5. Issue に着手コメントを残し、必要な label と assignee を設定する。
-6. branch/worktree を作る。
-7. 変更予定ファイルと検証コマンドを短くメモする。
-8. 実装する。
+4. Spec Kit task と GitHub Issue の対応を確認する。
+5. dependency decision を `Proceed` / `Proceed with guardrails` / `Wait` / `Split` で決める。
+6. Issue に着手コメントを残し、必要な label と assignee を設定する。
+7. branch/worktree を作る。
+8. 変更予定ファイルと検証コマンドを短くメモする。
+9. 実装する。
+
+## Completion Sync
+
+Spec Kit tasks と GitHub Issues は同じ作業セッションで同期する。
+
+完了時に行うこと:
+
+- `tasks.md` を `[x]` にする。
+- 対応 Issue に validation 結果をコメントする。
+- scope が完了した Issue は completed として close する。
+- 部分完了の Issue は open のまま、完了 task ID と残 task ID をコメントする。
+- `tasks.md` pending count と open GitHub Issues を照合する。
+- mismatch がある場合は、work note と final report に理由を書く。
+
+標準コマンド:
+
+```bash
+scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue
+```
+
+人間承認が必要な変更では merge/close を自動化しない。
 
 ## Commit And PR
 
@@ -112,6 +134,8 @@ PR には次を含める。
 
 - 対象 Issue
 - 対応した spec/task
+- Spec Kit / GitHub sync 結果
+- objective review report
 - 変更概要
 - 検証結果
 - 既知の未対応、後続 Issue
@@ -126,6 +150,7 @@ PR には次を含める。
 
 - 対象
 - 並行作業状態
+- Spec Kit / GitHub 同期
 - 内容
 - 理由
 - 検証

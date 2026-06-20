@@ -57,13 +57,19 @@
 5. Validate
    required checks を実行し、失敗は原因と対応を記録する。
 
-6. Review
+6. Synchronize
+   Spec Kit task と GitHub Issue の完了状態を同期する。
+
+7. Complete Task Pipeline
+   objective review、PR 作成、merge、Issue close を実行する。
+
+8. Review
    Reviewer が品質、scope、secret、risk を確認する。
 
-7. Handoff
+9. Handoff
    PR、work note、decision log、blocker を残す。
 
-8. Merge
+10. Merge
    条件を満たす場合のみ auto merge。危険領域は Human Approver が merge。
 ```
 
@@ -74,6 +80,7 @@
 - 問題、期待結果、非目標が書かれている。
 - 受け入れ条件が検証可能である。
 - 対応する spec/task がある。
+- 対応する Spec Kit task と GitHub Issue の紐づきが分かっている。
 - 影響範囲と危険領域が明確である。
 - secret、個人情報、production data の扱いが決まっている。
 - 並列作業時の shared state が分かっている。
@@ -183,6 +190,64 @@ docs/work-notes/
 docs/decision-log/
 ```
 
+## Completion Synchronization
+
+Spec Kit と GitHub Issues を併用する project では、`tasks.md` だけを完了 ledger にしない。GitHub を coordination state とするため、対応 Issue の state/comment/labels も同じ作業セッションで更新する。
+
+実装開始前:
+
+- 対象 Spec Kit task ID を確認する。
+- 対応する GitHub Issue を確認する。
+- task と Issue の対応が曖昧なら、Issue comment または work note に mapping を残す。
+
+実装完了時:
+
+- `tasks.md` を `[x]` にする作業と同じ session で、対応 Issue を更新する。
+- validation が scope 全体に通ったら、Issue を completed として close する。
+- 部分完了の場合は Issue を open のままにし、完了 task ID と残 task ID をコメントする。
+- `review-ready` / `auto-merge-ok` / `manual-merge-required` などの labels を最新化する。
+
+handoff 前:
+
+- `tasks.md` の pending count と open GitHub Issues を照合する。
+- mismatch がある場合は、意図的な理由を final report と work note に書く。
+- close できない Issue には blocker、残 task、次の validation をコメントする。
+
+## Task Completion Automation
+
+タスクが完了したら、標準パイプラインとして `scripts/complete-task.sh` を実行する。
+
+通常の完了:
+
+```bash
+scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue
+```
+
+人間承認が必要な変更:
+
+```bash
+scripts/complete-task.sh --issue <number> --stage-all
+```
+
+この script が行うこと:
+
+- local validation を実行する。
+- staged diff から objective review report を生成する。
+- secret/env/local artifact の混入を機械的に確認する。
+- work note として objective review を保存する。
+- commit を作成する。
+- branch を push する。
+- PR を作成する。
+- objective review を PR comment として投稿する。
+- `--merge` 指定時は PR を merge する。
+- `--close-issue` 指定時は対応 Issue を completed として close する。
+
+禁止事項:
+
+- destructive migration、auth/secret/permission、billing、production deploy、privacy/legal は自動 merge しない。
+- objective review が blocker を出した場合は merge しない。
+- Spec Kit task と GitHub Issue の completion mismatch を説明なしで残さない。
+
 ## Auto Merge
 
 auto merge を許可する条件:
@@ -237,3 +302,4 @@ framework 自体の効果は次で測る。
 - decision log template
 - secret handling policy
 - deployment approval policy
+- Spec Kit task と GitHub Issue の completion synchronization policy

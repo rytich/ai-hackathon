@@ -7,8 +7,9 @@ Project: <PROJECT_NAME>
 1. `README.md`
 2. `docs/runtime.md`
 3. `docs/secrets.md`
-4. `docs/ai-execution-framework.md`
-5. `docs/collaboration-rules.md`
+4. `docs/codex-dev-stack.md`
+5. `docs/ai-execution-framework.md`
+6. `docs/collaboration-rules.md`
 
 Add project-specific specs here.
 
@@ -27,6 +28,13 @@ Replace with real commands.
 
 - Use one branch and one PR per Issue.
 - Use isolated worktrees for parallel AI agents.
+- Before implementation, identify the target Spec Kit task and corresponding GitHub Issue.
+- When marking `tasks.md` entries as `[x]`, update the corresponding GitHub Issue in the same work session.
+- Close the Issue as completed only after scope validation passes.
+- For partial completion, keep the Issue open and comment completed task IDs and remaining task IDs.
+- Before final handoff, compare `tasks.md` pending count with open GitHub Issues and document any intentional mismatch.
+- When a task is complete, run `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue`.
+- For human-approval-required changes, omit `--merge --close-issue` and stop at PR plus objective review.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
 

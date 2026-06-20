@@ -22,6 +22,12 @@ assignees: ""
 - Depends on:
 - Blocks:
 
+## Spec Kit Mapping
+
+- Spec:
+- Task IDs:
+- Completion sync required: yes / no
+
 ## Shared Files / Contracts
 
 - 

@@ -23,12 +23,13 @@ AI エージェントや人間が途中参加しても、repository 内の情報
 2. `AGENTS.md`
 3. `docs/runtime.md`
 4. `docs/secrets.md`
-5. `docs/ai-execution-framework.md`
-6. `docs/collaboration-rules.md`
-7. `docs/quality-gates.md`
-8. relevant spec/task files
-9. recent work notes
-10. recent decision logs
+5. `docs/codex-dev-stack.md`
+6. `docs/ai-execution-framework.md`
+7. `docs/collaboration-rules.md`
+8. `docs/quality-gates.md`
+9. relevant spec/task files
+10. recent work notes
+11. recent decision logs
 
 ## Handoff Note
 
@@ -39,6 +40,7 @@ AI エージェントや人間が途中参加しても、repository 内の情報
 - まだ壊れていること
 - 次に見るべき file/path
 - 実行済み validation
+- Spec Kit task と GitHub Issue の同期状態
 - 失敗した command と原因
 - 触ってはいけない unrelated changes
 
@@ -48,5 +50,6 @@ AI エージェントや人間が途中参加しても、repository 内の情報
 - Issue-linked branch と isolated worktree を使う。
 - 小さい差分を保つ。
 - runtime、scope、secret、permission が変わったら docs を更新する。
+- Spec Kit task と GitHub Issue の completion mismatch を残したまま handoff しない。残す場合は理由を書く。
 - 大量出力は context-mode や script で要約する。
 - 不明な危険領域は Human Approver に渡す。

@@ -17,6 +17,15 @@
 - Dependency decision: Proceed / Proceed with guardrails / Wait / Split
 - Parallel safety:
 
+## Spec Kit / GitHub 同期
+
+- Spec Kit tasks:
+- GitHub Issue:
+- Completed task IDs:
+- Remaining task IDs:
+- Issue state: open / closed / partial
+- Mismatch rationale:
+
 ## 内容
 
 - 

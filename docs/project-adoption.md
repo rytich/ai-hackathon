@@ -5,11 +5,14 @@
 1. `scripts/bootstrap-project.sh /path/to/project` を実行する。
 2. 生成された `AGENTS.md` と docs を project に合わせて編集する。
 3. 現在の README、CI、package scripts、runtime docs と矛盾がないか確認する。
-4. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
-5. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
-6. `docs/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
-7. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
-8. 効果測定を始める。
+4. Codex stack を使う場合は `docs/codex-dev-stack.md` の導入・検証手順を端末ごとに確認する。
+5. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
+6. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
+7. `docs/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
+8. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
+9. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
+10. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
+11. 効果測定を始める。
 
 ## GitHub Setup
 

@@ -14,6 +14,7 @@ AGENTS.md
 .env.example
 docs/runtime.md
 docs/secrets.md
+docs/codex-dev-stack.md
 docs/ai-environment-profiles.md
 docs/ai-execution-framework.md
 docs/collaboration-rules.md
@@ -33,6 +34,7 @@ docs/decision-log/README.md
 - test command
 - build command
 - migration/seed command
+- terminal-wide AI development stack setup, if using Codex/Spec Kit/context-mode/Serena
 - Docker/Compose/devcontainer の使い方
 - health check
 - known limitations
@@ -62,9 +64,10 @@ secret の値は絶対に commit しない。
 5. local services を起動する。
 6. migration/seed を実行する。
 7. lint/typecheck/test/build を実行する。
-8. 利用する AI profile を `./scripts/select-ai-profile.sh <profile>` で選ぶ。
-9. AI tools を接続する。
-10. `AGENTS.md` と docs の required reading order を読む。
+8. Codex stack を使う場合は `docs/codex-dev-stack.md` の verification を実行する。
+9. 利用する AI profile を `./scripts/select-ai-profile.sh <profile>` で選ぶ。
+10. AI tools を接続する。
+11. `AGENTS.md` と docs の required reading order を読む。
 
 ## AI Tooling
 
@@ -78,6 +81,8 @@ secret の値は絶対に commit しない。
 各 tool は optional にし、使えない端末でも手順が破綻しないように fallback を docs に残す。
 
 AI 環境別の設定差分は `docs/ai-environment-profiles.md` に従って管理する。local auto-detection ではなく、`.ai/active-profile` に記録された profile を source of truth にする。
+
+macOS/Codex 向けの端末セットアップは `docs/codex-dev-stack.md` に分ける。project runtime と terminal-wide AI stack を混ぜない。
 
 ## Reproducibility Gate
 

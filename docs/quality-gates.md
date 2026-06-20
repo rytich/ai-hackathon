@@ -17,6 +17,8 @@ e2e test if applicable
 build or package
 contract/schema validation if applicable
 secret scan or secret checklist
+open GitHub issues vs tasks.md pending check if Spec Kit is used
+objective review report generated and posted to PR
 ```
 
 ## Reviewer Checklist
@@ -27,6 +29,9 @@ secret scan or secret checklist
 - tests が失敗時に意味のある coverage を持つ。
 - logs に secret、個人情報、token が出ない。
 - docs、env example、runtime guide が必要に応じて更新されている。
+- Spec Kit task と GitHub Issue の完了状態が同期されている。
+- open GitHub Issues と `tasks.md` pending count の mismatch が説明されている。
+- `scripts/complete-task.sh` の objective review が PASS している。
 - rollback または migration recovery の考慮がある。
 
 ## Human Approval Required

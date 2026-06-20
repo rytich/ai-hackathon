@@ -140,6 +140,65 @@ Agent は作業開始前に GitHub で次を確認する。
 
 `auto-merge-ok` と `manual-merge-required` は同時に付けない。
 
+## Completion Synchronization
+
+Spec Kit を使う project では、GitHub Issues と `tasks.md` の完了状態を同期する。
+
+Required rules:
+
+- 実装開始前に、対象 Spec Kit task と対応 GitHub Issue を特定する。
+- `tasks.md` を `[x]` にした同じ作業セッションで、対応 GitHub Issue も更新する。
+- scope の validation が通ったら、Issue を completed として close する。
+- 部分完了の場合は Issue を open のままにし、完了 task ID と残 task ID をコメントする。
+- handoff 前に、`tasks.md` の pending count と open GitHub Issues を突き合わせる。
+- mismatch がある場合は、意図的な理由を final report と work note に明記する。
+
+Partial completion comment template:
+
+```text
+Spec Kit / GitHub completion sync:
+
+- Completed tasks:
+- Remaining tasks:
+- Validation:
+- Reason this Issue remains open:
+```
+
+Final sync checklist:
+
+```text
+- [ ] tasks.md pending count checked
+- [ ] open GitHub Issues checked
+- [ ] completed Issues closed with completed state reason
+- [ ] partial Issues have remaining task comments
+- [ ] mismatch rationale documented
+```
+
+## Automated Task Completion
+
+Task completion automation uses GitHub as the execution ledger.
+
+Default command:
+
+```bash
+scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue
+```
+
+Expected GitHub operations:
+
+1. Create a PR for the current branch.
+2. Post objective review results as a PR comment.
+3. Merge the PR when validation and objective review pass.
+4. Close the corresponding Issue with completed reason.
+
+Required safeguards:
+
+- The script must not run from the stable base branch.
+- The script must not stage `.serena/`, `outputs/`, `.env*`, or `.ai/backups`.
+- The script must fail on staged secret-looking files.
+- Human-approval-required areas must stop at PR + objective review.
+- Issue close requires successful merge.
+
 ## Human Approval Required
 
 次を含む PR は `manual-merge-required` を付ける。

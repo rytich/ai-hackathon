@@ -21,6 +21,7 @@ AGENTS.md                         # AI エージェント共通ルール
 docs/ai-execution-framework.md    # 役割、標準ワークフロー、並列実行ルール
 docs/collaboration-rules.md       # branch/worktree/PR/作業ログの運用
 docs/environment-reproducibility.md # 別端末での再現手順
+docs/codex-dev-stack.md           # macOS/Codex 用の開発スタック導入・検証手順
 docs/agent-handoff.md             # AI エージェント間の引き継ぎ手順
 docs/ai-environment-profiles.md   # Codex/Claude など AI 環境別 profile 切り替え
 docs/github-configuration.md      # GitHub labels、Issue/PR、branch protection 設定
@@ -44,10 +45,11 @@ templates/project/                # bootstrap で配布される雛形
 1. `AGENTS.md` のプロジェクト名、検証コマンド、禁止事項。
 2. `docs/ai-execution-framework.md` の stable branch、branch prefix、required checks。
 3. `docs/environment-reproducibility.md` の runtime、package manager、secret 名。
-4. `docs/agent-handoff.md` の required reading order。
-5. `docs/ai-environment-profiles.md` の利用 AI profile。
-6. `docs/github-configuration.md` の labels、branch protection、required checks。
-7. `.github/pull_request_template.md` の project-specific checklist。
+4. `docs/codex-dev-stack.md` の端末ごとの導入パスと検証コマンド。
+5. `docs/agent-handoff.md` の required reading order。
+6. `docs/ai-environment-profiles.md` の利用 AI profile。
+7. `docs/github-configuration.md` の labels、branch protection、required checks。
+8. `.github/pull_request_template.md` の project-specific checklist。
 
 AI 環境を明示的に切り替える場合:
 
