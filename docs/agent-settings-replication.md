@@ -174,6 +174,8 @@ Examples:
 ```text
 .ai/profiles/codex/files/AGENTS.md
 .ai/profiles/claude/files/CLAUDE.md
+.ai/profiles/codex-claude/files/AGENTS.md
+.ai/profiles/codex-claude/files/CLAUDE.md
 .ai/profiles/copilot/files/.github/copilot-instructions.md
 ```
 
@@ -183,6 +185,7 @@ Rules:
 - Do not manually mix files from multiple profiles.
 - Keep shared behavior in `docs/` and `.agents/skills`.
 - Keep tool-specific files as small compatibility entrypoints.
+- Use a dual profile when two tools must be active in the same checkout, for example `codex-claude` with both `AGENTS.md` and `CLAUDE.md`.
 - Review the diff after switching profiles.
 
 ## Adoption Checklist

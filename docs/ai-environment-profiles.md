@@ -20,6 +20,11 @@
       manifest.env
       files/
         CLAUDE.md
+    codex-claude/
+      manifest.env
+      files/
+        AGENTS.md
+        CLAUDE.md
     copilot/
       manifest.env
       files/
@@ -48,6 +53,7 @@ PROFILE_FILES="AGENTS.md"
 ```bash
 ./scripts/select-ai-profile.sh codex
 ./scripts/select-ai-profile.sh claude
+./scripts/select-ai-profile.sh codex-claude
 ./scripts/select-ai-profile.sh copilot
 ./scripts/select-ai-profile.sh generic
 ```
@@ -68,6 +74,7 @@ PROFILE_FILES="AGENTS.md"
 - 共通ルールは `docs/`、`.agents/skills`、canonical templates に置く。
 - 同じ設定ファイルを複数 AI 向けに手作業で編集しない。
 - `AGENTS.md`、`CLAUDE.md`、`.github/copilot-instructions.md` などの tool-specific files は薄い entrypoint にする。
+- Codex と Claude Code を同じ checkout で使う場合は `codex-claude` profile を使い、`AGENTS.md` と `CLAUDE.md` を同時に有効化する。
 - profile 切り替え後は diff を確認する。
 - PR には利用 profile を work note に書く。
 - CI や production deploy は profile に依存させない。
@@ -93,6 +100,19 @@ Typical files:
 ```text
 CLAUDE.md
 ```
+
+### codex-claude
+
+Use when Codex and Claude Code both work from the same checkout.
+
+Typical files:
+
+```text
+AGENTS.md
+CLAUDE.md
+```
+
+This profile keeps both tool entrypoints active while shared rules remain in `docs/` and `.agents/skills`.
 
 ### copilot
 
@@ -128,6 +148,7 @@ Work notes should include:
 - Fill `.ai/profiles/<profile>/manifest.env`.
 - Keep profile-specific files under `.ai/profiles/<profile>/files/`.
 - Keep shared workflows in `.agents/skills` and reference them from tool-specific instructions.
+- Add a dual profile such as `codex-claude` when multiple AI tools must read root-level entrypoints at the same time.
 - Run `./scripts/select-ai-profile.sh <profile>`.
 - Commit generated root-level config files only if the project wants that profile to be the shared default.
 - Document local-only profile choices in work notes, not in hidden local state.

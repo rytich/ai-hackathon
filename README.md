@@ -60,10 +60,12 @@ AI 環境を明示的に切り替える場合:
 ```bash
 ./scripts/select-ai-profile.sh codex
 ./scripts/select-ai-profile.sh claude
+./scripts/select-ai-profile.sh codex-claude
 ./scripts/select-ai-profile.sh copilot
 ```
 
 選択された profile は `.ai/active-profile` に記録され、profile ごとの設定ファイルだけが repository root に反映されます。
+Codex と Claude Code を同じ checkout で使う場合は `codex-claude` を選ぶと、`AGENTS.md` と `CLAUDE.md` が同時に有効になります。
 
 新規プロジェクトの場合は、Spec Kit が利用可能なら次の順で進めます。
 
