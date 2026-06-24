@@ -18,16 +18,36 @@ build or package
 contract/schema validation if applicable
 secret scan or secret checklist
 open GitHub issues vs tasks.md pending check if Spec Kit is used
+local validation commands match CI, or differences are documented
 objective review report generated and posted to PR
 real-use path or explicit user-facing fallback validated for usable/v1/production-ready claims
 ```
+
+## Verifiable Done
+
+Issue Done must be expressed as commands or observable states.
+
+Good Done examples:
+
+- `<lint-command>` passes
+- `<test-command>` passes
+- expected user-visible behavior is observed at a named route, screen, CLI command, API response, or artifact path
+- CI required checks pass, or any local/CI difference is documented
+
+Avoid:
+
+- "implemented"
+- "works locally" without command output or observable behavior
+- mock-only or demo-only evidence for product acceptance
 
 ## Reviewer Checklist
 
 - Issue と acceptance criteria に対応している。
 - scope 外の変更が混ざっていない。
+- 変更理由が 1 つで、依頼外の cleanup、rename、format、refactor が混ざっていない。
 - public API、schema、migration、config の互換性を確認した。
 - tests が失敗時に意味のある coverage を持つ。
+- local validation が CI と同じ bar か、差分が説明されている。
 - logs に secret、個人情報、token が出ない。
 - docs、env example、runtime guide が必要に応じて更新されている。
 - Spec Kit task と GitHub Issue の完了状態が同期されている。
@@ -35,6 +55,8 @@ real-use path or explicit user-facing fallback validated for usable/v1/productio
 - `scripts/complete-task.sh` の objective review が PASS している。
 - mock、fixture、stub、fake、demo が product acceptance evidence として扱われていない。
 - real API、real provider、real data path、または明示された user-facing fallback が検証されている。
+- 新しい抽象化は現在の要求に必要か、既存 project pattern に沿っている。
+- error handling は fail fast で、silent fallback がある場合は理由と検証がある。
 - rollback または migration recovery の考慮がある。
 
 ## Real-use Gate

@@ -25,6 +25,7 @@ docs/codex-dev-stack.md           # macOS/Codex 用の開発スタック導入�
 docs/agent-handoff.md             # AI エージェント間の引き継ぎ手順
 docs/ai-environment-profiles.md   # Codex/Claude など AI 環境別 profile 切り替え
 docs/agent-settings-replication.md # AGENTS/CLAUDE/Copilot/skills の再現設計
+docs/software-engineering-practices.md # エージェント時代も捨てない開発規律
 docs/github-configuration.md      # GitHub labels、Issue/PR、branch protection 設定
 docs/quality-gates.md             # 品質ゲートと自動 merge 判定
 docs/project-adoption.md          # 既存プロジェクトへの導入手順
@@ -50,8 +51,9 @@ templates/project/                # bootstrap で配布される雛形
 5. `docs/agent-handoff.md` の required reading order。
 6. `docs/ai-environment-profiles.md` の利用 AI profile。
 7. `docs/agent-settings-replication.md` の tool-specific entrypoint、skills、permission allowlist。
-8. `docs/github-configuration.md` の labels、branch protection、required checks。
-9. `.github/pull_request_template.md` の project-specific checklist。
+8. `docs/software-engineering-practices.md` の Done、scope、CI、human gate。
+9. `docs/github-configuration.md` の labels、branch protection、required checks。
+10. `.github/pull_request_template.md` の project-specific checklist。
 
 AI 環境を明示的に切り替える場合:
 

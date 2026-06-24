@@ -39,6 +39,13 @@
 
 - 
 
+## Scope Discipline
+
+- Change reason:
+- Out-of-scope findings:
+- Drive-by cleanup/refactor avoided or split:
+- Existing pattern extended / new abstraction reason:
+
 ## 理由
 
 - 
@@ -46,6 +53,8 @@
 ## 検証
 
 - 
+- observable outcome:
+- local/CI difference:
 
 ## 未完了 / 次の作業
 

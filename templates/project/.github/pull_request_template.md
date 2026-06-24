@@ -2,6 +2,12 @@
 
 - 
 
+## Scope
+
+- One change reason:
+- Out-of-scope follow-ups:
+- Drive-by refactors avoided or explained:
+
 ## Issue / Spec
 
 - Issue:
@@ -14,6 +20,7 @@
 - [ ] lint/static analysis:
 - [ ] test:
 - [ ] build:
+- [ ] local commands match CI, or difference documented:
 - [ ] secret/privacy checklist:
 
 ## Real-use Gate

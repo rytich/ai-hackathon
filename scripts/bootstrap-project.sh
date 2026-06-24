@@ -37,7 +37,7 @@ while IFS= read -r -d '' file; do
   copy_if_missing "$file" "$TARGET_DIR/$rel"
 done < <(find "$TEMPLATE_DIR" -type f -print0)
 
-for doc in ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md github-configuration.md quality-gates.md project-adoption.md; do
+for doc in ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md software-engineering-practices.md github-configuration.md quality-gates.md project-adoption.md; do
   copy_if_missing "$ROOT_DIR/docs/$doc" "$TARGET_DIR/docs/$doc"
 done
 
@@ -45,4 +45,4 @@ copy_if_missing "$ROOT_DIR/scripts/complete-task.sh" "$TARGET_DIR/scripts/agenti
 
 echo
 echo "Bootstrap complete."
-echo "Next: edit AGENTS.md, .env.example, docs/runtime.md, docs/secrets.md, docs/codex-dev-stack.md, docs/agent-handoff.md, docs/ai-environment-profiles.md, docs/agent-settings-replication.md, docs/github-configuration.md, and .github/pull_request_template.md for this project."
+echo "Next: edit AGENTS.md, .env.example, docs/runtime.md, docs/secrets.md, docs/codex-dev-stack.md, docs/agent-handoff.md, docs/ai-environment-profiles.md, docs/agent-settings-replication.md, docs/software-engineering-practices.md, docs/github-configuration.md, and .github/pull_request_template.md for this project."

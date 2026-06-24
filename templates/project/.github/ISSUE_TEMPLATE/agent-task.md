@@ -13,6 +13,12 @@ assignees: ""
 
 - [ ] 
 
+## Done
+
+- [ ] Command:
+- [ ] Observable outcome:
+- [ ] Local validation matches CI, or difference is documented:
+
 ## Real-use Gate
 
 - Real user path:

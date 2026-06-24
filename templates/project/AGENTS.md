@@ -11,6 +11,7 @@ Project: <PROJECT_NAME>
 5. `docs/ai-execution-framework.md`
 6. `docs/collaboration-rules.md`
 7. `docs/agent-settings-replication.md`
+8. `docs/software-engineering-practices.md`
 
 Add project-specific specs here.
 
@@ -28,6 +29,9 @@ Replace with real commands.
 ## Parallel Work Rules
 
 - Use one branch and one PR per Issue.
+- Define Done as commands or observable states before implementation.
+- Keep each PR to one reason. Split unrelated cleanup, formatting, rename, and refactor.
+- Prefer existing project patterns over new abstractions unless the current requirement needs one.
 - Use isolated worktrees for parallel AI agents.
 - Before implementation, identify the target Spec Kit task and corresponding GitHub Issue.
 - When marking `tasks.md` entries as `[x]`, update the corresponding GitHub Issue in the same work session.
@@ -40,6 +44,7 @@ Replace with real commands.
 - Do not comment on closed Issues; create a new Issue, reopen, or comment on an open PR instead.
 - Mock, fixture, stub, fake, and demo success is not product acceptance evidence. Validate the real user path or an explicit user-facing fallback before closing.
 - Keep repeated agent workflows in `.agents/skills` and keep tool-specific instruction files thin.
+- Local validation commands must match CI, or the difference must be documented.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
 
