@@ -10,6 +10,7 @@ Project: <PROJECT_NAME>
 4. `docs/codex-dev-stack.md`
 5. `docs/ai-execution-framework.md`
 6. `docs/collaboration-rules.md`
+7. `docs/agent-settings-replication.md`
 
 Add project-specific specs here.
 
@@ -38,6 +39,7 @@ Replace with real commands.
 - Re-fetch GitHub Issue/PR state immediately before commenting, merging, or closing. Do not rely only on thread memory or local checkout.
 - Do not comment on closed Issues; create a new Issue, reopen, or comment on an open PR instead.
 - Mock, fixture, stub, fake, and demo success is not product acceptance evidence. Validate the real user path or an explicit user-facing fallback before closing.
+- Keep repeated agent workflows in `.agents/skills` and keep tool-specific instruction files thin.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
 

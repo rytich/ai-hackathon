@@ -20,6 +20,11 @@
       manifest.env
       files/
         CLAUDE.md
+    copilot/
+      manifest.env
+      files/
+        .github/
+          copilot-instructions.md
     generic/
       manifest.env
       files/
@@ -43,6 +48,7 @@ PROFILE_FILES="AGENTS.md"
 ```bash
 ./scripts/select-ai-profile.sh codex
 ./scripts/select-ai-profile.sh claude
+./scripts/select-ai-profile.sh copilot
 ./scripts/select-ai-profile.sh generic
 ```
 
@@ -59,8 +65,9 @@ PROFILE_FILES="AGENTS.md"
 ## Rules
 
 - profile 固有の設定は `.ai/profiles/<profile>/files/` に置く。
-- 共通ルールは `docs/` と canonical templates に置く。
+- 共通ルールは `docs/`、`.agents/skills`、canonical templates に置く。
 - 同じ設定ファイルを複数 AI 向けに手作業で編集しない。
+- `AGENTS.md`、`CLAUDE.md`、`.github/copilot-instructions.md` などの tool-specific files は薄い entrypoint にする。
 - profile 切り替え後は diff を確認する。
 - PR には利用 profile を work note に書く。
 - CI や production deploy は profile に依存させない。
@@ -87,6 +94,16 @@ Typical files:
 CLAUDE.md
 ```
 
+### copilot
+
+Use for GitHub Copilot repository instructions.
+
+Typical files:
+
+```text
+.github/copilot-instructions.md
+```
+
 ### generic
 
 Use for tools that only need repository-level instructions.
@@ -110,6 +127,8 @@ Work notes should include:
 - Decide supported profiles.
 - Fill `.ai/profiles/<profile>/manifest.env`.
 - Keep profile-specific files under `.ai/profiles/<profile>/files/`.
+- Keep shared workflows in `.agents/skills` and reference them from tool-specific instructions.
 - Run `./scripts/select-ai-profile.sh <profile>`.
 - Commit generated root-level config files only if the project wants that profile to be the shared default.
 - Document local-only profile choices in work notes, not in hidden local state.
+- Manage detailed replication rules in `docs/agent-settings-replication.md`.
