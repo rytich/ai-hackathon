@@ -1,5 +1,7 @@
 # Project Adoption Guide
 
+このガイドは **AF を初めて導入するとき**の手順。既に AF を導入済みのプロジェクトへ最新の変更を反映する場合は [project-update.md](project-update.md) を参照する。
+
 ## For Existing Projects
 
 1. `scripts/bootstrap-project.sh /path/to/project` を実行する。

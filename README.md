@@ -33,6 +33,7 @@ docs/framework/                              # フレームワーク運用ルー
   github-configuration.md                    #   GitHub labels、Issue/PR、branch protection 設定
   quality-gates.md                           #   品質ゲートと自動 merge 判定
   project-adoption.md                        #   既存プロジェクトへの導入手順
+  project-update.md                          #   導入済みプロジェクトの AF 最新化手順
 docs/knowledge/                              # system of record（現状 stock、開発＋非開発）
   product/ engineering/ business/ support/ materials/
 docs/planning/                               # 企画フェーズ成果物（調査・要件定義）
@@ -66,6 +67,10 @@ docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-frame
 8. `docs/framework/software-engineering-practices.md` の Done、scope、CI、human gate。
 9. `docs/framework/github-configuration.md` の labels、branch protection、required checks。
 10. `.github/pull_request_template.md` の project-specific checklist。
+
+**既に AF を導入済みのプロジェクトへ最新の変更を反映する場合**は、`bootstrap-project.sh` を再実行するのではなく
+[docs/framework/project-update.md](/Users/ichie/github/agentic-framework/docs/framework/project-update.md) の手順に従ってください。
+導入先が独自の docs 構造にカスタマイズされている場合、単純な再配布は二重構造を生みます。
 
 AI 環境を明示的に切り替える場合:
 

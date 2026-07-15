@@ -116,6 +116,8 @@ YYYY-MM-DD
 - **同時更新義務**: `AGENTS.md`「Knowledge Base（docs の維持）」に従い、前提が変わったら同じ作業で docs を更新する。
 - **Codex / Claude 共通**: どちらのエージェントも `docs/` を single source of truth として維持する。tool 固有の記憶やチャット履歴に知識を残さない。
 
+この規約自体を他プロジェクトへ導入・更新する手順は [project-adoption.md](project-adoption.md)（新規導入）と [project-update.md](project-update.md)（導入済みプロジェクトの最新化）を参照。
+
 ---
 
 ## ルール（DRY / MECE）
