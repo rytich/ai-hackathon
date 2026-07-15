@@ -30,6 +30,12 @@
 - [ ] Mock/fixture/stub/fake/demo success is not presented as product acceptance
 - Notes:
 
+## Docs / Knowledge
+
+- [ ] 影響する `docs/knowledge/` カテゴリ（product/engineering/business/support/materials）を更新した、または該当なし
+- 企画成果物 path（`docs/planning/`）:
+- 意思決定 path（`docs/decisions/`、情報ソース＋理由）:
+
 ## Handoff
 
 - Work note:

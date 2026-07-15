@@ -5,13 +5,14 @@ Project: <PROJECT_NAME>
 ## Required Reading Order
 
 1. `README.md`
-2. `docs/runtime.md`
-3. `docs/secrets.md`
-4. `docs/codex-dev-stack.md`
-5. `docs/ai-execution-framework.md`
-6. `docs/collaboration-rules.md`
-7. `docs/agent-settings-replication.md`
-8. `docs/software-engineering-practices.md`
+2. `docs/knowledge/engineering/runtime.md`
+3. `docs/knowledge/engineering/secrets.md`
+4. `docs/framework/codex-dev-stack.md`
+5. `docs/framework/ai-execution-framework.md`
+6. `docs/framework/collaboration-rules.md`
+7. `docs/framework/agent-settings-replication.md`
+8. `docs/framework/software-engineering-practices.md`
+9. `docs/framework/knowledge-base.md`
 
 Add project-specific specs here.
 
@@ -47,6 +48,7 @@ Replace with real commands.
 - Local validation commands must match CI, or the difference must be documented.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
+- ドキュメントは `docs/` 配下に日本語で構造化して保存する（開発外の知識も `docs/knowledge/` に置く）。企画（調査・要件定義）と実作業を分離し、成果物を `docs/planning/` と `docs/decisions/` に残してから実装に入る。意思決定は情報ソース付きで `docs/decisions/` に残す。詳細は `docs/framework/knowledge-base.md`。
 
 ## Forbidden
 

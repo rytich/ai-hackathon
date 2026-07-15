@@ -7,12 +7,13 @@ AI profile: claude
 
 1. `README.md`
 2. `CLAUDE.md`
-3. `docs/runtime.md`
-4. `docs/secrets.md`
-5. `docs/ai-environment-profiles.md`
-6. `docs/codex-dev-stack.md`
-7. `docs/ai-execution-framework.md`
-8. `docs/collaboration-rules.md`
+3. `docs/knowledge/engineering/runtime.md`
+4. `docs/knowledge/engineering/secrets.md`
+5. `docs/framework/ai-environment-profiles.md`
+6. `docs/framework/codex-dev-stack.md`
+7. `docs/framework/ai-execution-framework.md`
+8. `docs/framework/collaboration-rules.md`
+9. `docs/framework/knowledge-base.md`
 
 ## Claude Rules
 
@@ -25,3 +26,4 @@ AI profile: claude
 - Do not treat mock/fixture/stub/fake/demo success as real-use completion.
 - Preserve existing user changes.
 - Record AI profile in work notes.
+- ドキュメントは `docs/` 配下に日本語で構造化して保存し、企画（調査・要件定義）と実作業を分離する。意思決定は情報ソース付きで `docs/decisions/` に残し、前提が変わったら該当 `docs/knowledge/` を同時更新する。詳細は `docs/framework/knowledge-base.md`。

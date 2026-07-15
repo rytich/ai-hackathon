@@ -17,22 +17,34 @@ ichimesher で試行した Spec Kit、Codex/Serena/context-mode、Issue 駆動�
 ## 構成
 
 ```text
-AGENTS.md                         # AI エージェント共通ルール
-docs/ai-execution-framework.md    # 役割、標準ワークフロー、並列実行ルール
-docs/collaboration-rules.md       # branch/worktree/PR/作業ログの運用
-docs/environment-reproducibility.md # 別端末での再現手順
-docs/codex-dev-stack.md           # macOS/Codex 用の開発スタック導入・検証手順
-docs/agent-handoff.md             # AI エージェント間の引き継ぎ手順
-docs/ai-environment-profiles.md   # Codex/Claude など AI 環境別 profile 切り替え
-docs/agent-settings-replication.md # AGENTS/CLAUDE/Copilot/skills の再現設計
-docs/software-engineering-practices.md # エージェント時代も捨てない開発規律
-docs/github-configuration.md      # GitHub labels、Issue/PR、branch protection 設定
-docs/quality-gates.md             # 品質ゲートと自動 merge 判定
-docs/project-adoption.md          # 既存プロジェクトへの導入手順
-docs/templates/                   # 作業サマリー、判断ログ、PR テンプレート
-scripts/bootstrap-project.sh      # 他プロジェクトへのテンプレート導入
-templates/project/                # bootstrap で配布される雛形
+AGENTS.md                                    # AI エージェント共通ルール
+docs/index.md                                # マップ:「どこに何があるか」の全体目次
+docs/README.md                               # docs 運用規約（憲法・維持機構の要約）
+docs/framework/                              # フレームワーク運用ルール（メタ）
+  knowledge-base.md                          #   知識ベース構造・企画/実作業分離・ソース記録・維持機構
+  ai-execution-framework.md                  #   役割、標準ワークフロー、並列実行ルール
+  collaboration-rules.md                     #   branch/worktree/PR/作業ログの運用
+  environment-reproducibility.md             #   別端末での再現手順
+  codex-dev-stack.md                         #   macOS/Codex 用の開発スタック導入・検証手順
+  agent-handoff.md                           #   AI エージェント間の引き継ぎ手順
+  ai-environment-profiles.md                 #   Codex/Claude など AI 環境別 profile 切り替え
+  agent-settings-replication.md              #   AGENTS/CLAUDE/Copilot/skills の再現設計
+  software-engineering-practices.md          #   エージェント時代も捨てない開発規律
+  github-configuration.md                    #   GitHub labels、Issue/PR、branch protection 設定
+  quality-gates.md                           #   品質ゲートと自動 merge 判定
+  project-adoption.md                        #   既存プロジェクトへの導入手順
+docs/knowledge/                              # system of record（現状 stock、開発＋非開発）
+  product/ engineering/ business/ support/ materials/
+docs/planning/                               # 企画フェーズ成果物（調査・要件定義）
+docs/decisions/                              # 意思決定記録（情報ソース＋理由）
+docs/work-notes/                             # 作業サマリー
+docs/templates/                              # 作業サマリー、判断ログ、PR テンプレート
+scripts/bootstrap-project.sh                 # 他プロジェクトへのテンプレート導入
+templates/project/                           # bootstrap で配布される雛形
 ```
+
+docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-framework/docs/README.md)、
+知識ベースの構造と維持ルールは [docs/framework/knowledge-base.md](/Users/ichie/github/agentic-framework/docs/framework/knowledge-base.md) を参照してください。
 
 ## クイックスタート
 
@@ -45,14 +57,14 @@ templates/project/                # bootstrap で配布される雛形
 導入後、対象プロジェクトで次を編集してください。
 
 1. `AGENTS.md` のプロジェクト名、検証コマンド、禁止事項。
-2. `docs/ai-execution-framework.md` の stable branch、branch prefix、required checks。
-3. `docs/environment-reproducibility.md` の runtime、package manager、secret 名。
-4. `docs/codex-dev-stack.md` の端末ごとの導入パスと検証コマンド。
-5. `docs/agent-handoff.md` の required reading order。
-6. `docs/ai-environment-profiles.md` の利用 AI profile。
-7. `docs/agent-settings-replication.md` の tool-specific entrypoint、skills、permission allowlist。
-8. `docs/software-engineering-practices.md` の Done、scope、CI、human gate。
-9. `docs/github-configuration.md` の labels、branch protection、required checks。
+2. `docs/framework/ai-execution-framework.md` の stable branch、branch prefix、required checks。
+3. `docs/framework/environment-reproducibility.md` の runtime、package manager、secret 名。
+4. `docs/framework/codex-dev-stack.md` の端末ごとの導入パスと検証コマンド。
+5. `docs/framework/agent-handoff.md` の required reading order。
+6. `docs/framework/ai-environment-profiles.md` の利用 AI profile。
+7. `docs/framework/agent-settings-replication.md` の tool-specific entrypoint、skills、permission allowlist。
+8. `docs/framework/software-engineering-practices.md` の Done、scope、CI、human gate。
+9. `docs/framework/github-configuration.md` の labels、branch protection、required checks。
 10. `.github/pull_request_template.md` の project-specific checklist。
 
 AI 環境を明示的に切り替える場合:
@@ -95,4 +107,4 @@ Issue ready
   -> Required checks 成功後に merge
 ```
 
-詳細は [docs/ai-execution-framework.md](/Users/ichie/github/agentic-framework/docs/ai-execution-framework.md) を参照してください。
+詳細は [docs/framework/ai-execution-framework.md](/Users/ichie/github/agentic-framework/docs/framework/ai-execution-framework.md) を参照してください。
