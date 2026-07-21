@@ -1,0 +1,17 @@
+# outputs/ はコミットする。
+# 対外資料・提案書・レポートは事業の成果物そのもので、非エンジニアが参照する最終形でもある。
+# repository 内の成果物だけで再現するという原則を保つため、配布物は repository に置く。
+# 除外するのは、受け手のいない使い捨ての中間生成物だけ。
+outputs/tmp/
+
+# 環境・秘密
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+
+# エディタ
+.vscode/
+.idea/

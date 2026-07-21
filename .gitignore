@@ -1,0 +1,12 @@
+# このファイルは agentic-framework 本体用。導入先プロジェクト向けの方針は
+# templates/project/.gitignore を参照（そちらでは outputs/ をコミットする）。
+
+# 生成物
+# AF 本体の outputs/ は、フレームワーク開発の副産物（デモ用デッキ、検証用レンダリング）で
+# 配布先が存在しないためコミットしない。原稿は docs/knowledge/materials/ に残す。
+# 方針を書いた README だけは追跡する。
+outputs/*
+!outputs/README.md
+
+# OS
+.DS_Store
