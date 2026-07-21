@@ -75,6 +75,7 @@ PROFILE_FILES="AGENTS.md"
 - 同じ設定ファイルを複数 AI 向けに手作業で編集しない。
 - `AGENTS.md`、`CLAUDE.md`、`.github/copilot-instructions.md` などの tool-specific files は薄い entrypoint にする。
 - Codex と Claude Code を同じ checkout で使う場合は `codex-claude` profile を使い、`AGENTS.md` と `CLAUDE.md` を同時に有効化する。
+- 複数エージェントを有効化したら、下記 Task Routing でタスク種別ごとの担当を決める。決めずに「どちらでも同じ」運用にしない。
 - profile 切り替え後は diff を確認する。
 - PR には利用 profile を work note に書く。
 - CI や production deploy は profile に依存させない。
@@ -113,6 +114,28 @@ CLAUDE.md
 ```
 
 This profile keeps both tool entrypoints active while shared rules remain in `docs/` and `.agents/skills`.
+
+## Task Routing（複数エージェントの使い分け）
+
+`codex-claude` のように複数の AI を同時に有効化する場合、**どちらをいつ使うか**を決めておく。決めないと「どちらでも同じ」扱いになり、速度と深さのどちらも取り逃す。
+
+既定の振り分け（プロジェクトごとに調整する）:
+
+| タスク種別 | 推奨 | 理由 |
+|---|---|---|
+| 定型の実装、既存パターンの適用、機械的な修正 | Codex | 速度優先。判断の余地が小さい |
+| 大量ファイルの一括変更、リネーム、定型 refactor | Codex | 反復処理が主で、設計判断を伴わない |
+| 仕様・設計の検討、要件定義、trade-off の判断 | Claude Code | 深い思考と文脈統合が要る |
+| 不具合の原因調査、再現困難な問題の切り分け | Claude Code | 仮説検証の反復が要る |
+| 非開発知識（事業・法務・サポート）の整理 | Claude Code | 文脈依存が強く、誤りのコストが高い |
+| 人間承認が必要な領域（auth/secret/billing/production） | Claude Code | 判断根拠の説明責任が要る |
+
+運用ルール:
+
+- 迷ったら**深い方（Claude Code）に倒す**。速度で失うものより、浅い判断で失うものの方が大きい。
+- 使い分けの実績は work note の `AI profile` 欄に残す。溜まった実績で上の表を更新する。
+- 表を更新したら理由を `docs/decisions/` に残す。
+- **同一 Issue を複数エージェントで並行させない。** 担当を 1 つに決める。分担する場合は Issue を分割する。
 
 ### copilot
 

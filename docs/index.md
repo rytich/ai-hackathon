@@ -10,6 +10,9 @@
 | docs 全体の運用規約を知る | [README.md](README.md) / [framework/knowledge-base.md](framework/knowledge-base.md) |
 | AF を他プロジェクトに新規導入する | [framework/project-adoption.md](framework/project-adoption.md) |
 | 導入済みプロジェクトの AF を最新化する | [framework/project-update.md](framework/project-update.md) |
+| どの AI にどのタスクを任せるか決める | [framework/ai-environment-profiles.md](framework/ai-environment-profiles.md) |
+| 指示の書き方（What/Why/How）を知る | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
+| 企画・差分にレビューを返す | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
 | 調査メモを残す / 読む（情報ソース付き） | [planning/research/](planning/research/) |
 | 要件定義を残す / 読む | [planning/requirements/](planning/requirements/) |
 | なぜそう決めたかを残す / 読む | [decisions/](decisions/) |

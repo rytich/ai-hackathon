@@ -49,6 +49,9 @@ Replace with real commands.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
 - ドキュメントは `docs/` 配下に日本語で構造化して保存する（開発外の知識も `docs/knowledge/` に置く）。企画（調査・要件定義）と実作業を分離し、成果物を `docs/planning/` と `docs/decisions/` に残してから実装に入る。意思決定は情報ソース付きで `docs/decisions/` に残す。詳細は `docs/framework/knowledge-base.md`。
+- 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く。欠けたまま着手せず補完を依頼する（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
+- 企画成果物は実装着手前に人間のインラインレビューを通す。指摘には差分で応答し、指摘のない箇所を作り直さない（同 Inline Review）。
+- 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。同一 Issue を複数エージェントで並行させない。
 
 ## Forbidden
 

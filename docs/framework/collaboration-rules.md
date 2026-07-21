@@ -95,10 +95,28 @@ Codex desktop など branch prefix が決まっている環境では、その pr
 
 shared files を触る場合は、Coordinator が他 branch との競合を先に確認する。
 
+## Instruction Pattern（指示の型）
+
+Issue、タスク依頼、エージェントへの指示には **What / Why / How** を含める。
+
+| 要素 | 内容 | 省略すると |
+|---|---|---|
+| What | 何をするか | 作業対象がぶれる |
+| Why | なぜ必要か、背景、経緯、誰が困っているか | **判断が浅くなる。トレードオフを誤る** |
+| How | 使ってよい/いけない手段、既存パターン、優先すべきトレードオフ | 既存パターンを無視した実装が出る |
+
+ルール:
+
+- **重要な作業ほど Why を厚く書く。** 出力が浅いときの原因は、指示の言い回しではなく背景情報の不足であることが多い。
+- 指示を出す前に「この内容を人間の担当者に渡して作業が始められるか」で確認する。始められないなら情報が足りていない。
+- 制約が無い場合も How に「制約なし」と明記する。空欄は「未検討」と区別がつかない。
+- 抽象的な品質要求（「もっと良くして」など）は禁止。**何がどう良くないのか**を具体化して渡す。
+- Why に書いた背景が後から重要になる場合は `docs/decisions/` に情報ソース付きで残す。Issue は閉じると読まれない。
+
 ## Start Procedure
 
 1. Issue、spec、tasks、related docs を読む。
-2. scope、acceptance criteria、non-goals を確認する。
+2. scope、acceptance criteria、non-goals を確認する。What/Why/How が欠けていれば、着手前に補完を依頼する。
 3. GitHub coordination state を確認する。
 4. Spec Kit task と GitHub Issue の対応を確認する。
 5. dependency decision を `Proceed` / `Proceed with guardrails` / `Wait` / `Split` で決める。
@@ -146,6 +164,38 @@ PR には次を含める。
 - 既知の未対応、後続 Issue
 - work note path
 - auto merge 可否
+
+## Inline Review（企画・差分への人間レビュー）
+
+企画（`docs/planning/` の調査・要件）と実装差分には、**人間がピンポイントで指摘を返せる導線**を用意する。PR の総評だけでは、どの記述のどこが違うのかが伝わらず、修正のたびに全体を作り直すことになる。
+
+### レビュー対象と手段
+
+| 対象 | 手段 |
+|---|---|
+| 企画成果物（`docs/planning/research/`、`docs/planning/requirements/`） | 実装着手**前**にインラインレビュー。承認されるまで実装に進まない |
+| 実装差分 | PR のインラインコメント、またはローカルでのインラインレビュー |
+| 対外資料・UI などの見た目 | レンダリング結果に対してインラインレビュー |
+
+### 手段の選択
+
+- **GitHub PR のインラインコメント**: 差分レビューの既定手段。追加ツール不要。
+- **ローカルのインラインレビューツール**（例: [crit](https://crit.md)）: **PR になる前**の plan / 要件 / 生成物をレビューしたい場合に使う。markdown・diff・ローカル起動中のページへ行単位でコメントし、エージェントにそのまま反映させられる。git 内で完結し外部サービスに依存しない。
+
+  ```bash
+  crit docs/planning/requirements/<topic>.md   # 要件をレビュー
+  crit                                          # branch の差分をレビュー
+  crit http://localhost:3000                    # 起動中のアプリをレビュー
+  ```
+
+  ツールを導入していないプロジェクトは、PR を先に作ってインラインコメントで代替してよい。**重要なのは行単位で指摘が返る導線があること**で、特定ツールの採用ではない。
+
+### ルール
+
+- 指摘は**行・箇所に紐づけて**返す。「全体的にもう少し良く」のような抽象指示はやり直しを招くため避ける。
+- エージェントは指摘に**差分で応答する**。指摘のない箇所を作り直さない。
+- 企画フェーズのレビュー結果で方針が変わったら、`docs/decisions/` に理由と情報ソースを残す。
+- 人間承認が必要な領域（auth/secret/billing/production/legal）は、インラインレビューの完了を merge の前提にする。
 
 ## Work Summary Notes
 

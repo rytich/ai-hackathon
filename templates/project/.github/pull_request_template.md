@@ -36,6 +36,12 @@
 - 企画成果物 path（`docs/planning/`）:
 - 意思決定 path（`docs/decisions/`、情報ソース＋理由）:
 
+## Review / Routing
+
+- [ ] 企画成果物を実装着手前にレビューした、または該当なし
+- [ ] レビュー指摘に差分で応答した（指摘のない箇所を作り直していない）
+- 担当エージェント（Task Routing の根拠）:
+
 ## Handoff
 
 - Work note:

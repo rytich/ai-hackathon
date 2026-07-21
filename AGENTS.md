@@ -33,6 +33,9 @@
 - mock、fixture、stub、fake、demo の成功を product acceptance として扱わない。real user path または明示された user-facing fallback の検証を完了条件に含める。
 - 変更理由が後から議論になりそうなものは `docs/decisions/` に残す。
 - 作業終了時は `docs/work-notes/` に短いサマリーを残す。
+- 指示・Issue には **What / Why / How** を含める。重要な作業ほど Why（背景・経緯）を厚く書く。欠けたまま着手せず、補完を依頼する。詳細は `docs/framework/collaboration-rules.md` の Instruction Pattern。
+- 企画成果物（`docs/planning/`）は**実装着手前に人間のインラインレビュー**を通す。指摘には差分で応答し、指摘のない箇所を作り直さない。詳細は同 Inline Review。
+- 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing に従って決める。迷ったら深い方に倒す。同一 Issue を複数エージェントで並行させない。
 - 詳細な開発規律は `docs/framework/software-engineering-practices.md` に従う。
 
 ## Knowledge Base（docs の維持）

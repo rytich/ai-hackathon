@@ -24,6 +24,9 @@ Tool entrypoint: Claude Code
 - Treat `docs/` and `.agents/skills` as the shared source of truth.
 - Keep this file as the Claude Code entrypoint; keep Codex-specific notes in `AGENTS.md`.
 - ドキュメントは `docs/` 配下に日本語で構造化して保存し、企画（調査・要件定義）と実作業を分離する。意思決定は情報ソース付きで `docs/decisions/` に残し、前提が変わったら該当 `docs/knowledge/` を同時更新する。詳細は `docs/framework/knowledge-base.md`。
+- 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
+- 企画成果物は実装着手前に人間のインラインレビューを通し、指摘には差分で応答する（同 Inline Review）。
+- 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。
 - Keep changes scoped to the active Issue.
 - Define Done as commands or observable states.
 - Keep each PR to one reason. Split unrelated cleanup, formatting, rename, and refactor.

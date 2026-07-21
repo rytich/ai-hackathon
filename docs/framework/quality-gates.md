@@ -53,6 +53,8 @@ Avoid:
 - docs、env example、runtime guide が必要に応じて更新されている。
 - 変更が影響する `docs/knowledge/` カテゴリ（product/engineering/business/support/materials）が更新されている。
 - 企画を伴う変更は `docs/planning/`（調査・要件）と `docs/decisions/`（情報ソース＋理由）が残っている。
+- 企画成果物が実装着手前にレビューされている（`docs/framework/collaboration-rules.md` の Inline Review）。
+- レビュー指摘に差分で応答している。指摘のない箇所を作り直していない。
 - Spec Kit task と GitHub Issue の完了状態が同期されている。
 - open GitHub Issues と `tasks.md` pending count の mismatch が説明されている。
 - `scripts/complete-task.sh` の objective review が PASS している。
