@@ -6,8 +6,9 @@
 
 | やりたいこと | 場所 |
 |---|---|
-| エージェント運用のルールを知る | [framework/](framework/) |
+| エージェント運用のルールを知る | [framework/](framework/README.md) |
 | docs 全体の運用規約を知る | [README.md](README.md) / [framework/knowledge-base.md](framework/knowledge-base.md) |
+| 作業を引き継ぐ / 引き継がれる | [agent-handoff.md](agent-handoff.md) |
 | AF を他プロジェクトに新規導入する | [framework/project-adoption.md](framework/project-adoption.md) |
 | 導入済みプロジェクトの AF を最新化する | [framework/project-update.md](framework/project-update.md) |
 | どの AI にどのタスクを任せるか決める | [framework/ai-environment-profiles.md](framework/ai-environment-profiles.md) |

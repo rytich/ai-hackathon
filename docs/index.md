@@ -6,7 +6,7 @@
 
 | やりたいこと | 場所 |
 |---|---|
-| エージェント運用のルールを知る | [framework/](framework/) |
+| エージェント運用のルールを知る | [framework/](framework/README.md) |
 | docs 全体の運用規約を知る | [README.md](README.md) / [framework/knowledge-base.md](framework/knowledge-base.md) |
 | AF を他プロジェクトに新規導入する | [framework/project-adoption.md](framework/project-adoption.md) |
 | 導入済みプロジェクトの AF を最新化する | [framework/project-update.md](framework/project-update.md) |

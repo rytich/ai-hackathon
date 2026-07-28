@@ -102,3 +102,9 @@ cd /path/to/target-project
 - 本ファイルが**原稿の正本**。配布形態（HTML / スライド等）はここから生成する。
 - 生成物は repository 直下の `outputs/` に置く。原稿と生成物の二重管理をしない。
 - 生成物を更新したら、必ず本ファイルを先に更新してから再生成する。
+
+## 関連
+
+- 出力形式と原稿・配布形態の分離を定めた判断: [../../decisions/2026-07-15-outputs-commit-policy.md](../../decisions/2026-07-15-outputs-commit-policy.md)
+- その検証（本資料を題材に実施）: [../../planning/research/2026-07-15-output-format-verification.md](../../planning/research/2026-07-15-output-format-verification.md)
+- 書き方の規約: [README.md](README.md)

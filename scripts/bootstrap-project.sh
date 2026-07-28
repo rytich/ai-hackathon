@@ -37,7 +37,7 @@ while IFS= read -r -d '' file; do
   copy_if_missing "$file" "$TARGET_DIR/$rel"
 done < <(find "$TEMPLATE_DIR" -type f -print0)
 
-for doc in knowledge-base.md ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md software-engineering-practices.md github-configuration.md quality-gates.md project-adoption.md project-update.md; do
+for doc in README.md knowledge-base.md ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md software-engineering-practices.md github-configuration.md quality-gates.md project-adoption.md project-update.md; do
   copy_if_missing "$ROOT_DIR/docs/framework/$doc" "$TARGET_DIR/docs/framework/$doc"
 done
 

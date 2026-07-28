@@ -122,7 +122,30 @@ YYYY-MM-DD
 
 ## ルール（DRY / MECE）
 
-1. **1 つの知識 = 1 つの置き場。** 横断は link（`[[...]]` や相対パス）で表現し、複製しない。
+1. **1 つの知識 = 1 つの置き場。** 横断は相対リンク（`[text](path)`）で表現し、複製しない。wikilink `[[slug]]` は使わない（GitHub や素の markdown ビューアで解決せず、可搬性が下がる）。
 2. **stock / flow / log を混ぜない。** knowledge は現在、planning は企画中、decisions/work-notes は履歴。
 3. **frontmatter は検索するもの。** 状態・カテゴリ・日付など query したい情報は frontmatter に、説明は本文に。
 4. **早すぎる細分化をしない。** カテゴリやサブフォルダは実際に必要になってから増やす。
+
+---
+
+## リンクと発見性
+
+知識は「置く」だけでなく「たどれる」状態を保つ。孤立した知識は、無いのとほぼ同じ。
+
+### 双方向にリンクする
+
+decision は影響先の docs へ前向きに張る。**それを受ける側（knowledge / planning）も、根拠となった decision / research へ張り返す。** 片方向だと、ある知識を見たときに「なぜこうなっているか」を遡れない。
+
+- content ノートの末尾に `## 関連` 節を置き、根拠・派生元・関連する artifact へリンクする。
+- フォルダの `README.md` は、そのフォルダの目次（map of content）として主要な content ノートへリンクする。
+
+### 孤立ノートを検出する
+
+どこからもリンクされない content ノートは、発見不能になった知識か、役割を終えた残骸。`scripts/check-doc-links.sh` で broken link と orphan を検出する。
+
+```bash
+scripts/check-doc-links.sh docs
+```
+
+orphan が出たら、index / README / 関連ノートからリンクするか、不要なら削除する。時系列ログ（work-notes / 作業記録）と構造ファイル（templates）は既定で除外する。除外パスは `DOC_LINKS_EXEMPT` で調整する。このチェックは `quality-gates.md` の docs 鮮度ゲートの一部。

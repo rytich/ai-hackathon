@@ -41,6 +41,7 @@ docs/decisions/                              # 意思決定記録（情報ソー
 docs/work-notes/                             # 作業サマリー
 docs/templates/                              # 作業サマリー、判断ログ、PR テンプレート
 scripts/bootstrap-project.sh                 # 他プロジェクトへのテンプレート導入
+scripts/check-doc-links.sh                   # docs の broken link / 孤立ノート検出
 templates/project/                           # bootstrap で配布される雛形
 ```
 

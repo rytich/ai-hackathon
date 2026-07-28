@@ -14,6 +14,12 @@
 - 更新トリガー: 対外資料の作成・更新（主担当: 担当者）
 - ブランド基準は [../business/branding/](../business/branding/) に従う。
 
+## 資料一覧（map of content）
+
+作成した資料はここに一覧し、発見できる状態を保つ（孤立させない）。
+
+- [agentic-framework 概要](agentic-framework-overview.md) — 対外説明用。docs 4 レイヤー・企画と実作業の分離・品質ゲート・複数 AI の使い分け
+
 ## 原稿と配布形態を分ける
 
 **このフォルダの markdown が正本。** 配布形態はここから生成し、`outputs/` に置く。
