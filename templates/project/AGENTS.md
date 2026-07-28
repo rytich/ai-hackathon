@@ -44,7 +44,7 @@ Replace with real commands.
 - Re-fetch GitHub Issue/PR state immediately before commenting, merging, or closing. Do not rely only on thread memory or local checkout.
 - Do not comment on closed Issues; create a new Issue, reopen, or comment on an open PR instead.
 - Mock, fixture, stub, fake, and demo success is not product acceptance evidence. Validate the real user path or an explicit user-facing fallback before closing.
-- Keep repeated agent workflows in `.agents/skills` and keep tool-specific instruction files thin.
+- Keep repeated agent workflows in `.agents/skills` and keep tool-specific instruction files thin. Sublimate a workflow into a skill after it repeats 3+ times in work-notes; disable model invocation for dangerous skills; keep SKILL.md a short map (see `docs/framework/agent-settings-replication.md`).
 - Local validation commands must match CI, or the difference must be documented.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
