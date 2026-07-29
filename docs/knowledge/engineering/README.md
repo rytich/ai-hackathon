@@ -7,6 +7,7 @@
   - `secrets.md` — secret 名と取得元（**値は書かない**）
   - `architecture.md` — 構成・依存・境界（必要になったら）
   - `testing.md` — テスト戦略・品質ゲート補足（必要になったら）
+  - `project-tracker.md` — PM ツール連携（正となるトラッカー、connector、同期方向、ID マッピング）。`docs/framework/toolchain-flow.md` の PM 反映契約の設定点。既定は Linear
 - frontmatter 例:
   ```yaml
   ---

@@ -1,0 +1,114 @@
+# Toolchain Flow（統合ツールチェーン標準フロー）
+
+superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 つの標準フロー**に束ねる正本。どのツールを、どの段で、何を成果物に、どの追跡先へ出すかを一意に決める。目的は、複数フレームワーク併用時の衝突（レビュー・出荷・知識ベース）を避け、作業を追跡可能に保つこと。
+
+この標準から外れる進め方を見つけたら、**非推奨であることを明示し、標準の代替案を提示してから**進む（下記「逸脱時の行動」）。
+
+## 追跡の正（二層）
+
+- **PM / 企画 = Linear が正**（ロードマップ、サイクル、プロジェクトタスク）。
+- **開発の作業単位 = GitHub Issues が正**（要件、主タスク、分割タスク、検証結果）。
+- 両者は相互リンクし、各層で権威を持つ。開発の状態は GitHub が、プロジェクトの状態は Linear が真とする。
+
+## 標準フロー（入れ子＋ロールアップ）
+
+```
+企画          superpowers          → Linear（プロジェクトタスク）        [PM層・正=Linear]
+ │            企画書は docs/planning/ に残し、Linear タスクと相互リンク
+ └ 実装(主)   Spec Kit 要件定義    → GitHub Issue（主タスク）            [開発層・正=GitHub]
+     │        主 Issue は上位の Linear タスクへリンク
+     ├ 実装(分割) Spec Kit で分解  → GitHub Issue（分割タスク／主にリンク）
+     │   └ 検証  crit             → 分割 Issue に「サブ開発結果報告」をコメント
+     ├ 実装(分割) Spec Kit で分解  → GitHub Issue（分割タスク／主にリンク）
+     │   └ 検証  crit             → 分割 Issue に「サブ開発結果報告」をコメント
+     └ 検証(主)  crit             → 主 Issue に「主開発結果報告」をコメント
+ └ 課題解決   complete-task.sh 延長 → Linear（解決を上位タスクへロールアップ）
+```
+
+補助レイヤー:
+
+- **AF（統治）**: docs 構造・Issue 駆動・品質ゲート・承認境界。常時 ON で道具に依存しない。
+- **skills（基盤/並列）**: 分割タスクを worktree → crabbox で並列に回す。dev-local/e2e で実行可能化し、pr で実駆動検証する。
+
+## 段ごとの担当
+
+| 段 | 担当ツール | 成果物 | 追跡先（正） |
+|---|---|---|---|
+| 企画・意図探索 | superpowers `brainstorming` / `writing-plans` | 企画書（`docs/planning/`） | Linear プロジェクトタスク |
+| 要件定義・主タスク | Spec Kit `specify` / `plan` | 要件、`tasks.md` | GitHub 主 Issue |
+| タスク分解 | Spec Kit `tasks` | 分割タスク | GitHub 分割 Issue |
+| 並列実装 | superpowers `test-driven-development` ＋ skills `worktree`/`crabbox` | 差分 | GitHub 分割 Issue |
+| 人間レビュー・検証 | crit | 行単位コメント → 差分反映 | 対応 Issue へ結果コメント |
+| 出荷・完了 | AF `complete-task.sh`（＋ skills `pr` で実駆動検証） | PR、objective review | GitHub Issue close |
+| 課題解決・ロールアップ | AF 完了パイプライン延長 | 解決サマリ | Linear アイテム更新 |
+
+## Spec Kit の位置づけ
+
+Spec Kit は**企画の上位ではなく実装層**のフェーズコントローラ。企画（superpowers → Linear）を受けて、**要件定義とタスク分解**を担い、その成果を GitHub Issue（主・分割）にマップする。`tasks.md` ↔ GitHub Issues の同期は `docs/framework/ai-execution-framework.md` の Completion Synchronization と `complete-task.sh` に従う。
+
+- Spec Kit が使える project: specify/plan/tasks を正式フェーズとして使い、tasks を Issue 化する。
+- Spec Kit が無い project: plan mode で要件を書き、`docs/planning/requirements/` に残して Issue 化する（縮退）。
+- plan mode は「対話で企画・要件を練る場」、`docs/planning/` は「企画書・要件の置き場」、Spec Kit は「フェーズ制御と分解」。役割が違うので競合しない。
+
+## 相互リンク契約
+
+1. **企画書 ↔ Linear**: 企画書（`docs/planning/`）に Linear タスク URL を、Linear タスクに企画書 path を記す。
+2. **GitHub 主 Issue ↔ Linear**: 主 Issue 本文に上位 Linear タスク URL、Linear タスクに主 Issue URL。
+3. **分割 Issue ↔ 主 Issue**: 分割 Issue に親（主 Issue）を明記。
+4. **crit 検証結果 → Issue**: crit の指摘と解消状況を、対応 Issue にコメントで残す（分割 → サブ開発結果報告、主 → 主開発結果報告）。証跡リンク（crit のレビュー成果物や PR）を添える。
+
+リンクは相対 URL でなく完全 URL を使う（別サービス間のため）。
+
+## ロールアップ契約（課題解決 → Linear）
+
+- GitHub の主/分割 Issue が解決したら、**AF 完了パイプライン（`complete-task.sh` の延長）**が、対応する Linear アイテムのステータスと解決サマリを更新する。
+- 逆方向: Linear の優先度・サイクルが着手順として GitHub 側に降りる。
+- 正は層ごと（PM=Linear, dev=GitHub）。矛盾したら、開発の事実は GitHub、プロジェクトの意思決定は Linear を優先する。
+
+## 衝突タイブレーカ（1 領域 1 ツール）
+
+複数ツールが同じ領域を持つ場合、次の 1 つに寄せる（`docs/framework/agent-settings-replication.md` の Framework Coexistence）。
+
+- **レビュー**: 人間レビュー面は **crit に一本化**。superpowers `requesting/receiving-code-review` は「人間に見せる前の AI 相互チェック」として前段に置く。AF の Inline Review は「いつ必須か」を定めるだけ。
+- **出荷・検証**: 外側パイプラインは **AF `complete-task.sh`**（何が Done か）。アプリを実駆動して確かめる工程は **skills `pr`**。superpowers はチェックリスト規律として併走。3 つを別々に走らせない。
+- **知識ベース**: **1 repo 1 つ**。AF は `docs/knowledge/` を採用済みのため、同じ repo に AIBC `new-loop` の substrate（signals/docs/domains）を**並置しない**。new-loop の思想（compounding、決定論的 collector）は借りてよいが、並行フォルダ木は作らない。
+
+## 並列開発
+
+- 分割タスクは isolated worktree で並列に実装する（`docs/framework/collaboration-rules.md` の Worktree Rule）。
+- 1 台で N スタックを同時に立てられない（固定ポート・単一 DB）場合は、skills `crabbox` でエージェントごとにクラウド隔離箱へ昇格する。
+- 同一 Issue を複数エージェントで並行させない。分担するなら Issue を分割する。
+
+## PM ツールの差し替え
+
+既定は Linear。ツール非依存の契約とし、正となるトラッカーと connector（MCP / CLI / API）、同期方向、ID マッピング規則を **`docs/knowledge/engineering/`** に project ごとに宣言する。Jira / GitHub Projects などにも同じ契約を当てられる。
+
+## 逸脱時の行動（徹底）
+
+人間またはエージェントがこの標準フローから外れて進めようとした場合、黙って従わない。次を順に行う。
+
+1. **検知**: どの段で標準と違うか（例: 企画を Linear に登録せず直接実装、crit を通さず PR、Spec Kit を飛ばして分割、知識を new-loop substrate に書く）。
+2. **非推奨の明示**: なぜ非推奨か（追跡が切れる／レビューが飛ぶ／二重構造になる等）を一言で伝える。
+3. **代替案の提示**: 標準に沿う具体的な進め方を示す。
+4. それでも人間が明示的に選ぶなら従うが、逸脱と理由を work note か Issue に残す。
+
+黙認は禁止。標準は守るためにあり、破る場合は記録して破る。
+
+## 優雅な縮退（ツール未導入時）
+
+| 未導入 | フォールバック |
+|---|---|
+| Spec Kit | plan mode で要件を書き `docs/planning/requirements/` に残して Issue 化 |
+| Linear（PM ツール） | GitHub Issues のみで運用（企画も Issue 化）。PM 反映はスキップ |
+| crit | PR のインラインコメントでレビュー |
+| crabbox | ローカル worktree で並列 |
+| skills `pr` | AF `complete-task.sh` と real-use gate のみで検証 |
+
+縮退しても、追跡（企画↔Issue）と検証結果の記録は省かない。
+
+## 関連
+
+- 標準ワークフロー全体: [ai-execution-framework.md](ai-execution-framework.md)
+- レビューと双方向リンク: [collaboration-rules.md](collaboration-rules.md)
+- フレームワーク共存と skill 規約: [agent-settings-replication.md](agent-settings-replication.md)
+- この標準を採用した理由や、PM ツール差し替えなどの判断は、各プロジェクトの `docs/decisions/` に情報ソース付きで残す。

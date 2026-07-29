@@ -32,3 +32,4 @@ AI profile: codex
 - 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
 - 企画成果物は実装着手前に人間のインラインレビューを通し、指摘には差分で応答する（同 Inline Review）。
 - 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。
+- ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画 superpowers→Linear、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示する。

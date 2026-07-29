@@ -56,6 +56,9 @@ Avoid:
 - 企画成果物が実装着手前にレビューされている（`docs/framework/collaboration-rules.md` の Inline Review）。
 - レビュー指摘に差分で応答している。指摘のない箇所を作り直していない。
 - `scripts/check-doc-links.sh` が broken link 0 で通る。新しい content ノートが孤立していない（index / README / 関連ノートからリンクされている）。
+- 企画書と GitHub Issue / Linear タスクが相互リンクされている（`docs/framework/toolchain-flow.md`）。
+- crit の検証結果が対応 Issue にコメントされている。解決した Issue が Linear の上位タスクへロールアップされている。
+- 標準フロー外の進め方をした場合、非推奨である旨と代替案を提示し、逸脱理由を記録している。
 - Spec Kit task と GitHub Issue の完了状態が同期されている。
 - open GitHub Issues と `tasks.md` pending count の mismatch が説明されている。
 - `scripts/complete-task.sh` の objective review が PASS している。

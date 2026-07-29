@@ -41,27 +41,36 @@
 
 ## Standard Workflow
 
+各段の担当ツール（superpowers / Spec Kit / crit / skills / GitHub Issues / Linear）と追跡先の対応は `docs/framework/toolchain-flow.md` を正本とする。この標準から外れる進め方は、非推奨と明示し代替案を提示してから進む。
+
 ```text
+0. Frame（企画）
+   superpowers で企画をまとめ、Linear のプロジェクトタスクにする。
+   企画書は docs/planning/ に残し、Linear と相互リンクする。
+
 1. Intake
    Issue, spec, acceptance criteria, risk を確認する。
+   実装層の要件・分解は Spec Kit で行い、GitHub 主 Issue / 分割 Issue にマップする。
 
 2. Plan
    変更ファイル、検証コマンド、parallel safety を短く決める。
 
 3. Branch And Worktree
-   Issue ごとに branch/worktree を分離する。
+   Issue ごとに branch/worktree を分離する。並列は worktree → 必要なら skills crabbox。
 
 4. Implement
    小さい差分で実装し、必要な docs と tests を更新する。
 
 5. Validate
    required checks を実行し、失敗は原因と対応を記録する。
+   人間レビュー・検証は crit で行い、結果を対応 Issue にコメントする。
 
 6. Synchronize
    Spec Kit task と GitHub Issue の完了状態を同期する。
 
 7. Complete Task Pipeline
    objective review、PR 作成、merge、Issue close を実行する。
+   解決結果を Linear の上位タスクへロールアップする（PM 反映）。
 
 8. Review
    Reviewer が品質、scope、secret、risk を確認する。
@@ -213,6 +222,12 @@ handoff 前:
 - mismatch がある場合は、意図的な理由を final report と work note に書く。
 - close できない Issue には blocker、残 task、次の validation をコメントする。
 - mock-only / fixture-only の成功は completion evidence として扱わず、real-use evidence または fallback tracking を確認する。
+
+crit 結果と Linear 反映（`toolchain-flow.md` の契約）:
+
+- crit の検証結果（指摘・解消状況）を、対応 Issue にコメントで残す（分割 → サブ開発結果報告、主 → 主開発結果報告）。
+- Issue を解決・close したら、対応する Linear の上位タスクへステータスと解決サマリをロールアップする。PM の正は Linear、開発の正は GitHub。
+- PM ツール（Linear / Jira 等）と connector は project ごとに `docs/knowledge/engineering/` で宣言する。
 
 ## Task Completion Automation
 

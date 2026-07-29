@@ -9,6 +9,7 @@ AI エージェント（Codex / Claude Code など）が並行開発するため
 | [knowledge-base.md](knowledge-base.md) | docs 構造・スキーマ・維持ルールの正本。企画/実作業の分離、情報ソース記録、リンクと発見性 |
 | [ai-execution-framework.md](ai-execution-framework.md) | 役割、標準ワークフロー、並列実行ルール |
 | [collaboration-rules.md](collaboration-rules.md) | branch/worktree/PR/作業ログ、指示の型、インラインレビュー |
+| [toolchain-flow.md](toolchain-flow.md) | superpowers/Spec Kit/crit/skills/GitHub Issues/Linear の標準フローと逸脱時の行動 |
 | [ai-environment-profiles.md](ai-environment-profiles.md) | AI 環境別 profile の切り替え、複数 AI の Task Routing |
 | [agent-settings-replication.md](agent-settings-replication.md) | AGENTS/CLAUDE/Copilot/skills の再現設計 |
 | [software-engineering-practices.md](software-engineering-practices.md) | エージェント時代も捨てない開発規律 |

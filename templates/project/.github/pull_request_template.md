@@ -42,6 +42,14 @@
 - [ ] レビュー指摘に差分で応答した（指摘のない箇所を作り直していない）
 - 担当エージェント（Task Routing の根拠）:
 
+## Toolchain（標準フロー: docs/framework/toolchain-flow.md）
+
+- 企画書 / Linear タスク:
+- 対応 GitHub Issue（主 / 分割）:
+- [ ] crit の検証結果を対応 Issue にコメントした、または該当なし
+- [ ] 解決を Linear の上位タスクへロールアップした、または該当なし
+- [ ] 標準フローに沿っている（外れた場合は非推奨提示＋代替案＋逸脱理由を記載）:
+
 ## Handoff
 
 - Work note:

@@ -196,6 +196,15 @@ PR には次を含める。
 - エージェントは指摘に**差分で応答する**。指摘のない箇所を作り直さない。
 - 企画フェーズのレビュー結果で方針が変わったら、`docs/decisions/` に理由と情報ソースを残す。
 - 人間承認が必要な領域（auth/secret/billing/production/legal）は、インラインレビューの完了を merge の前提にする。
+- **crit の検証結果を対応 Issue に反映する。** 指摘と解消状況を、対応する GitHub Issue にコメントで残す（分割 → サブ開発結果報告、主 → 主開発結果報告）。詳細は `docs/framework/toolchain-flow.md`。
+
+### 企画書と Issue の相互リンク
+
+企画（superpowers でまとめ、`docs/planning/` に残す）と、それを実装する GitHub Issue / Linear タスクを双方向にリンクする。
+
+- 企画書に、対応する Linear タスクと GitHub Issue の完全 URL を記す。
+- GitHub 主 Issue 本文に、上位 Linear タスク URL と企画書 path を記す。分割 Issue は親（主 Issue）を明記する。
+- 追跡が切れる進め方（企画を Linear/Issue に登録せず実装、crit を通さず PR 等）は非推奨。検知したら理由と代替案を示してから進む（`docs/framework/toolchain-flow.md` の「逸脱時の行動」）。
 
 ## Work Summary Notes
 

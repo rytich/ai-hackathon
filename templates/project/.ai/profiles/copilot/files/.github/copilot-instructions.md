@@ -14,4 +14,6 @@ Project-specific agent skills live in `.agents/skills/<name>/SKILL.md`.
 
 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く。詳細は `docs/framework/collaboration-rules.md` の Instruction Pattern。
 
+ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画 superpowers→Linear、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示する。
+
 Keep suggestions aligned with the repository quality gates, safety rules, and active GitHub Issue/PR state.

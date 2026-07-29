@@ -14,6 +14,7 @@
 - [ ] 影響する `docs/knowledge/` カテゴリを更新した、または該当なし
 - 企画成果物 path（`docs/planning/`）:
 - 意思決定 path（`docs/decisions/`、情報ソース＋理由）:
+- [ ] 標準フロー（`docs/framework/toolchain-flow.md`）に沿っている、または該当なし
 
 ## Handoff
 
