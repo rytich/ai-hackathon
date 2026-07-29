@@ -46,3 +46,7 @@ B を採用。`docs/framework/toolchain-flow.md` を標準の正本として新�
 - **外部ハブ一本化（Linear のみ / GitHub のみ）**: 開発の粒度は GitHub、プロジェクトの粒度は Linear が実態に合うため二層を採用。
 - **new-loop substrate の併置**: AF の `docs/knowledge/` と二重になるため却下。思想のみ借用。
 - 再検討条件: ロールアップ担い手を `complete-task.sh` 延長にしたが、Linear connector の実装が固まれば専用 skill（`sync-tracker` 等）へ切り出す。二層の同期がノイズ過多になれば片方向に簡略化。
+
+## 追記（境界の明確化）
+
+二層ハブの判定基準を明文化した。**アプリのソースコード（と、その改修・機能追加の要件定義・開発タスク）は GitHub の Issue/PR**、**ソースコードに反映しない企画・非開発のファイル変更は Linear（必要なら sub-issue に分割）**で管理する。開発ドキュメント（要件定義・engineering）はコードと同じ Issue/PR に、非開発ドキュメント（事業・マーケ等）は Linear に載せる。詳細は `../framework/toolchain-flow.md` の「管理先の境界」。

@@ -10,6 +10,22 @@ superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 �
 - **開発の作業単位 = GitHub Issues が正**（要件、主タスク、分割タスク、検証結果）。
 - 両者は相互リンクし、各層で権威を持つ。開発の状態は GitHub が、プロジェクトの状態は Linear が真とする。
 
+### 管理先の境界（Linear か GitHub か）
+
+判定は 1 つ: **その作業がアプリケーションのソースコード（と、その改修・機能追加の要件定義・開発タスク）に関わるか。**
+
+| 対象 | 管理先 | 分割 |
+|---|---|---|
+| 機能追加・バグ改修・リファクタなどのコード変更 | **GitHub** Issue ＋ PR | Spec Kit で主 / 分割 Issue |
+| その改修の要件定義書・開発タスク（システム開発） | **GitHub** Issue | 主 / 分割 Issue |
+| 人間が実行する企画・ロードマップ・事業判断 | **Linear** | 必要なら sub-issue |
+| ソースコードに反映しないファイル変更（マーケ資料・ブランド・対外文書・非開発の設定など） | **Linear** | 必要なら sub-issue |
+| `docs/knowledge/` の非開発カテゴリ更新（人間主導） | **Linear** で作業管理し、成果物は `docs/` に残す | 必要なら sub-issue |
+
+- 迷ったら「これは**アプリのソースコードを変える or その要件・開発タスクか**」を問う。Yes → GitHub、No → Linear。
+- ドキュメント変更の扱い: **開発ドキュメント**（要件定義、engineering 系）はコードと同じ Issue/PR に載せる（GitHub）。**非開発ドキュメント**（事業・マーケ・ブランド等）は Linear で管理する。
+- 分割はどちらの側でも行う。GitHub は Spec Kit の主 / 分割 Issue、Linear は sub-issue。
+
 ## 標準フロー（入れ子＋ロールアップ）
 
 ```

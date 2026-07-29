@@ -53,6 +53,7 @@ Replace with real commands.
 - 企画成果物は実装着手前に人間のインラインレビューを通す。指摘には差分で応答し、指摘のない箇所を作り直さない（同 Inline Review）。
 - 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。同一 Issue を複数エージェントで並行させない。
 - ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画 superpowers→Linear、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示してから進む。
+- 管理先の境界: アプリのソースコード（と改修・機能追加の要件定義・開発タスク）は GitHub の Issue/PR、ソースコードに反映しない企画・非開発のファイル変更は Linear（必要なら sub-issue 分割）で管理する。
 
 ## Forbidden
 
