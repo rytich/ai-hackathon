@@ -12,6 +12,7 @@ Project runtime は `docs/knowledge/engineering/runtime.md` に書く。この d
 - context-mode: large-output handling、session continuity、token-efficient analysis。
 - Serena: semantic code navigation、symbol search、references、diagnostics、refactoring。
 - Codex: implementation、verification、handoff。
+- Symphony（任意）: issue tracker を control plane にした無人継続実行。対話セッションではなく常駐サービスとして動かす。
 
 ## Assumptions
 
@@ -132,6 +133,20 @@ Recommended routing:
 2. Codebase structure, symbols, references, refactors -> Serena.
 3. Large output, repeated searches, long-running context, web/raw data -> context-mode.
 4. Small direct file edits and focused test/build commands -> Codex built-in tools.
+5. Unattended, tracker-driven runs across many issues -> Symphony (see below). Interactive work stays in the Codex session.
+
+## Symphony（任意 / 無人実行）
+
+[Symphony](https://github.com/openai/symphony) は issue tracker をポーリングし、issue ごとの隔離ワークスペースでコーディングエージェントを継続実行する常駐サービスの仕様。OpenAI は仕様と Elixir 参照実装のみ公開し、製品としては保守しない。
+
+導入する場合の要点:
+
+- 実行方針は `WORKFLOW.md` としてリポジトリに置き、コードと同じくバージョン管理する。変更は PR とレビューを通す。
+- リポジトリが run / test / verify できる状態になっていることが前提。整う前に無人実行させない。
+- **人間承認領域は `Human Review` などの handoff state で止める。** Symphony に自動 merge させない（`docs/framework/quality-gates.md`）。
+- 常駐サービスなので、実行ホスト・ネットワーク・認証情報の扱いは project 側の `docs/knowledge/engineering/` に記録する。tracker の認証情報を子プロセスへ二重に渡さない。
+
+詳細な位置づけと AF 標準フローとの関係は `docs/framework/toolchain-flow.md` の「実行の自動化層」を参照。
 
 ## Final Verification
 

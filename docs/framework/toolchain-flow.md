@@ -58,6 +58,34 @@ superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 �
 | 出荷・完了 | AF `complete-task.sh`（＋ skills `pr` で実駆動検証） | PR、objective review | GitHub Issue close |
 | 課題解決・ロールアップ | AF 完了パイプライン延長 | 解決サマリ | Linear アイテム更新 |
 
+段をまたいで使う補助:
+
+| 用途 | ツール | 使いどころ |
+|---|---|---|
+| 大量出力・ログ・広域検索・集計・parse | context-mode | 生データを会話へ流さない。Validate 段のテスト出力やログ解析、Intake 段の広域調査 |
+| tracker 起点の無人継続実行 | Symphony | 下記「実行の自動化層」 |
+
+## 実行の自動化層（Symphony）
+
+[Symphony](https://github.com/openai/symphony)（Apache 2.0）は、**issue tracker をコーディングエージェントの control plane にする**長期稼働サービスの仕様。OpenAI は仕様と Elixir の参照実装を公開しており、製品としては保守しない。使う場合は自前実装かリファレンス実装を運用する。
+
+やること:
+
+- tracker（Linear など）を継続的にポーリングし、active な issue を拾う。
+- **issue ごとに隔離ワークスペース**を作り、その中でコーディングエージェントを実行する。
+- スタール・クラッシュ時は再起動し、`max_turns` まで同一スレッドで継続する。
+- 実行方針（プロンプトと runtime 設定）を **`WORKFLOW.md` としてリポジトリに置き**、コードと同じくバージョン管理する。
+
+AF の標準フローとの関係:
+
+- **Symphony はスケジューラ／ランナーであり、チケットの書き手ではない。** 状態遷移・コメント・PR リンクはエージェントが provider-native tool で行う。したがって本書の相互リンク契約とロールアップ契約は Symphony 導入後も変わらない。
+- **成功した実行は `Done` で終わらなくてよい。** `Human Review` のような handoff state で止められる。`quality-gates.md` の人間承認領域（destructive migration、auth/secret/permission、billing、production deploy、infrastructure、privacy/legal、不可逆なデータ削除）は、この handoff state を終着点にして守る。**Symphony に自動 merge させない。**
+- issue ごとの隔離ワークスペースは、本書「並列開発」の worktree / crabbox と同じ目的（並列時の衝突回避）を果たす。どれを使うかはプロジェクトで 1 つに決める。
+- 前提として、リポジトリが **run / test / verify できる状態**（harness engineering）になっている必要がある。整っていないうちに無人実行させない。
+- `WORKFLOW.md` はリポジトリ所有の設定であり、変更は他の運用ルールと同じく PR とレビューを通す。
+
+導入するかはプロジェクトの判断。採否と理由は `docs/decisions/` に情報ソース付きで残す。
+
 ## Spec Kit の位置づけ
 
 Spec Kit は**企画の上位ではなく実装層**のフェーズコントローラ。企画（superpowers → Linear）を受けて、**要件定義とタスク分解**を担い、その成果を GitHub Issue（主・分割）にマップする。`tasks.md` ↔ GitHub Issues の同期は `docs/framework/ai-execution-framework.md` の Completion Synchronization と `complete-task.sh` に従う。

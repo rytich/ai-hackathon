@@ -129,6 +129,8 @@ This profile keeps both tool entrypoints active while shared rules remain in `do
 | 不具合の原因調査、再現困難な問題の切り分け | Claude Code | 仮説検証の反復が要る |
 | 非開発知識（事業・法務・サポート）の整理 | Claude Code | 文脈依存が強く、誤りのコストが高い |
 | 人間承認が必要な領域（auth/secret/billing/production） | Claude Code | 判断根拠の説明責任が要る |
+| 大量出力・ログ・広域検索・集計・parse | context-mode | 生データを会話へ流さず要約する。token を浪費しない |
+| tracker 上の定型タスクを無人で継続実行 | Symphony（Codex） | issue ごとの隔離ワークスペースで自律実行する。`docs/framework/toolchain-flow.md` を参照 |
 
 運用ルール:
 
