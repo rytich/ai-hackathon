@@ -117,10 +117,29 @@ Spec Kit は**企画の上位ではなく実装層**のフェーズコントロ�
 - **出荷・検証**: 外側パイプラインは **AF `complete-task.sh`**（何が Done か）。アプリを実駆動して確かめる工程は **skills `pr`**。superpowers はチェックリスト規律として併走。3 つを別々に走らせない。
 - **知識ベース**: **1 repo 1 つ**。AF は `docs/knowledge/` を採用済みのため、同じ repo に AIBC `new-loop` の substrate（signals/docs/domains）を**並置しない**。new-loop の思想（compounding、決定論的 collector）は借りてよいが、並行フォルダ木は作らない。
 
+## 実行エージェントとオーケストレーション
+
+AF は特定の AI に依存しない。Codex / Claude Code / hermes のいずれでも同じ規約で動く。ただし **GitHub Issue をどう消化するか（オーケストレーション方式）はエージェントによって異なる**。
+
+| エージェント | オーケストレーション | 隔離 |
+|---|---|---|
+| Codex | **Symphony** — tracker を継続ポーリングし、拾った issue ごとに無人で実行する | issue ごとのワークスペース |
+| Claude Code | **マルチエージェント（skills）** — 分割 Issue を複数エージェントで同時に進める | worktree → crabbox |
+| hermes | **マルチエージェント（skills）** — 同上 | worktree → crabbox |
+
+方式が違っても、次は共通:
+
+- **追跡先は GitHub Issue**。作業単位・検証結果の記録先は変わらない。
+- **承認境界は同じ**。人間承認が必要な領域では自動 merge させない。Symphony では handoff state で止める。
+- **同一 Issue を複数エージェントで並行させない。** 分担するなら Issue を分割する。
+
+hermes のように AF の外で運用されるエージェントも、この repository で作業する間は本書と `AGENTS.md` の規約に従う。エージェント本体の実装・運用がどこにあるかは問わない。
+
 ## 並列開発
 
 - 分割タスクは isolated worktree で並列に実装する（`docs/framework/collaboration-rules.md` の Worktree Rule）。
 - 1 台で N スタックを同時に立てられない（固定ポート・単一 DB）場合は、skills `crabbox` でエージェントごとにクラウド隔離箱へ昇格する。
+- Symphony を使う場合は issue ごとのワークスペースがこの役割を果たす。**隔離方式はプロジェクトで 1 つに決める**（worktree / crabbox / Symphony のワークスペースを混在させない）。
 - 同一 Issue を複数エージェントで並行させない。分担するなら Issue を分割する。
 
 ## PM ツールの差し替え

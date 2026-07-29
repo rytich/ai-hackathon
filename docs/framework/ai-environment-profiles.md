@@ -138,6 +138,8 @@ This profile keeps both tool entrypoints active while shared rules remain in `do
 - 使い分けの実績は work note の `AI profile` 欄に残す。溜まった実績で上の表を更新する。
 - 表を更新したら理由を `docs/decisions/` に残す。
 - **同一 Issue を複数エージェントで並行させない。** 担当を 1 つに決める。分担する場合は Issue を分割する。
+- AF は Codex / Claude Code / hermes のいずれでも動くが、**Issue の消化方式（オーケストレーション）はエージェントによって異なる**。Codex は Symphony で無人実行、Claude Code と hermes は skills のマルチエージェントで並列に進める。対応と隔離方式は `docs/framework/toolchain-flow.md` の「実行エージェントとオーケストレーション」を参照。
+- profile を持たないエージェント（hermes など AF の外で運用されるもの）も、この repository で作業する間は `AGENTS.md` と本書の規約に従う。work note には実際に使ったエージェント名を残す。
 
 ### copilot
 
