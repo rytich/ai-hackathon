@@ -58,9 +58,24 @@ scripts/build-public-archive.sh v<version>
 
 除外・置換のルールは環境変数で調整する（`PUBLIC_ARCHIVE_DROP` / `PUBLIC_ARCHIVE_REDACT` / `PUBLIC_ARCHIVE_REDACT_WITH`）。新しいプロジェクトや顧客が増えたら `PUBLIC_ARCHIVE_REDACT` の既定値を更新する。
 
-配布方法:
+### 配布方法（Google Drive 上の 1 ファイルを上書きする）
 
-- **アーティファクトに zip を埋め込む** — private repository を公開せずに、リンクを渡した相手だけへ配れる。zip は公開時点で固定されるため、版が上がったら再公開する。
-- GitHub Release で配る場合、private repository の release asset は認証が必要。誰でも取得できるようにするなら公開用の別 repository が要る。
+公開用 zip は **Google Drive の共有ファイル 1 つ**に置き、版が上がるたび**同じファイルを上書き**する。ファイル ID が変わらないので、資料側の URL を張り替えずに済む。
+
+- ファイル名に版数を入れない（例: `<project>-public.zip`）。上書きしても名前が実態と食い違わないようにするため。
+- **どの版かは Drive の更新日時から辿る。** 資料側に更新日を書き、`CHANGELOG.md` の日付と突き合わせれば版が特定できる。
+- 共有設定は「リンクを知っている全員が閲覧可」。直接ダウンロードの URL 形式は `https://drive.google.com/uc?export=download&id=<FILE_ID>`。
+
+タグを切ったときの手順:
+
+1. `git tag -a vX.Y.Z -m "Release X.Y.Z" && git push origin vX.Y.Z`
+2. `scripts/build-public-archive.sh vX.Y.Z`
+3. 生成された zip で **Drive の既存ファイルを上書き**する（新規アップロードにしない。ID が変わる）
+4. 資料側の版数表記と更新日を直す
+
+採用しなかった方法:
+
+- **アーティファクトに zip を埋め込む（`data:` URI）** — Chrome が大きい `data:` URI のダウンロードをブロックするため実用にならなかった。
+- **GitHub Release** — private repository の release asset は認証が必要。誰でも取得できるようにするには公開用の別 repository が要る。
 
 **生の `git archive` や repository の zip を直接渡さない。** 必ず上記スクリプトを通す。
