@@ -18,6 +18,7 @@ AI エージェント（Codex / Claude Code など）が並行開発するため
 | [codex-dev-stack.md](codex-dev-stack.md) | macOS/Codex 用の開発スタック導入・検証 |
 | [github-configuration.md](github-configuration.md) | GitHub labels、Issue/PR、branch protection |
 | [agent-handoff.md](agent-handoff.md) | AI エージェント間の引き継ぎ手順 |
+| [site-hosting.md](site-hosting.md) | 説明サイトのホスティング（Cloudflare Pages）と独自ドメイン設定 |
 | [project-adoption.md](project-adoption.md) | 他プロジェクトへの新規導入手順 |
 | [project-update.md](project-update.md) | 導入済みプロジェクトの AF 最新化手順 |
 

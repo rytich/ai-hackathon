@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="agentic-framework の基本構成。docs の 4 レイヤー、Linear と GitHub の分担、実行エージェント、作業のライフサイクル、実行環境。">
+<title>agentic-framework の構成</title>
+
+<style>
+  :root {
+    --ink:        #16191F;
+    --paper:      #F3F5F8;
+    --surface:    #FFFFFF;
+    --sunken:     #ECEFF4;
+    --indigo:     #24457A;
+    --indigo-mid: #4B6FA8;
+    --slate:      #596373;
+    --rule:       #D9DEE6;
+    --rule-soft:  #E7EBF0;
+    --shu:        #A63D2F;
+
+    --font-ja: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+    --font-display: "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+    --font-mono: "SF Mono", ui-monospace, "Menlo", "Consolas", "Courier New", monospace;
+
+    --gutter: 7rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ink:        #E3E7ED;
+      --paper:      #111419;
+      --surface:    #181C23;
+      --sunken:     #14181E;
+      --indigo:     #86ABDF;
+      --indigo-mid: #5F86BE;
+      --slate:      #99A3B2;
+      --rule:       #2A313B;
+      --rule-soft:  #222831;
+      --shu:        #E08878;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink:#E3E7ED; --paper:#111419; --surface:#181C23; --sunken:#14181E;
+    --indigo:#86ABDF; --indigo-mid:#5F86BE; --slate:#99A3B2;
+    --rule:#2A313B; --rule-soft:#222831; --shu:#E08878;
+  }
+  :root[data-theme="light"] {
+    --ink:#16191F; --paper:#F3F5F8; --surface:#FFFFFF; --sunken:#ECEFF4;
+    --indigo:#24457A; --indigo-mid:#4B6FA8; --slate:#596373;
+    --rule:#D9DEE6; --rule-soft:#E7EBF0; --shu:#A63D2F;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-ja);
+    line-height: 1.85;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+
+  a { color: var(--indigo); }
+  a:focus-visible { outline: 2px solid var(--indigo); outline-offset: 3px; }
+
+  code, .mono { font-family: var(--font-mono); }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    border-bottom: 2px solid var(--ink); padding-bottom: 2.25rem;
+    display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 1.5rem 2.5rem; align-items: start;
+  }
+  .masthead__main { grid-column: 1; }
+  .dl {
+    grid-column: 2; grid-row: 1;
+    border: 1px solid var(--rule); background: var(--surface);
+    padding: 0.8rem 0.95rem; display: grid; gap: 0.35rem; justify-items: start;
+    min-width: 12rem;
+  }
+  .dl__label {
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--slate);
+  }
+  .dl__tag {
+    font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600; color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .dl__link {
+    font-family: var(--font-mono); font-size: 0.78rem; color: var(--indigo);
+    text-decoration-thickness: 1px; text-underline-offset: 3px;
+  }
+  .dl__note { font-family: var(--font-mono); font-size: 0.62rem; color: var(--slate); letter-spacing: 0.04em; }
+  .dl__next {
+    font-family: var(--font-mono); font-size: 0.6rem; color: var(--indigo-mid);
+    letter-spacing: 0.04em; padding-top: 0.3rem; margin-top: 0.15rem;
+    border-top: 1px dashed var(--rule); width: 100%;
+  }
+  @media (max-width: 44rem) {
+    .masthead { grid-template-columns: minmax(0,1fr); }
+    .dl { grid-column: 1; grid-row: auto; justify-self: stretch; }
+  }
+  .eyebrow {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--slate);
+    display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0 0 1.5rem;
+  }
+  .eyebrow b { color: var(--indigo); font-weight: 600; }
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3.8vw, 2.6rem);
+    line-height: 1.35; letter-spacing: -0.015em; font-weight: 700;
+    margin: 0; text-wrap: balance; max-width: 22em;
+  }
+  .lead { max-width: 38em; margin: 1.25rem 0 0; color: var(--slate); font-size: 1.0625rem; }
+
+  /* ---------- sections ---------- */
+  section { margin-top: 4rem; }
+  .sec-head {
+    display: grid; grid-template-columns: var(--gutter) minmax(0,1fr); gap: 1.5rem;
+    align-items: baseline; border-top: 1px solid var(--rule); padding-top: 1.5rem;
+  }
+  .sec-mark {
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--indigo); padding-top: 0.4rem;
+  }
+  h2 {
+    font-family: var(--font-display); font-size: clamp(1.2rem, 2.3vw, 1.55rem);
+    font-weight: 700; letter-spacing: -0.01em; margin: 0; line-height: 1.5;
+  }
+  .sec-body { display: grid; grid-template-columns: var(--gutter) minmax(0,1fr); gap: 1.5rem; margin-top: 1.25rem; }
+  .sec-body > * { grid-column: 2; }
+  .note { color: var(--slate); font-size: 0.9375rem; margin: 0.25rem 0 0; max-width: 40em; }
+
+  @media (max-width: 48rem) {
+    :root { --gutter: 0px; }
+    .sec-head, .sec-body { grid-template-columns: minmax(0,1fr); gap: 0.5rem; }
+    .sec-head > *, .sec-body > * { grid-column: 1; }
+    .sec-mark { padding-top: 0; }
+  }
+
+  .frame { overflow-x: auto; margin: 0 0 1.25rem; }
+
+  /* ================= 図1: 4レイヤー ================= */
+  .layers { display: grid; gap: 0.5rem; min-width: 30rem; }
+  .layer {
+    display: grid; grid-template-columns: 0.5rem 9.5rem minmax(0,1fr);
+    background: var(--surface); border: 1px solid var(--rule); align-items: stretch;
+  }
+  .layer__rail { background: var(--rule); }
+  .layer[data-n="stock"] .layer__rail { background: var(--indigo); }
+  .layer[data-n="flow"]  .layer__rail { background: repeating-linear-gradient(180deg, var(--indigo-mid) 0 10px, transparent 10px 18px); }
+  .layer[data-n="log"]   .layer__rail { background: repeating-linear-gradient(180deg, var(--slate) 0 3px, transparent 3px 9px); }
+  .layer__id { padding: 0.95rem 0 0.95rem 1.1rem; border-right: 1px solid var(--rule-soft); }
+  .layer__name { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; display: block; }
+  .layer__path { font-family: var(--font-mono); font-size: 0.72rem; color: var(--indigo); display: block; margin-top: 0.1rem; }
+  .layer__main { padding: 0.95rem 1.15rem; }
+  .layer__nature {
+    font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--slate); display: block; margin-bottom: 0.2rem;
+  }
+  .layer__desc { margin: 0; font-size: 0.9375rem; color: var(--slate); }
+  .layer__desc b { color: var(--ink); font-weight: 600; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 0.75rem 0 0; padding: 0; list-style: none;
+    font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--slate); }
+  .legend li { display: flex; align-items: center; gap: 0.45rem; }
+  .swatch { width: 1.4rem; height: 0.5rem; display: inline-block; }
+  .swatch[data-n="stock"] { background: var(--indigo); }
+  .swatch[data-n="flow"]  { background: repeating-linear-gradient(90deg, var(--indigo-mid) 0 6px, transparent 6px 11px); }
+  .swatch[data-n="log"]   { background: repeating-linear-gradient(90deg, var(--slate) 0 2px, transparent 2px 6px); }
+  .swatch[data-n="meta"]  { background: var(--rule); }
+
+  /* ================= 図2: ツールチェーン ================= */
+  .lanes { min-width: 40rem; }
+  .lanes__head { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0.75rem; margin-bottom: 0.6rem; }
+  .lane-tag {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.35rem 0.7rem; border: 1px solid var(--rule); color: var(--slate); background: var(--sunken);
+  }
+  .lane-tag b { color: var(--indigo); font-weight: 600; }
+
+  .tree { display: grid; gap: 0.4rem; }
+  .node { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0.75rem; align-items: stretch; }
+  .cell { padding: 0.7rem 0.9rem; border: 1px solid var(--rule); background: var(--surface); }
+  .cell--void { border: none; background: transparent; }
+  .cell__tool {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
+    color: var(--indigo); display: block;
+  }
+  .cell__what { font-size: 0.9rem; font-weight: 600; display: block; margin-top: 0.1rem; }
+  .cell__meta { font-size: 0.8rem; color: var(--slate); display: block; margin-top: 0.15rem; }
+  .d1 { margin-left: 1.25rem; }
+  .d2 { margin-left: 2.5rem; }
+  .cell[data-depth]::before {
+    content: ""; position: absolute; left: -0.85rem; top: 0; bottom: 50%;
+    border-left: 1px solid var(--rule); border-bottom: 1px solid var(--rule); width: 0.7rem;
+  }
+  .cell[data-depth] { position: relative; }
+  .rollup {
+    display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 0.75rem;
+    margin-top: 0.4rem; padding-top: 0.6rem; border-top: 1px dashed var(--rule);
+  }
+  .rollup .cell { border-color: var(--indigo-mid); }
+  .arrow-back {
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--indigo-mid);
+    letter-spacing: 0.06em; align-self: center;
+  }
+
+  /* ================= 図3: ライフサイクル ================= */
+  .cycle { display: grid; gap: 0; min-width: 32rem; border-top: 1px solid var(--rule); }
+  .step {
+    display: grid; grid-template-columns: 3rem 11rem minmax(0,1fr) auto; gap: 1rem;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--rule-soft); align-items: baseline;
+  }
+  .step__n {
+    font-family: var(--font-mono); font-size: 0.8rem; color: var(--indigo);
+    font-variant-numeric: tabular-nums; text-align: right;
+  }
+  .step__name { font-weight: 600; font-size: 0.9rem; }
+  .step__tool { font-family: var(--font-mono); font-size: 0.78rem; color: var(--slate); }
+  .gate {
+    font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase;
+    border: 1px solid currentColor; padding: 0.1rem 0.45rem; white-space: nowrap;
+  }
+  .gate--human { color: var(--shu); }
+  .gate--check { color: var(--indigo-mid); }
+  .step[data-phase="frame"] { background: var(--sunken); }
+
+  @media (max-width: 40rem) {
+    .step { grid-template-columns: 2rem minmax(0,1fr); row-gap: 0.15rem; }
+    .step__tool, .gate { grid-column: 2; }
+  }
+
+  /* ================= 図3: 実行エージェント ================= */
+  .orch { display: grid; gap: 0.6rem; min-width: 34rem; }
+  .orch__modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.6rem; }
+  .mode { border: 1px solid var(--rule); background: var(--surface); padding: 0.9rem 1rem 1rem; }
+  .mode__label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--indigo); display: block; margin-bottom: 0.6rem;
+  }
+  .mode__agents { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.7rem; padding: 0; list-style: none; }
+  .agent {
+    font-family: var(--font-display); font-weight: 700; font-size: 0.85rem;
+    border: 1px solid var(--indigo-mid); color: var(--ink);
+    padding: 0.2rem 0.6rem; background: var(--paper);
+  }
+  .mode__how { margin: 0; font-size: 0.875rem; color: var(--slate); }
+  .mode__how b { color: var(--ink); font-weight: 600; }
+  .mode__iso {
+    font-family: var(--font-mono); font-size: 0.68rem; color: var(--slate);
+    display: block; margin-top: 0.55rem; padding-top: 0.5rem; border-top: 1px dashed var(--rule);
+  }
+  .cross {
+    border: 1px solid var(--rule); background: var(--sunken);
+    padding: 0.75rem 1rem; display: grid; grid-template-columns: auto minmax(0,1fr); gap: 1rem; align-items: baseline;
+  }
+  .cross__tool { font-family: var(--font-mono); font-size: 0.8rem; color: var(--indigo); font-weight: 600; white-space: nowrap; }
+  .cross__desc { margin: 0; font-size: 0.875rem; color: var(--slate); }
+  @media (max-width: 34rem) {
+    .cross { grid-template-columns: minmax(0,1fr); gap: 0.25rem; }
+  }
+
+  /* ================= 図5: 実行環境 ================= */
+  .infra { display: grid; gap: 1rem; min-width: 34rem; }
+  .zone {
+    border: 1px solid var(--rule); background: var(--surface); padding: 0.9rem 1rem 1rem;
+  }
+  .zone--vpn { border-style: solid; border-color: var(--indigo-mid); }
+  .zone--cloud { background: var(--sunken); }
+  .zone__label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--indigo); display: block; margin-bottom: 0.7rem;
+  }
+  .zone--cloud .zone__label { color: var(--slate); }
+  .hosts { display: grid; grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr)); gap: 0.6rem; }
+  .host { border: 1px solid var(--rule); padding: 0.6rem 0.75rem; background: var(--paper); }
+  .host--ext { border-style: dashed; }
+  .host__name { font-family: var(--font-display); font-weight: 700; font-size: 0.88rem; display: block; }
+  .host__role { font-size: 0.8rem; color: var(--slate); display: block; margin-top: 0.15rem; }
+  .host__tag {
+    font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--slate); border: 1px solid var(--rule); padding: 0.05rem 0.35rem;
+    display: inline-block; margin-top: 0.4rem;
+  }
+  .host__tag--out { color: var(--shu); border-color: var(--shu); }
+  .link-row {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    font-family: var(--font-mono); font-size: 0.7rem; color: var(--slate); letter-spacing: 0.06em;
+  }
+  .link-row::before, .link-row::after {
+    content: ""; flex: 1; border-top: 1px dashed var(--rule);
+  }
+
+  /* tailnet の囲い（自宅サーバ＋クライアントのみ） */
+  .tailnet {
+    border: 1px solid var(--indigo-mid); padding: 0.7rem;
+    display: grid; gap: 0.6rem;
+  }
+  .tailnet__label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--indigo-mid);
+  }
+
+  /* AF が全要素を貫くことを示す背骨 */
+  .infra-frame { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 0.75rem; min-width: 34rem; }
+  .af-spine {
+    writing-mode: vertical-rl; text-orientation: mixed;
+    border: 1px solid var(--indigo); background: var(--surface);
+    display: grid; place-items: center; padding: 0.6rem 0.5rem;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.14em;
+    color: var(--indigo); white-space: nowrap;
+  }
+  .af-spine b { font-weight: 600; }
+  @media (max-width: 34rem) {
+    .infra-frame { grid-template-columns: minmax(0,1fr); }
+    .af-spine { writing-mode: horizontal-tb; }
+  }
+
+  footer {
+    margin-top: 4.5rem; border-top: 1px solid var(--rule); padding-top: 1.5rem;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--slate);
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="masthead__main">
+      <p class="eyebrow"><b>agentic-framework</b> <span>v0.2.1</span> <span>基本構成</span></p>
+      <h1>知識の置き場、ツールの担当、作業の順序を、それぞれ一意に決める</h1>
+      <p class="lead">
+        複数の AI エージェントが並行して働いても、追跡と再現が壊れないための枠組み。
+        <b>Codex / Claude Code / hermes</b> のいずれでも同じ規約で動く。この 5 つの図が骨格にあたる。
+      </p>
+    </div>
+
+    <div class="dl">
+      <span class="dl__label">latest release</span>
+      <span class="dl__tag">v0.2.1</span>
+      <a class="dl__link" href="agentic-framework-public.zip">zip をダウンロード ↓</a>
+      <span class="dl__note">更新 2026-07-31 ／ 常に最新版</span>
+      <span class="dl__next">next ver. &gt; context7, codeowners +</span>
+    </div>
+  </header>
+
+  <!-- ============ 図1 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="sec-mark">図 1 ／ 構造</p>
+      <h2>docs は 4 つのレイヤーに分かれる</h2>
+    </div>
+    <div class="sec-body">
+      <div class="frame">
+        <div class="layers">
+
+          <div class="layer" data-n="meta">
+            <div class="layer__rail"></div>
+            <div class="layer__id">
+              <span class="layer__name">framework</span>
+              <code class="layer__path">docs/framework/</code>
+            </div>
+            <div class="layer__main">
+              <span class="layer__nature">meta ／ 運用ルール</span>
+              <p class="layer__desc">エージェント運用の規約。<b>プロジェクトが変わっても共通</b>。</p>
+            </div>
+          </div>
+
+          <div class="layer" data-n="stock">
+            <div class="layer__rail"></div>
+            <div class="layer__id">
+              <span class="layer__name">knowledge</span>
+              <code class="layer__path">docs/knowledge/</code>
+            </div>
+            <div class="layer__main">
+              <span class="layer__nature">stock ／ 今の事実</span>
+              <p class="layer__desc"><b>「今どうなっているか」</b>。product・engineering に加え、事業・サポート・対外資料まで含む。</p>
+            </div>
+          </div>
+
+          <div class="layer" data-n="flow">
+            <div class="layer__rail"></div>
+            <div class="layer__id">
+              <span class="layer__name">planning</span>
+              <code class="layer__path">docs/planning/</code>
+            </div>
+            <div class="layer__main">
+              <span class="layer__nature">flow ／ 企画中</span>
+              <p class="layer__desc">調査と要件定義。確定したら <b>knowledge へ反映</b>して、ここには残さない。</p>
+            </div>
+          </div>
+
+          <div class="layer" data-n="log">
+            <div class="layer__rail"></div>
+            <div class="layer__id">
+              <span class="layer__name">decisions<br>work-notes</span>
+              <code class="layer__path">docs/decisions/</code>
+            </div>
+            <div class="layer__main">
+              <span class="layer__nature">log ／ 履歴</span>
+              <p class="layer__desc">なぜ決めたか（情報ソース必須）と、誰が何をしたか。<b>追記型で書き換えない</b>。</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <ul class="legend">
+        <li><span class="swatch" data-n="meta"></span>meta</li>
+        <li><span class="swatch" data-n="stock"></span>stock</li>
+        <li><span class="swatch" data-n="flow"></span>flow</li>
+        <li><span class="swatch" data-n="log"></span>log</li>
+      </ul>
+      <p class="note">
+        性質の違う知識を混ぜないことが要点。stock を書き換えれば経緯が消え、log を書き換えれば履歴が壊れる。
+        置き場が 1 つに決まっていれば、同じ知識が 2 か所で食い違うことがない。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 図2 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="sec-mark">図 2 ／ 分担</p>
+      <h2>企画は Linear、開発は GitHub。入れ子で連結する</h2>
+    </div>
+    <div class="sec-body">
+      <div class="frame">
+        <div class="lanes">
+          <div class="lanes__head">
+            <span class="lane-tag"><b>Linear</b> ／ 企画・PM の正</span>
+            <span class="lane-tag"><b>GitHub Issues</b> ／ 開発の正</span>
+          </div>
+
+          <div class="tree">
+            <div class="node">
+              <div class="cell">
+                <span class="cell__tool">superpowers</span>
+                <span class="cell__what">企画</span>
+                <span class="cell__meta">プロジェクトタスク／企画書は docs/planning/</span>
+              </div>
+              <div class="cell cell--void"></div>
+            </div>
+
+            <div class="node">
+              <div class="cell cell--void"></div>
+              <div class="cell d1" data-depth="1">
+                <span class="cell__tool">Spec Kit</span>
+                <span class="cell__what">要件定義 → 主タスク</span>
+                <span class="cell__meta">主 Issue は上位 Linear タスクへリンク</span>
+              </div>
+            </div>
+
+            <div class="node">
+              <div class="cell cell--void"></div>
+              <div class="cell d2" data-depth="2">
+                <span class="cell__tool">Spec Kit</span>
+                <span class="cell__what">分解 → 分割タスク</span>
+                <span class="cell__meta">worktree／crabbox で並列に実装</span>
+              </div>
+            </div>
+
+            <div class="node">
+              <div class="cell cell--void"></div>
+              <div class="cell d2" data-depth="2">
+                <span class="cell__tool">crit</span>
+                <span class="cell__what">検証 → 結果を Issue へ</span>
+                <span class="cell__meta">行単位で指摘し、差分で応答する</span>
+              </div>
+            </div>
+
+            <div class="rollup">
+              <div class="cell">
+                <span class="cell__tool">roll-up</span>
+                <span class="cell__what">解決を上位タスクへ反映</span>
+                <span class="cell__meta">ステータスと解決サマリを更新</span>
+              </div>
+              <span class="arrow-back">◀── complete-task.sh</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        判定は 1 つ。<b>アプリのソースコード（と、その改修の要件定義・開発タスク）に関わるか。</b>
+        Yes なら GitHub、No なら Linear。この境界があるので、企画と開発が同じ場所で混ざらない。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 図3 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="sec-mark">図 3 ／ 実行</p>
+      <h2>3 種のエージェントに対応し、2 つの方式で並列に回す</h2>
+    </div>
+    <div class="sec-body">
+      <div class="frame">
+        <div class="orch">
+
+          <div class="orch__modes">
+
+            <div class="mode">
+              <span class="mode__label">Symphony ／ tracker 起点の無人実行</span>
+              <ul class="mode__agents">
+                <li class="agent">Codex</li>
+              </ul>
+              <p class="mode__how">
+                <b>GitHub Issue を継続的にポーリング</b>し、拾った issue ごとにエージェントを起動する。
+                スタール時は再起動し、実行方針は <code>WORKFLOW.md</code> としてリポジトリで版管理する。
+              </p>
+              <span class="mode__iso">隔離: issue ごとのワークスペース</span>
+            </div>
+
+            <div class="mode">
+              <span class="mode__label">マルチエージェント ／ skills</span>
+              <ul class="mode__agents">
+                <li class="agent">Claude Code</li>
+                <li class="agent">hermes</li>
+              </ul>
+              <p class="mode__how">
+                分割した Issue を<b>複数エージェントで同時に進める</b>。
+                1 台で N スタックを立てられない場合は、クラウドの隔離箱へ昇格する。
+              </p>
+              <span class="mode__iso">隔離: worktree → crabbox</span>
+            </div>
+
+          </div>
+
+          <div class="cross">
+            <span class="cross__tool">context-mode</span>
+            <p class="cross__desc">
+              <b>全エージェント共通の補助。</b>大量出力・ログ・広域検索・集計・parse を担い、生データを会話へ流さない。
+              テスト出力やログの解析、着手前の広域調査で使う。
+            </p>
+          </div>
+
+        </div>
+      </div>
+      <p class="note">
+        方式は違っても、<b>追跡先と承認境界は同じ</b>。どちらも GitHub Issue を作業単位とし、
+        人間承認が必要な領域では自動 merge させない。同一 Issue を複数エージェントで並行させないルールも共通。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 図4 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="sec-mark">図 4 ／ 順序</p>
+      <h2>1 つの作業が通る 11 の段</h2>
+    </div>
+    <div class="sec-body">
+      <div class="frame">
+        <div class="cycle">
+
+          <div class="step" data-phase="frame">
+            <span class="step__n">0</span>
+            <span class="step__name">Frame（企画）</span>
+            <span class="step__tool">superpowers → Linear</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">1</span>
+            <span class="step__name">Intake</span>
+            <span class="step__tool">Spec Kit → GitHub Issue</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">2</span>
+            <span class="step__name">Plan</span>
+            <span class="step__tool">変更ファイル・検証コマンド・並列安全性</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">3</span>
+            <span class="step__name">Branch / Worktree</span>
+            <span class="step__tool">worktree 分離 → crabbox</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">4</span>
+            <span class="step__name">Implement</span>
+            <span class="step__tool">TDD・小さい差分・docs 同時更新</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">5</span>
+            <span class="step__name">Validate</span>
+            <span class="step__tool">required checks ＋ crit</span>
+            <span class="gate gate--check">real-use gate</span>
+          </div>
+          <div class="step">
+            <span class="step__n">6</span>
+            <span class="step__name">Synchronize</span>
+            <span class="step__tool">tasks.md ↔ Issue</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">7</span>
+            <span class="step__name">Complete Pipeline</span>
+            <span class="step__tool">complete-task.sh</span>
+            <span class="gate gate--check">objective review</span>
+          </div>
+          <div class="step">
+            <span class="step__n">8</span>
+            <span class="step__name">Review</span>
+            <span class="step__tool">品質・scope・secret・risk</span>
+            <span class="gate gate--check">docs 鮮度</span>
+          </div>
+          <div class="step">
+            <span class="step__n">9</span>
+            <span class="step__name">Handoff</span>
+            <span class="step__tool">work note・decision log・blocker</span>
+            <span></span>
+          </div>
+          <div class="step">
+            <span class="step__n">10</span>
+            <span class="step__name">Merge</span>
+            <span class="step__tool">条件を満たせば auto merge</span>
+            <span class="gate gate--human">human approver</span>
+          </div>
+
+        </div>
+      </div>
+      <p class="note">
+        番号は実際の順序を表す。<span style="color:var(--shu)">朱</span>で示した段は自動化しない領域
+        —— 破壊的マイグレーション、認証・secret・権限、課金、本番デプロイ、インフラ、プライバシー・法務、不可逆なデータ削除。
+        ここだけは人間が承認する。
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ 図5 ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="sec-mark">図 5 ／ 実行環境</p>
+      <h2>どこで動いているか</h2>
+    </div>
+    <div class="sec-body">
+      <div class="frame">
+        <div class="infra-frame">
+
+          <div class="af-spine"><b>agentic-framework</b> ／ 全要素に同じ規約</div>
+
+          <div class="infra">
+
+            <div class="zone zone--cloud">
+              <span class="zone__label">cloud ／ SaaS</span>
+              <div class="hosts">
+                <div class="host">
+                  <span class="host__name">Linear</span>
+                  <span class="host__role">企画・PM の正。Symphony が読む control plane</span>
+                </div>
+                <div class="host">
+                  <span class="host__name">GitHub</span>
+                  <span class="host__role">開発の正。Issue／PR／確定文書の版管理</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="link-row">HTTPS（インターネット経由）</div>
+
+            <div class="tailnet">
+              <span class="tailnet__label">Tailscale VPN ／ この範囲だけ</span>
+
+              <div class="zone zone--vpn">
+                <span class="zone__label">自宅サーバ</span>
+                <div class="hosts">
+                  <div class="host">
+                    <span class="host__name">Symphony</span>
+                    <span class="host__role">Linear をポーリングし、issue ごとに隔離ワークスペースで Codex を実行</span>
+                    <span class="host__tag">openai/symphony</span>
+                  </div>
+                  <div class="host host--ext">
+                    <span class="host__name">hermes</span>
+                    <span class="host__role">ループ改善型の開発エージェント。図 3 のマルチエージェント側で働く</span>
+                    <span class="host__tag host__tag--out">エージェント本体は別系統で運用</span>
+                  </div>
+                  <div class="host">
+                    <span class="host__name">ローカル LLM</span>
+                    <span class="host__role">手元で完結させたい推論</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="zone">
+                <span class="zone__label">クライアント</span>
+                <div class="hosts">
+                  <div class="host">
+                    <span class="host__name">Mac</span>
+                    <span class="host__role">Claude Code／Codex での対話作業</span>
+                  </div>
+                  <div class="host">
+                    <span class="host__name">iPhone</span>
+                    <span class="host__role">外出先からの確認・指示</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <p class="note">
+        <b>左の背骨が agentic-framework。</b>cloud から自宅サーバ、手元の端末まで、ここに並ぶすべての要素が
+        同じ規約（<code>docs/</code> と <code>AGENTS.md</code>）を読んで動く。だから実行場所やエージェントが変わっても、
+        追跡先と承認境界は揺れない。図 1〜4 は、この背骨の中身にあたる。
+      </p>
+      <p class="note">
+        Tailscale が繋ぐのは<b>自宅サーバと手元の端末だけ</b>。cloud の SaaS には通常のインターネット経由で接続する。
+        Symphony は Linear の issue を拾って自律実行するが、<b>スケジューラであってチケットの書き手ではない</b>。
+        成功した実行は <code>Done</code> ではなく <code>Human Review</code> のような handoff で止められるため、
+        図 4 の人間承認境界はこの層でも保たれる。
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <span>agentic-framework</span>
+    <span>正本: docs/framework/</span>
+    <span>knowledge-base.md ／ toolchain-flow.md ／ ai-execution-framework.md</span>
+  </footer>
+
+</div>
+</body>
+</html>

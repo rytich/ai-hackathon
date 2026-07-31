@@ -10,6 +10,7 @@
 | docs 全体の運用規約を知る | [README.md](README.md) / [framework/knowledge-base.md](framework/knowledge-base.md) |
 | AF を他プロジェクトに新規導入する | [framework/project-adoption.md](framework/project-adoption.md) |
 | 導入済みプロジェクトの AF を最新化する | [framework/project-update.md](framework/project-update.md) |
+| 説明サイトを公開・更新する | [framework/site-hosting.md](framework/site-hosting.md) |
 | ツールチェーン（superpowers/SpecKit/crit/skills/Issues/Linear）の標準フロー | [framework/toolchain-flow.md](framework/toolchain-flow.md) |
 | どの AI にどのタスクを任せるか決める | [framework/ai-environment-profiles.md](framework/ai-environment-profiles.md) |
 | 指示の書き方（What/Why/How）を知る | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
