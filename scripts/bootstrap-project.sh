@@ -46,3 +46,15 @@ copy_if_missing "$ROOT_DIR/scripts/complete-task.sh" "$TARGET_DIR/scripts/agenti
 echo
 echo "Bootstrap complete."
 echo "Next: edit AGENTS.md, .env.example, docs/knowledge/engineering/runtime.md, docs/knowledge/engineering/secrets.md, docs/framework/codex-dev-stack.md, docs/agent-handoff.md, docs/framework/ai-environment-profiles.md, docs/framework/agent-settings-replication.md, docs/framework/software-engineering-practices.md, docs/framework/github-configuration.md, and .github/pull_request_template.md for this project."
+
+echo
+echo "--- Agent tool requirements ---"
+if [ -x "$TARGET_DIR/scripts/check-agent-tools.sh" ]; then
+  # must 欠落でも bootstrap 自体は失敗させない。導入直後は未設定が普通のため、
+  # 結果を表示して利用者に判断させる。
+  (cd "$TARGET_DIR" && ./scripts/check-agent-tools.sh) || true
+elif [ -e "$TARGET_DIR/scripts/check-agent-tools.sh" ]; then
+  echo "skip: scripts/check-agent-tools.sh is not executable, run: chmod +x scripts/check-agent-tools.sh"
+else
+  echo "skip: scripts/check-agent-tools.sh not found"
+fi

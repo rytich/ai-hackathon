@@ -66,8 +66,9 @@ secret の値は絶対に commit しない。
 7. lint/typecheck/test/build を実行する。
 8. Codex stack を使う場合は `docs/framework/codex-dev-stack.md` の verification を実行する。
 9. 利用する AI profile を `./scripts/select-ai-profile.sh <profile>` で選ぶ。
-10. AI tools を接続する。
-11. `AGENTS.md` と docs の required reading order を読む。
+10. `./scripts/check-agent-tools.sh` で profile ごとの必須ツールを確認する。must が欠落していたら導入する。
+11. AI tools を接続する。
+12. `AGENTS.md` と docs の required reading order を読む。
 
 ## AI Tooling
 
@@ -78,7 +79,7 @@ secret の値は絶対に commit しない。
 - context-mode for large output and session memory
 - Spec Kit for product workflow
 
-各 tool は optional にし、使えない端末でも手順が破綻しないように fallback を docs に残す。
+tool は **must** と **recommended** に分かれる。区分と未導入時の fallback は `docs/framework/toolchain-flow.md` のツール要件表を正本とし、機械可読な定義を `.ai/profiles/<profile>/tools.tsv` に置く。must が欠落した端末では作業を始めない。
 
 AI 環境別の設定差分は `docs/framework/ai-environment-profiles.md` に従って管理する。local auto-detection ではなく、`.ai/active-profile` に記録された profile を source of truth にする。
 

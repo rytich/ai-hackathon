@@ -46,3 +46,7 @@ Tool entrypoint: Claude Code
 
 - Prefer repository docs and issue state over chat-only memory.
 - Keep generated explanations and code changes tied to the active Issue.
+- Use superpowers for the planning stage (brainstorming → design approval → writing-plans). It is a **must** tool for this profile — if it is missing, stop and ask for it to be installed instead of falling back.
+- 大量出力・ログ・広域検索は context-mode で処理する。Codex 側で実行する。
+- Use Serena for symbol-aware code navigation. It is **recommended** — if it is missing, fall back to rg/grep text search and do not volunteer a recommendation to install it.
+- ツール要件と検査は `docs/framework/toolchain-flow.md` のツール要件表と `./scripts/check-agent-tools.sh` に従う。ツールを自動でインストールしない。

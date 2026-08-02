@@ -10,7 +10,7 @@ AI profile: generic
 3. `docs/knowledge/engineering/runtime.md`
 4. `docs/knowledge/engineering/secrets.md`
 5. `docs/framework/ai-environment-profiles.md`
-6. `docs/framework/codex-dev-stack.md`
+6. `docs/framework/toolchain-flow.md`
 7. `docs/framework/ai-execution-framework.md`
 8. `docs/framework/collaboration-rules.md`
 9. `docs/framework/knowledge-base.md`
@@ -30,6 +30,7 @@ AI profile: generic
 - 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
 - 企画成果物は実装着手前に人間のインラインレビューを通し、指摘には差分で応答する（同 Inline Review）。
 - 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。
-- ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画 superpowers→Linear、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示する。
+- ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（superpowers が使えないためこの profile の企画は plan mode で練り、成果を `docs/planning/` に残してから Linear へ、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示する。
 - Codex / Claude Code / hermes のいずれで作業しても同じ規約に従う。Issue の消化方式は異なり、Codex は Symphony で無人実行、Claude Code と hermes は skills のマルチエージェントで並列に進める。詳細は `docs/framework/toolchain-flow.md`。
 - 管理先の境界: アプリのソースコード（と改修・機能追加の要件定義・開発タスク）は GitHub の Issue/PR、ソースコードに反映しない企画・非開発のファイル変更は Linear（必要なら sub-issue 分割）で管理する。
+- ツール要件と検査は `docs/framework/toolchain-flow.md` のツール要件表と `./scripts/check-agent-tools.sh` に従う。この profile の must は git と gh のみ。**must が未導入と分かったら、作業を止めて導入を促す。縮退して進めない。** recommended は自発的に勧めず、尋ねられたとき、または縮退のコストが明らかに高いときだけ提示する。ツールを自動でインストールしない。

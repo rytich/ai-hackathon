@@ -52,7 +52,8 @@ Replace with real commands.
 - 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く。欠けたまま着手せず補完を依頼する（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
 - 企画成果物は実装着手前に人間のインラインレビューを通す。指摘には差分で応答し、指摘のない箇所を作り直さない（同 Inline Review）。
 - 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing で決める。同一 Issue を複数エージェントで並行させない。
-- ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画 superpowers→Linear、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示してから進む。
+- ツールチェーンは `docs/framework/toolchain-flow.md` の標準フローに沿う（企画→Linear（担当ツールは profile 依存、同ファイルのツール要件表を参照）、実装 Spec Kit→GitHub Issue、検証 crit→Issue、解決→Linear ロールアップ、企画書↔Issue 相互リンク）。標準外の進め方を人間が選ぼうとしたら、非推奨と明示し代替案を提示してから進む。
+- ツールの must / recommended は `docs/framework/toolchain-flow.md` のツール要件表に従う。検査は `./scripts/check-agent-tools.sh`。**must が未導入なら作業を止めて導入を促し、recommended は尋ねられたときだけ推奨する。** ツールを自動でインストールしない。
 - Codex / Claude Code / hermes のいずれで作業しても同じ規約に従う。Issue の消化方式は異なり、Codex は Symphony で無人実行、Claude Code と hermes は skills のマルチエージェントで並列に進める。詳細は `docs/framework/toolchain-flow.md`。
 - 管理先の境界: アプリのソースコード（と改修・機能追加の要件定義・開発タスク）は GitHub の Issue/PR、ソースコードに反映しない企画・非開発のファイル変更は Linear（必要なら sub-issue 分割）で管理する。
 

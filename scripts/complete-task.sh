@@ -213,6 +213,19 @@ run_validation() {
   [ -f scripts/bootstrap-project.sh ] && run bash -n scripts/bootstrap-project.sh
   [ -f templates/project/scripts/select-ai-profile.sh ] && run bash -n templates/project/scripts/select-ai-profile.sh
   [ -f templates/project/scripts/setup-github-labels.sh ] && run bash -n templates/project/scripts/setup-github-labels.sh
+  [ -f scripts/check-agent-tools.sh ] && run bash -n scripts/check-agent-tools.sh
+  [ -f scripts/test-check-agent-tools.sh ] && run bash -n scripts/test-check-agent-tools.sh
+
+  if [ -f scripts/test-check-agent-tools.sh ]; then
+    run ./scripts/test-check-agent-tools.sh
+  fi
+
+  if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then
+    if ! diff -q scripts/check-agent-tools.sh templates/project/scripts/check-agent-tools.sh >/dev/null 2>&1; then
+      echo "scripts/check-agent-tools.sh と templates/project/scripts/check-agent-tools.sh が一致していません。両方を同期させてください。" >&2
+      exit 1
+    fi
+  fi
 }
 
 run_validation

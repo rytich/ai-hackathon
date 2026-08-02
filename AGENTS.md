@@ -4,10 +4,17 @@
 
 ## Mandatory Routing
 
-- 大量出力、ログ、広い検索、集計、比較、parse は context-mode で処理する。
-- コード理解と refactor は、利用できる場合 Serena の symbol-aware tools を優先する。
-- 仕様や product intent は Spec Kit の specify/plan/tasks/implement flow に寄せる。
+- 大量出力、ログ、広い検索、集計、比較、parse は、生データを会話へ流さず要約してから判断する。使う手段は profile ごとの entrypoint に従う。
+- コード理解と refactor は symbol 単位の理解を優先する。手段は profile ごとの entrypoint に従う。
+- 仕様や product intent は Spec Kit の specify/plan/tasks/implement flow に寄せる。未導入なら plan mode で要件を書き `docs/planning/requirements/` に残す。
 - raw secret、個人情報、production data を会話、ログ、fixture、commit に出さない。
+
+## Tool Requirements
+
+- ツールの must / recommended と未導入時の縮退先は `docs/framework/toolchain-flow.md` のツール要件表に従う。検査は `./scripts/check-agent-tools.sh`。
+- **must が未導入と分かったら、作業を止めて導入を促す。** 縮退して進めない。
+- **recommended は自発的に勧めない。** 尋ねられたとき、または縮退のコストが明らかに高いときだけ提示する。
+- **ツールを自動でインストールしない。** 環境変更は人間の承認領域（`docs/framework/quality-gates.md`）。
 
 ## Agent Roles
 
@@ -37,7 +44,7 @@
 - 企画成果物（`docs/planning/`）は**実装着手前に人間のインラインレビュー**を通す。指摘には差分で応答し、指摘のない箇所を作り直さない。詳細は同 Inline Review。
 - 複数の AI を有効化している場合、タスク種別ごとの担当を `docs/framework/ai-environment-profiles.md` の Task Routing に従って決める。迷ったら深い方に倒す。同一 Issue を複数エージェントで並行させない。
 - 同じ手順を work-note で 3 回以上繰り返したら `.agents/skills/` への昇華を検討する。危険操作の skill は自動呼び出しを無効化し、SKILL.md は目次に留める。詳細は `docs/framework/agent-settings-replication.md`。
-- ツールチェーン（superpowers / Spec Kit / crit / skills / GitHub Issues / Linear）は `docs/framework/toolchain-flow.md` の標準フローに沿う。企画は superpowers→Linear、実装の要件・分解は Spec Kit→GitHub Issue、人間検証は crit→対応 Issue にコメント、解決は Linear へロールアップ。企画書と Issue を相互リンクする。
+- ツールチェーン（superpowers / Spec Kit / crit / skills / GitHub Issues / Linear）は `docs/framework/toolchain-flow.md` の標準フローに沿う。企画段を担うツールは profile によって異なる（同ファイルのツール要件表を参照）。実装の要件・分解は Spec Kit→GitHub Issue、人間検証は crit→対応 Issue にコメント、解決は Linear へロールアップ。企画書と Issue を相互リンクする。
 - Codex / Claude Code / hermes のいずれで作業しても同じ規約に従う。Issue の消化方式は異なり、Codex は Symphony で無人実行、Claude Code と hermes は skills のマルチエージェントで並列に進める。追跡先（GitHub Issue）と承認境界はどちらも共通。詳細は `docs/framework/toolchain-flow.md`。
 - 管理先の境界: **アプリのソースコード（と、その改修・機能追加の要件定義・開発タスク）は GitHub の Issue/PR**、**ソースコードに反映しない企画・非開発のファイル変更は Linear**（必要なら sub-issue に分割）で管理する。迷ったら「アプリのコードを変える or その要件・開発タスクか」を問い、Yes→GitHub、No→Linear。
 - **標準フローから外れた進め方を人間が選ぼうとしたら、黙って従わない。** 非推奨である理由を明示し、標準に沿う代替案を提示する。それでも明示的に選ばれたら従うが、逸脱と理由を work note か Issue に残す。

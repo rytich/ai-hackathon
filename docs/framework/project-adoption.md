@@ -12,11 +12,12 @@
 6. Codex stack を使う場合は `docs/framework/codex-dev-stack.md` の導入・検証手順を端末ごとに確認する。
 7. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
 8. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
-9. `docs/framework/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
-10. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
-11. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
-12. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
-13. 効果測定を始める。
+9. `./scripts/check-agent-tools.sh` で必須ツールの導入状況を確認する。must が欠落していたら、先に導入してから次へ進む。recommended の欠落は縮退先で運用できるため、必須ではない。
+10. `docs/framework/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
+11. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
+12. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
+13. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
+14. 効果測定を始める。
 
 ## GitHub Setup
 

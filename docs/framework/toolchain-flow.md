@@ -29,7 +29,7 @@ superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 �
 ## 標準フロー（入れ子＋ロールアップ）
 
 ```
-企画          superpowers          → Linear（プロジェクトタスク）        [PM層・正=Linear]
+企画          superpowers / plan mode（profile 依存）→ Linear（プロジェクトタスク）  [PM層・正=Linear]
  │            企画書は docs/planning/ に残し、Linear タスクと相互リンク
  └ 実装(主)   Spec Kit 要件定義    → GitHub Issue（主タスク）            [開発層・正=GitHub]
      │        主 Issue は上位の Linear タスクへリンク
@@ -41,6 +41,8 @@ superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 �
  └ 課題解決   complete-task.sh 延長 → Linear（解決を上位タスクへロールアップ）
 ```
 
+企画段のツールは profile 依存: `claude` / `codex-claude` は superpowers、`copilot` / `generic` は superpowers が使えないため plan mode で企画を練り、成果を `docs/planning/` に残す。詳細は下記「ツール要件（must / recommended）」の表を参照。
+
 補助レイヤー:
 
 - **AF（統治）**: docs 構造・Issue 駆動・品質ゲート・承認境界。常時 ON で道具に依存しない。
@@ -50,7 +52,7 @@ superpowers / Spec Kit / crit / skills(AIBC) / GitHub Issues / Linear を **1 �
 
 | 段 | 担当ツール | 成果物 | 追跡先（正） |
 |---|---|---|---|
-| 企画・意図探索 | superpowers `brainstorming` / `writing-plans` | 企画書（`docs/planning/`） | Linear プロジェクトタスク |
+| 企画・意図探索 | superpowers `brainstorming` / `writing-plans`（claude, codex-claude）／ plan mode（copilot, generic） | 企画書（`docs/planning/`） | Linear プロジェクトタスク |
 | 要件定義・主タスク | Spec Kit `specify` / `plan` | 要件、`tasks.md` | GitHub 主 Issue |
 | タスク分解 | Spec Kit `tasks` | 分割タスク | GitHub 分割 Issue |
 | 並列実装 | superpowers `test-driven-development` ＋ skills `worktree`/`crabbox` | 差分 | GitHub 分割 Issue |
@@ -88,7 +90,7 @@ AF の標準フローとの関係:
 
 ## Spec Kit の位置づけ
 
-Spec Kit は**企画の上位ではなく実装層**のフェーズコントローラ。企画（superpowers → Linear）を受けて、**要件定義とタスク分解**を担い、その成果を GitHub Issue（主・分割）にマップする。`tasks.md` ↔ GitHub Issues の同期は `docs/framework/ai-execution-framework.md` の Completion Synchronization と `complete-task.sh` に従う。
+Spec Kit は**企画の上位ではなく実装層**のフェーズコントローラ。企画（担当ツールは profile 依存、→ Linear。後述のツール要件表を参照）を受けて、**要件定義とタスク分解**を担い、その成果を GitHub Issue（主・分割）にマップする。`tasks.md` ↔ GitHub Issues の同期は `docs/framework/ai-execution-framework.md` の Completion Synchronization と `complete-task.sh` に従う。
 
 - Spec Kit が使える project: specify/plan/tasks を正式フェーズとして使い、tasks を Issue 化する。
 - Spec Kit が無い project: plan mode で要件を書き、`docs/planning/requirements/` に残して Issue 化する（縮退）。
@@ -157,15 +159,46 @@ hermes のように AF の外で運用されるエージェントも、この re
 
 黙認は禁止。標準は守るためにあり、破る場合は記録して破る。
 
-## 優雅な縮退（ツール未導入時）
+## ツール要件（must / recommended）
 
-| 未導入 | フォールバック |
-|---|---|
-| Spec Kit | plan mode で要件を書き `docs/planning/requirements/` に残して Issue 化 |
-| Linear（PM ツール） | GitHub Issues のみで運用（企画も Issue 化）。PM 反映はスキップ |
-| crit | PR のインラインコメントでレビュー |
-| crabbox | ローカル worktree で並列 |
-| skills `pr` | AF `complete-task.sh` と real-use gate のみで検証 |
+ツールは **must** と **recommended** に分ける。基準は**縮退先の有無**。
+
+- **must** — 未導入では本書や `AGENTS.md` の規約文が成立しない。フォールバックを定義しない。
+- **recommended** — フォールバックが定義されており、無くても運用が破綻しない。
+
+**この表の形式が基準そのものである。** must の行は「未導入時」欄が必ず `-`、recommended の行は必ず埋まる。片方だけの状態を作らない。
+
+| ツール | 区分 | 対象 profile | 未導入時 |
+|---|---|---|---|
+| git | must | 全 | - |
+| gh | must | 全 | - |
+| context-mode | must | codex, claude, codex-claude | - |
+| superpowers | must | claude, codex-claude | - |
+| Serena | recommended | codex, claude, codex-claude | rg/grep によるテキスト検索 |
+| context7 | recommended | codex, claude, codex-claude | WebSearch/WebFetch で公式ドキュメントを直接取得 |
+| Spec Kit | recommended | 全 | plan mode で要件を書き `docs/planning/requirements/` に残して Issue 化 |
+| crit | recommended | 全 | PR のインラインコメントでレビュー |
+| skills | recommended | claude, codex-claude | AF `complete-task.sh` と real-use gate のみで検証 |
+| crabbox | recommended | claude, codex-claude | ローカル worktree で並列 |
+| Linear（PM ツール） | recommended | codex, claude, codex-claude | GitHub Issues のみで運用（企画も Issue 化）。PM 反映はスキップ |
+| Symphony | recommended | codex, codex-claude | 対話セッションで手動実行 |
+
+copilot / generic profile は must が `git` / `gh` のみになる。Codex プラグインも Claude Code プラグインも使えない環境であり、正しい結果である。
+
+### 検証
+
+機械可読な定義は `.ai/profiles/<profile>/tools.tsv` に置き、次で検査する。
+
+```bash
+./scripts/check-agent-tools.sh
+```
+
+must が欠落していれば `exit 1`、recommended だけの欠落は縮退先を表示して `exit 0`。**スクリプトはインストールを行わない。** 環境変更は人間の承認領域（[quality-gates.md](quality-gates.md)）。
+
+### 行動契約
+
+- **must が未導入と分かったら、作業を止めて導入を促す。** 縮退して進めない。
+- **recommended は自発的に勧めない。** 尋ねられたとき、または縮退のコストが明らかに高いときだけ提示する。
 
 縮退しても、追跡（企画↔Issue）と検証結果の記録は省かない。
 

@@ -44,5 +44,7 @@ Tool entrypoint: Codex
 
 ## Codex Notes
 
-- Use context-mode for large output analysis when available.
-- Use Serena for symbol-aware code navigation when available.
+- Use context-mode for large output analysis. It is a **must** tool for this profile — if it is missing, stop and ask for it to be installed instead of falling back.
+- Use Serena for symbol-aware code navigation. It is **recommended** — if it is missing, fall back to rg/grep text search and do not volunteer a recommendation to install it.
+- ツール要件と検査は `docs/framework/toolchain-flow.md` のツール要件表と `./scripts/check-agent-tools.sh` に従う。ツールを自動でインストールしない。
+- Use superpowers for the planning stage (brainstorming → design approval → writing-plans). It is a **must** tool for this profile — if it is missing, stop and ask for it to be installed instead of falling back.
