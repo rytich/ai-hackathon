@@ -4,14 +4,14 @@
 
 - Issue: #47 v0.3 要件定義と v0.2.2-v0.2.9 ロードマップを策定する
 - Issue URL: https://github.com/rytich/agentic-framework/issues/47
-- Branch: 1acx/issue-47-v03-roadmap
+- Branch: 1acx/issue-47-approve-roadmap
 - Base: main
 - Spec Kit tasks: not specified
 
 ## Changed Files
 
 - docs/planning/requirements/2026-08-03-v0.3-requirements-and-v0.2-roadmap.md
-- docs/planning/requirements/README.md
+- docs/work-notes/2026-08-03-issue-47-roadmap-approved.md
 
 ## Mechanical Checks
 
