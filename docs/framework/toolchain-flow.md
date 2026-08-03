@@ -193,6 +193,8 @@ copilot / generic profile は must が `git` / `gh` のみになる。Codex プ�
 ./scripts/check-agent-tools.sh
 ```
 
+`check` は任意 shell ではない。`cmd:<name>`、`file:<path>`、`exec:<path>`、`mcp:<agent>:<name>`、`plugin:<agent>:<name>` を使い、複数候補は ` || ` で連結する。未知の語彙は定義不備として exit 2 になる。
+
 must が欠落していれば `exit 1`、recommended だけの欠落は縮退先を表示して `exit 0`。**スクリプトはインストールを行わない。** 環境変更は人間の承認領域（[quality-gates.md](quality-gates.md)）。
 
 ### 行動契約

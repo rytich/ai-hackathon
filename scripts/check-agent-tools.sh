@@ -83,6 +83,50 @@ missing_must=0
 missing_recommended=0
 line_no=0
 
+dsl_atom() {
+  local atom="$1" remainder agent name
+  case "$atom" in
+    cmd:*)
+      name="${atom#cmd:}"
+      [ -n "$name" ] && command -v "$name" >/dev/null 2>&1
+      ;;
+    file:*)
+      remainder="${atom#file:}"
+      [ -n "$remainder" ] && test -f "$remainder"
+      ;;
+    exec:*)
+      remainder="${atom#exec:}"
+      [ -n "$remainder" ] && test -x "$remainder"
+      ;;
+    mcp:codex:*|mcp:claude:*|plugin:claude:*)
+      remainder="${atom#*:}"
+      agent="${remainder%%:*}"
+      name="${remainder#*:}"
+      [ -n "$name" ] || return 127
+      case "$atom" in
+        mcp:*) "$agent" mcp list 2>/dev/null | grep -q -- "$name" ;;
+        plugin:*) "$agent" plugin list 2>/dev/null | grep -q -- "$name" ;;
+      esac
+      ;;
+    *) return 127 ;;
+  esac
+}
+
+dsl_check() {
+  local expression="$1" rest atom status
+  rest="$expression"
+  while :; do
+    atom="${rest%%' || '*}"
+    [ -n "$atom" ] || return 127
+    dsl_atom "$atom"
+    status=$?
+    [ "$status" -eq 0 ] && return 0
+    [ "$status" -eq 127 ] && return 127
+    [ "$rest" = "$atom" ] && return 1
+    rest="${rest#*' || '}"
+  done
+}
+
 while IFS= read -r raw_line || [ -n "${raw_line:-}" ]; do
   line_no=$((line_no + 1))
 
@@ -168,10 +212,7 @@ while IFS= read -r raw_line || [ -n "${raw_line:-}" ]; do
       ;;
   esac
 
-  # check は eval する。tools.tsv はバージョン管理下の repository 所有ファイルであり、
-  # 他のスクリプトと同じ信頼水準として扱う。外部由来の tools.tsv を読ませない。
-  # eval が stdin を消費して while ループを壊さないよう /dev/null を渡す。
-  #
+  # check は制限文法で評価する。tools.tsv はデータであり、任意の shell を実行しない。
   # この行だけ pipefail を外す（set +o pipefail のサブシェルで包む）。多くの check は
   # `codex mcp list | grep -q foo` のような形で、grep -q は最初の一致で即座に終了する。
   # これはツールが「見つかった」正常系であって異常ではないが、pipefail が有効なままだと
@@ -181,9 +222,16 @@ while IFS= read -r raw_line || [ -n "${raw_line:-}" ]; do
   # （実機で確認済み：pipefail 有効時は誤判定、`set +o pipefail` で回避すると正しく OK になる）。
   # スクリプト全体の pipefail は維持したいので、ここだけサブシェルで無効化する。
   # 「tidy」でこのサブシェルを外さないこと。
-  if ( set +o pipefail; eval "$check" ) </dev/null >/dev/null 2>&1; then
+  if ( set +o pipefail; dsl_check "$check" ) </dev/null >/dev/null 2>&1; then
     printf "  OK        %-14s %s\n" "$tool" "$class"
     continue
+  else
+    check_status=$?
+  fi
+  if [ "$check_status" -eq 127 ]; then
+    echo "tools.tsv の check 列が不正です: $TOOLS_FILE:$line_no" >&2
+    echo "  許可される文法: cmd:<name>, file:<path>, exec:<path>, mcp:<agent>:<name>, plugin:<agent>:<name>（' || ' 連結可）" >&2
+    exit 2
   fi
 
   if [ "$class" = "must" ]; then
