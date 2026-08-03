@@ -10,12 +10,7 @@
 
 ## Changed Files
 
-- docs/decisions/2026-08-03-cloudflare-dns-cli-publication.md
-- docs/decisions/README.md
-- docs/framework/site-hosting.md
-- docs/work-notes/2026-08-03-issue-32-cloudflare-cli.md
 - scripts/configure-cloudflare-pages-domain.mjs
-- scripts/deploy-site.sh
 - scripts/test-configure-cloudflare-pages-domain.mjs
 
 ## Mechanical Checks

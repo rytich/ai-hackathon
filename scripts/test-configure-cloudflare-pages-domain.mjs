@@ -15,6 +15,7 @@ function response(status, body) {
 
 test("creates the Pages domain and a proxied CNAME when neither exists", async () => {
   const requests = [];
+  let pageDomainReads = 0;
   const fetchFn = async (url, options) => {
     requests.push({ url, options });
 
@@ -26,6 +27,9 @@ test("creates the Pages domain and a proxied CNAME when neither exists", async (
     }
     if (url.endsWith("/dns_records")) {
       return response(200, { success: true, result: { id: "record-1" } });
+    }
+    if (url.endsWith("/domains/ai.microdotz.net") && ++pageDomainReads === 1) {
+      return response(404, { success: false, errors: [{ message: "not found" }] });
     }
     if (url.endsWith("/domains/ai.microdotz.net")) {
       return response(200, { success: true, result: { status: "active", certificate_authority: "lets_encrypt" } });
@@ -46,6 +50,10 @@ test("creates the Pages domain and a proxied CNAME when neither exists", async (
   assert.deepEqual(result, { domain: "ai.microdotz.net", dnsAction: "created", pagesStatus: "active" });
   assert.deepEqual(requests.map(({ url, options }) => ({ url, method: options.method })), [
     {
+      url: "https://api.cloudflare.com/client/v4/accounts/account-id/pages/projects/agentic-framework/domains/ai.microdotz.net",
+      method: "GET",
+    },
+    {
       url: "https://api.cloudflare.com/client/v4/accounts/account-id/pages/projects/agentic-framework/domains",
       method: "POST",
     },
@@ -62,7 +70,7 @@ test("creates the Pages domain and a proxied CNAME when neither exists", async (
       method: "GET",
     },
   ]);
-  assert.deepEqual(JSON.parse(requests[2].options.body), {
+  assert.deepEqual(JSON.parse(requests[3].options.body), {
     type: "CNAME",
     name: "ai.microdotz.net",
     content: "agentic-framework.pages.dev",
@@ -73,6 +81,7 @@ test("creates the Pages domain and a proxied CNAME when neither exists", async (
 
 test("updates an existing CNAME that does not point to the Pages project", async () => {
   const requests = [];
+  let pageDomainReads = 0;
   const fetchFn = async (url, options) => {
     requests.push({ url, options });
 
@@ -87,6 +96,9 @@ test("updates an existing CNAME that does not point to the Pages project", async
     }
     if (url.endsWith("/dns_records/record-1")) {
       return response(200, { success: true, result: { id: "record-1" } });
+    }
+    if (url.endsWith("/domains/ai.microdotz.net") && ++pageDomainReads === 1) {
+      return response(404, { success: false, errors: [{ message: "not found" }] });
     }
     if (url.endsWith("/domains/ai.microdotz.net")) {
       return response(200, { success: true, result: { status: "active", certificate_authority: "lets_encrypt" } });
@@ -105,8 +117,8 @@ test("updates an existing CNAME that does not point to the Pages project", async
   });
 
   assert.deepEqual(result, { domain: "ai.microdotz.net", dnsAction: "updated", pagesStatus: "active" });
-  assert.equal(requests[2].options.method, "PUT");
-  assert.deepEqual(JSON.parse(requests[2].options.body), {
+  assert.equal(requests[3].options.method, "PUT");
+  assert.deepEqual(JSON.parse(requests[3].options.body), {
     type: "CNAME",
     name: "ai.microdotz.net",
     content: "agentic-framework.pages.dev",
@@ -117,6 +129,7 @@ test("updates an existing CNAME that does not point to the Pages project", async
 
 test("leaves an already-correct CNAME unchanged", async () => {
   const requests = [];
+  let pageDomainReads = 0;
   const fetchFn = async (url, options) => {
     requests.push({ url, options });
 
@@ -128,6 +141,9 @@ test("leaves an already-correct CNAME unchanged", async () => {
         success: true,
         result: [{ id: "record-1", type: "CNAME", name: "ai.microdotz.net", content: "agentic-framework.pages.dev", proxied: true }],
       });
+    }
+    if (url.endsWith("/domains/ai.microdotz.net") && ++pageDomainReads === 1) {
+      return response(404, { success: false, errors: [{ message: "not found" }] });
     }
     if (url.endsWith("/domains/ai.microdotz.net")) {
       return response(200, { success: true, result: { status: "active", certificate_authority: "lets_encrypt" } });
@@ -146,11 +162,45 @@ test("leaves an already-correct CNAME unchanged", async () => {
   });
 
   assert.deepEqual(result, { domain: "ai.microdotz.net", dnsAction: "unchanged", pagesStatus: "active" });
-  assert.equal(requests.length, 3);
+  assert.equal(requests.length, 4);
+});
+
+test("does not re-create an already-registered Pages domain", async () => {
+  const requests = [];
+  const fetchFn = async (url, options) => {
+    requests.push({ url, options });
+
+    if (url.endsWith("/domains/ai.microdotz.net")) {
+      return response(200, { success: true, result: { status: "active", certificate_authority: "lets_encrypt" } });
+    }
+    if (url.includes("/dns_records?")) {
+      return response(200, {
+        success: true,
+        result: [{ id: "record-1", type: "CNAME", name: "ai.microdotz.net", content: "agentic-framework.pages.dev", proxied: true }],
+      });
+    }
+
+    throw new Error(`Unexpected request: ${url}`);
+  };
+
+  const result = await configureCustomDomain({
+    accountId: "account-id",
+    zoneId: "zone-id",
+    apiToken: "token",
+    project: "agentic-framework",
+    domain: "ai.microdotz.net",
+    fetchFn,
+  });
+
+  assert.deepEqual(result, { domain: "ai.microdotz.net", dnsAction: "unchanged", pagesStatus: "active" });
+  assert.equal(requests.some(({ url }) => url.endsWith("/domains")), false);
 });
 
 test("rejects an existing non-CNAME record instead of overwriting it", async () => {
   const fetchFn = async (url) => {
+    if (url.endsWith("/domains/ai.microdotz.net")) {
+      return response(200, { success: true, result: { status: "active", certificate_authority: "lets_encrypt" } });
+    }
     if (url.endsWith("/domains")) {
       return response(200, { success: true, result: { name: "ai.microdotz.net" } });
     }

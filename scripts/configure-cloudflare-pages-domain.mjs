@@ -55,8 +55,19 @@ export async function configureCustomDomain({
   fetchFn = fetch,
 }) {
   const record = desiredRecord(domain, project);
+  const pagesDomainPath = `/accounts/${encodeURIComponent(accountId)}/pages/projects/${encodeURIComponent(project)}/domains/${encodeURIComponent(domain)}`;
 
   try {
+    await cloudflareRequest({
+      fetchFn,
+      apiToken,
+      path: pagesDomainPath,
+      method: "GET",
+    });
+  } catch (error) {
+    if (error.status !== 404) {
+      throw error;
+    }
     await cloudflareRequest({
       fetchFn,
       apiToken,
@@ -64,10 +75,6 @@ export async function configureCustomDomain({
       method: "POST",
       body: { name: domain },
     });
-  } catch (error) {
-    if (error.status !== 409) {
-      throw error;
-    }
   }
 
   const existingRecords = await cloudflareRequest({
@@ -105,7 +112,7 @@ export async function configureCustomDomain({
   const pagesDomain = await cloudflareRequest({
     fetchFn,
     apiToken,
-    path: `/accounts/${encodeURIComponent(accountId)}/pages/projects/${encodeURIComponent(project)}/domains/${encodeURIComponent(domain)}`,
+    path: pagesDomainPath,
     method: "GET",
   });
   return { domain, dnsAction, pagesStatus: pagesDomain.status };
