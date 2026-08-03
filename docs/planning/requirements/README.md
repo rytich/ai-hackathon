@@ -16,3 +16,7 @@
 - 承認後に実装へ進む。確定した仕様サマリは [../../knowledge/product/](../../knowledge/product/) へ反映する。
 
 記入例: [_example-requirements.md](_example-requirements.md)
+
+## Drafts
+
+- [v0.3 要件定義と v0.2 ロードマップ](2026-08-03-v0.3-requirements-and-v0.2-roadmap.md) - v0.2.2-v0.2.9 の段階的リリース案。人間のインラインレビュー待ち。
