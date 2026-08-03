@@ -11,5 +11,8 @@ outputs/*
 # AI agent worktree isolation
 .worktrees/
 
+# Serena が生成する端末ローカルの project 設定と memory
+.serena/
+
 # OS
 .DS_Store
