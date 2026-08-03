@@ -8,5 +8,8 @@
 outputs/*
 !outputs/README.md
 
+# AI agent worktree isolation
+.worktrees/
+
 # OS
 .DS_Store
