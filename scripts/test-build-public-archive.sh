@@ -3,18 +3,26 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TAG="archive-test-$$-${RANDOM}"
+MISMATCH_TAG="v9.9.9"
 TMP_DIR="$(mktemp -d)"
 OUT="$TMP_DIR/public.zip"
 PREFIX="agentic-framework-${TAG#v}"
 
 cleanup() {
   git -C "$ROOT_DIR" tag -d "$TAG" >/dev/null 2>&1 || true
+  git -C "$ROOT_DIR" tag -d "$MISMATCH_TAG" >/dev/null 2>&1 || true
   rm -rf "$TMP_DIR"
 }
 trap cleanup EXIT
 
 git -C "$ROOT_DIR" tag "$TAG" HEAD
 "$ROOT_DIR/scripts/build-public-archive.sh" "$TAG" "$OUT" >/dev/null
+
+git -C "$ROOT_DIR" tag "$MISMATCH_TAG" HEAD
+if "$ROOT_DIR/scripts/build-public-archive.sh" "$MISMATCH_TAG" "$TMP_DIR/mismatch.zip" >/dev/null 2>&1; then
+  echo "FAIL: tag と VERSION が不一致の archive 作成を許可した" >&2
+  exit 1
+fi
 
 entries="$(zipinfo -1 "$OUT")"
 for path in \

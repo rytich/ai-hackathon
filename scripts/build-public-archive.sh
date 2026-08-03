@@ -35,6 +35,16 @@ if ! git rev-parse "$TAG" >/dev/null 2>&1; then
   exit 1
 fi
 
+if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  TAG_VERSION="${TAG#v}"
+  ARCHIVE_VERSION="$(git show "$TAG:VERSION" 2>/dev/null | tr -d '[:space:]')"
+  if [ "$ARCHIVE_VERSION" != "$TAG_VERSION" ]; then
+    echo "tag と VERSION が一致しません: $TAG -> $ARCHIVE_VERSION" >&2
+    echo "VERSION を更新した commit に tag を付けてから archive を作成してください。" >&2
+    exit 1
+  fi
+fi
+
 PREFIX="agentic-framework-${TAG#v}"
 WORK="$(mktemp -d)"
 trap 'rm -rf "$WORK"' EXIT
