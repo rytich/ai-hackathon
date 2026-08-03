@@ -15,6 +15,7 @@ Options:
   --stage-all               Stage all repo changes except local/tooling artifacts.
   --merge                   Merge the PR after objective review passes.
   --close-issue             Close the Issue after merge succeeds.
+  --review-request-file <p> Post only unresolved human review requests from this file.
   --dry-run                 Print planned actions without changing GitHub state.
 
 Environment:
@@ -35,6 +36,7 @@ COMMIT_MESSAGE=""
 STAGE_ALL=false
 MERGE=false
 CLOSE_ISSUE=false
+REVIEW_REQUEST_FILE=""
 DRY_RUN=false
 
 while [ "$#" -gt 0 ]; do
@@ -70,6 +72,10 @@ while [ "$#" -gt 0 ]; do
     --close-issue)
       CLOSE_ISSUE=true
       shift
+      ;;
+    --review-request-file)
+      REVIEW_REQUEST_FILE="${2:-}"
+      shift 2
       ;;
     --dry-run)
       DRY_RUN=true
@@ -129,7 +135,12 @@ fetch_issue_json() {
 }
 
 fetch_pr_json() {
-  gh pr view "$1" --repo "$REPO_FULL_NAME" --json number,state,mergedAt,headRefOid,url
+  gh pr view "$1" --repo "$REPO_FULL_NAME" --json number,state,mergedAt,mergeStateStatus,headRefOid,url
+}
+
+find_open_pr_number() {
+  gh pr list --repo "$REPO_FULL_NAME" --base "$BASE_BRANCH" --head "$CURRENT_BRANCH" --state open \
+    --json number --jq '.[0].number // empty'
 }
 
 ensure_issue_open() {
@@ -214,10 +225,15 @@ run_validation() {
   [ -f templates/project/scripts/select-ai-profile.sh ] && run bash -n templates/project/scripts/select-ai-profile.sh
   [ -f templates/project/scripts/setup-github-labels.sh ] && run bash -n templates/project/scripts/setup-github-labels.sh
   [ -f scripts/check-agent-tools.sh ] && run bash -n scripts/check-agent-tools.sh
+  [ -f scripts/test-complete-task.sh ] && run bash -n scripts/test-complete-task.sh
   [ -f scripts/test-check-agent-tools.sh ] && run bash -n scripts/test-check-agent-tools.sh
 
   if [ -f scripts/test-check-agent-tools.sh ]; then
     run ./scripts/test-check-agent-tools.sh
+  fi
+
+  if [ -f scripts/test-complete-task.sh ]; then
+    run bash scripts/test-complete-task.sh
   fi
 
   if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then
@@ -335,6 +351,17 @@ if [ "$BLOCKERS" -ne 0 ]; then
   exit 1
 fi
 
+if [ "$REVIEW_REQUEST_FILE" != "" ]; then
+  if [ ! -s "$REVIEW_REQUEST_FILE" ]; then
+    echo "Review request file is empty or missing: $REVIEW_REQUEST_FILE" >&2
+    exit 1
+  fi
+  if ! grep -q '確認対象' "$REVIEW_REQUEST_FILE" || ! grep -q '判断してほしいこと' "$REVIEW_REQUEST_FILE"; then
+    echo "Review request file must contain unresolved confirmation points with required headings." >&2
+    exit 1
+  fi
+fi
+
 run git commit -m "$COMMIT_MESSAGE"
 run git push -u origin "$CURRENT_BRANCH"
 
@@ -376,18 +403,32 @@ if [ "$DRY_RUN" = true ]; then
   exit 0
 fi
 
-ensure_issue_open "PR creation"
-PR_URL="$(gh pr create --repo "$REPO_FULL_NAME" --base "$BASE_BRANCH" --head "$CURRENT_BRANCH" --title "$TITLE" --body-file "$PR_BODY_FILE")"
-PR_NUMBER="${PR_URL##*/}"
-echo "Created PR: $PR_URL"
+ensure_issue_open "PR lookup or creation"
+PR_NUMBER="$(find_open_pr_number)"
+if [ "$PR_NUMBER" = "" ]; then
+  PR_URL="$(gh pr create --repo "$REPO_FULL_NAME" --base "$BASE_BRANCH" --head "$CURRENT_BRANCH" --title "$TITLE" --body-file "$PR_BODY_FILE")"
+  PR_NUMBER="${PR_URL##*/}"
+  echo "Created PR: $PR_URL"
+else
+  echo "Reusing existing PR #$PR_NUMBER"
+fi
 
-ensure_pr_open "$PR_NUMBER" "objective review comment"
-gh pr comment "$PR_NUMBER" --repo "$REPO_FULL_NAME" --body-file "$REVIEW_FILE"
+if [ "$REVIEW_REQUEST_FILE" != "" ]; then
+  ensure_pr_open "$PR_NUMBER" "human review request"
+  gh pr comment "$PR_NUMBER" --repo "$REPO_FULL_NAME" --body-file "$REVIEW_REQUEST_FILE"
+fi
 
 if [ "$MERGE" = true ]; then
   ensure_pr_open "$PR_NUMBER" "merge"
   ensure_issue_open "pre-merge issue state check"
   gh pr merge "$PR_NUMBER" --repo "$REPO_FULL_NAME" --squash --delete-branch --subject "$TITLE" --body "Merged after objective review passed."
+  PR_JSON="$(fetch_pr_json "$PR_NUMBER")"
+  PR_STATE="$(printf "%s" "$PR_JSON" | jq -r .state)"
+  PR_MERGED_AT="$(printf "%s" "$PR_JSON" | jq -r '.mergedAt // empty')"
+  if [ "$PR_STATE" != "MERGED" ] || [ "$PR_MERGED_AT" = "" ]; then
+    echo "PR #$PR_NUMBER is not merged after merge command; Issue will remain open." >&2
+    exit 1
+  fi
   echo "Merged PR #$PR_NUMBER"
 fi
 
