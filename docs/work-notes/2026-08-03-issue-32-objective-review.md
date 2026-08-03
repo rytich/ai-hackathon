@@ -10,8 +10,7 @@
 
 ## Changed Files
 
-- scripts/configure-cloudflare-pages-domain.mjs
-- scripts/test-configure-cloudflare-pages-domain.mjs
+- docs/work-notes/2026-08-03-issue-32-cloudflare-cli.md
 
 ## Mechanical Checks
 

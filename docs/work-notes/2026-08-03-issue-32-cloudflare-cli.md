@@ -23,6 +23,11 @@
 - `./scripts/check-doc-links.sh`
 - `git diff --check`
 
-## Pending real-use gate
+## Real-use gate
 
-現時点の実行環境には `CLOUDFLARE_API_TOKEN` がない。トークンを環境変数で渡した後、`scripts/deploy-site.sh <tag>` を実行し、`https://ai.microdotz.net` の HTTPS 配信と Pages status `active` を実測してから Issue を close する。
+Keychain から読み出した API token を CLI に渡し、`configure-cloudflare-pages-domain.mjs` を実行した。
+
+- proxied CNAME: created
+- Pages custom domain: `active`
+- certificate authority: `google`
+- `https://ai.microdotz.net`: HTTP 200
