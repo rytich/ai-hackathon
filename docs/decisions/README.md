@@ -41,3 +41,7 @@ YYYY-MM-DD
 **情報ソースは必須。** 企画で参照した URL・ツール・資料を残し、根拠を追跡可能にする。詳細は [../framework/knowledge-base.md](../framework/knowledge-base.md#意思決定の型-docsdecisions)。
 
 記入例（実例）: [2026-07-15-docs-knowledge-base.md](2026-07-15-docs-knowledge-base.md)
+
+## 最新の記録
+
+- [2026-08-03-cloudflare-dns-cli-publication.md](2026-08-03-cloudflare-dns-cli-publication.md): Cloudflare DNS を CLI で設定する。

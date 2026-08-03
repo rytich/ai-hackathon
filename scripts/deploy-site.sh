@@ -69,3 +69,6 @@ fi
 
 # 4. アップロード。
 npx wrangler pages deploy "$SITE_DIR" --project-name "$PROJECT"
+
+# 5. Cloudflare API で独自ドメインと DNS を冪等に設定する。
+node "$ROOT_DIR/scripts/configure-cloudflare-pages-domain.mjs"

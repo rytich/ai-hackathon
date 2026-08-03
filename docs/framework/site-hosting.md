@@ -8,14 +8,14 @@
 |---|---|
 | private repository のまま公開できる | AF は private。GitHub Pages は private repository だと有料プランが要る |
 | 商用利用に制限がない | 受託業務でも使う。Vercel の無料プランは非商用限定 |
-| 1 コマンドでデプロイできる | `wrangler pages deploy` だけ。リリース手順に組み込める |
+| CLI で再現できる | `deploy-site.sh` が Pages のアップロード、独自ドメイン、DNS を順に設定する |
 | 独自ドメインが無料 | SSL 証明書も自動 |
 
 **git 連携は使わない。** ディレクトリを直接アップロードする方式にする。private repository を外部サービスへ接続せずに済み、何が公開されるかがローカルで確定する。
 
 ## 初回セットアップ
 
-以下は**人間が実行する**。エージェントは代行しない（アカウント作成と認証、DNS 変更のため）。
+Cloudflare アカウント作成と API トークン発行は**人間承認領域**である。以降の Pages 配信、独自ドメイン登録、DNS レコード設定は CLI で行う。
 
 ### 1. Cloudflare アカウントを作る
 
@@ -23,21 +23,26 @@ https://dash.cloudflare.com/sign-up
 
 無料プランでよい。クレジットカードは不要。
 
-### 2. wrangler で認証する
+### 2. API トークンを発行してローカルに保管する
+
+Cloudflare Dashboard の **My Profile → API Tokens** で、次の最小権限を持つトークンを発行する。
+
+- Account / Cloudflare Pages / Edit: 対象アカウント
+- Zone / DNS / Edit: `microdotz.net`
+
+トークンは `CLOUDFLARE_API_TOKEN` として、その実行シェルまたは CI の secret store にだけ設定する。トークン値を Issue、PR、work note、`.env`、シェル履歴、リポジトリに置かない。
 
 ```bash
-npx wrangler login
+export CLOUDFLARE_ACCOUNT_ID="<Cloudflare account id>"
+export CLOUDFLARE_ZONE_ID="<microdotz.net zone id>"
+export CLOUDFLARE_API_TOKEN="<API token>"
 ```
 
-ブラウザが開き、Cloudflare の認可画面が出る。`Allow` を押すとターミナルに戻り、認証が完了する。
-
-- 認証情報は `~/.wrangler/` に保存される。**リポジトリには入らない**。
-- `npx` を使うので wrangler のグローバルインストールは不要。
-- 確認: `npx wrangler whoami`
+`CLOUDFLARE_ACCOUNT_ID` と `CLOUDFLARE_ZONE_ID` は secret ではないが、環境差分として環境変数で渡す。API トークンだけが secret である。
 
 ### 3. Pages プロジェクトを作る
 
-初回のデプロイ時に作られる。プロジェクト名を決めておく（例: `agentic-framework`）。
+初回のデプロイ時に作られる。プロジェクト名を決めておく（例: `agentic-framework`）。API トークンを設定済みなら `wrangler` は同じトークンを使う。
 
 ```bash
 scripts/deploy-site.sh v0.2.1
@@ -47,27 +52,30 @@ scripts/deploy-site.sh v0.2.1
 
 デプロイ後、`https://<project>.pages.dev` で見られる。
 
-### 4. 独自ドメインを割り当てる
+### 4. CLI で独自ドメインを割り当てる
 
-Cloudflare のダッシュボードで **Workers & Pages → 対象プロジェクト → Custom domains → Set up a domain** を開き、使うサブドメイン（例: `ai.microdotz.net`）を入力する。
+`deploy-site.sh` は次を冪等に実行する。
 
-Cloudflare が CNAME の設定値を表示するので、**DNS 側にそのレコードを追加する**。
+1. `agentic-framework` Pages project へ `ai.microdotz.net` を登録する
+2. `microdotz.net` Cloudflare zone に `CNAME ai -> agentic-framework.pages.dev` を proxied で作成または更新する
+3. Pages domain API から status を取得して表示する
 
-このドメインの DNS は Value Domain（`ns1.value-domain.com`）が管理している。Value Domain のコントロールパネルで、対象ドメインの DNS レコードに次を追加する。
+既に正しい CNAME がある場合は変更しない。A/AAAA など CNAME と両立しない既存レコードがある場合は、意図しない上書きを避けて停止する。
 
 ```text
-cname  ai  <project>.pages.dev
+CF_PAGES_PROJECT=agentic-framework
+CF_CUSTOM_DOMAIN=ai.microdotz.net
 ```
 
-- ネームサーバを Cloudflare へ移す必要はない。サブドメインを CNAME で向けるだけでよい。
-- apex（`microdotz.net` 直下）ではなくサブドメインなので、CNAME で問題ない。
-- 反映後、Cloudflare 側が自動で SSL 証明書を発行する。数分かかる。
+- DNS の権威サーバーは Cloudflare（`ophelia.ns.cloudflare.com` / `duke.ns.cloudflare.com`）である。Value Domain のコントロールパネルは使わない。
+- apex（`microdotz.net` 直下）ではなくサブドメインなので、CNAME を使う。
+- 初回は DNS 伝播と SSL 証明書発行に数分かかる。CLI 出力が `Pages active` になるまで再実行して確認する。
 
-確認:
+CLI による確認:
 
 ```bash
-dig +short ai.microdotz.net
-curl -sI https://ai.microdotz.net | head -3
+scripts/deploy-site.sh vX.Y.Z
+dig +short CNAME ai.microdotz.net
 ```
 
 ## 更新（版を上げたとき）
@@ -83,6 +91,7 @@ scripts/deploy-site.sh vX.Y.Z
 2. zip を `site/` へ置く
 3. `site/index.html` の版数表記と更新日を書き換える
 4. `wrangler pages deploy site` でアップロードする
+5. Cloudflare API で Pages domain と proxied CNAME を設定し、Pages の status を表示する
 
 **zip は毎回ビルドし直す。** リポジトリには置かない（`site/*.zip` は gitignore 済み）。
 
