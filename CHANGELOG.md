@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.3 - 2026-08-03
+
+- `tools.tsv` の check 欄を任意 shell の `eval` から制限文法へ移行し、未知語彙を fail-closed で拒否するようにした。
+- 公開 archive は release tag と `VERSION` が一致しない場合に生成を停止するようにした。
+
+## 0.2.2 - 2026-08-03
+
+- 完了パイプラインが既存 PR を再利用し、merge 成功を再確認してから Issue を close するようにした。
+- 人間確認コメントを未解決の確認点だけに限定した。
+
 ## 0.2.1 - 2026-07-29
 
 - エージェント別のオーケストレーション方式を明記した。Codex は Symphony で無人実行、Claude Code と hermes は skills のマルチエージェントで並列に進める。方式が違っても追跡先（GitHub Issue）と承認境界は共通。

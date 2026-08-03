@@ -40,6 +40,10 @@ if [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "VERSION を更新した commit に tag を付けてから archive を作成してください。" >&2
     exit 1
   fi
+  if ! git show "$TAG:CHANGELOG.md" | grep -Eq "^## ${TAG_VERSION}( | -)"; then
+    echo "CHANGELOG.md に release entry がありません: $TAG_VERSION" >&2
+    exit 1
+  fi
 fi
 
 PREFIX="$(basename "$ROOT_DIR")-${TAG#v}"

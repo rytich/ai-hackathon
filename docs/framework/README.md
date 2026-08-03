@@ -14,6 +14,7 @@ AI エージェント（Codex / Claude Code など）が並行開発するため
 | [agent-settings-replication.md](agent-settings-replication.md) | AGENTS/CLAUDE/Copilot/skills の再現設計 |
 | [software-engineering-practices.md](software-engineering-practices.md) | エージェント時代も捨てない開発規律 |
 | [quality-gates.md](quality-gates.md) | 品質ゲートと自動 merge 判定 |
+| [release-checklist.md](release-checklist.md) | VERSION、tag、CHANGELOG、公開 ZIP の release 整合性確認 |
 | [environment-reproducibility.md](environment-reproducibility.md) | 別端末での再現手順 |
 | [codex-dev-stack.md](codex-dev-stack.md) | macOS/Codex 用の開発スタック導入・検証 |
 | [github-configuration.md](github-configuration.md) | GitHub labels、Issue/PR、branch protection |
