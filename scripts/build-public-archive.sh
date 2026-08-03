@@ -11,6 +11,7 @@
 #
 # 除外・置換のルールは環境変数で調整する:
 #   PUBLIC_ARCHIVE_DROP="docs/work-notes"                # 中身を配布しないディレクトリ（カンマ区切り）
+#   PUBLIC_ARCHIVE_EXTRA_EXCLUDE="path/to/local-only"   # 配布しない追加パス（カンマ区切り）
 #   PUBLIC_ARCHIVE_REDACT="name1,name2"                  # 伏せる固有名（カンマ区切り）
 #   PUBLIC_ARCHIVE_REDACT_WITH="導入先プロジェクト"        # 置換後の表記
 set -euo pipefail
@@ -23,6 +24,8 @@ OUT="${2:-$ROOT_DIR/outputs/agentic-framework-${TAG}-public.zip}"
 
 # 既定の sanitize ルール。プロジェクトの実情に合わせて上書きする。
 DROP="${PUBLIC_ARCHIVE_DROP:-docs/work-notes}"
+LOCAL_ONLY_EXCLUDE="site/,scripts/configure-cloudflare-pages-domain.mjs,scripts/test-configure-cloudflare-pages-domain.mjs,scripts/deploy-site.sh,docs/framework/site-hosting.md,docs/decisions/2026-08-03-cloudflare-dns-cli-publication.md"
+EXTRA_EXCLUDE="${PUBLIC_ARCHIVE_EXTRA_EXCLUDE:-}"
 REDACT="${PUBLIC_ARCHIVE_REDACT:-ten_matcha,bonsmith_corporate,kdic,innovation-team-hy,tenjp}"
 REDACT_WITH="${PUBLIC_ARCHIVE_REDACT_WITH:-導入先プロジェクト}"
 
@@ -59,7 +62,36 @@ PLACEHOLDER
   echo "dropped: $d/*.md （README に置換）"
 done
 
-# 2. 固有名を伏せ、置換で崩れた日本語を整える。
+# 2. この repository 固有の Cloudflare / 説明サイト公開資産は AF 本体の配布物に含めない。
+#    追加のローカル専用パスも同じ仕組みで除外できる。
+EXCLUDE="$LOCAL_ONLY_EXCLUDE"
+if [ -n "$EXTRA_EXCLUDE" ]; then
+  EXCLUDE="$EXCLUDE,$EXTRA_EXCLUDE"
+fi
+IFS=',' read -r -a exclude_list <<< "$EXCLUDE"
+for path in "${exclude_list[@]}"; do
+  [ -n "$path" ] || continue
+  rm -rf "$SRC/$path"
+  echo "excluded: $path"
+done
+
+# 除外したパスへの配布版 README の導線も消し、リンク切れを残さない。
+SRC="$SRC" EXCLUDE="$EXCLUDE" python3 - <<'PY'
+import os
+import pathlib
+
+src = pathlib.Path(os.environ["SRC"])
+needles = [path for path in os.environ["EXCLUDE"].split(",") if path]
+
+for f in src.rglob("*.md"):
+    text = f.read_text(encoding="utf-8")
+    lines = text.splitlines(keepends=True)
+    kept = [line for line in lines if not any(needle in line for needle in needles)]
+    if kept != lines:
+        f.write_text("".join(kept), encoding="utf-8")
+PY
+
+# 3. 固有名を伏せ、置換で崩れた日本語を整える。
 #    日本語を扱うため python3 で処理する（byte 単位の sed/perl では文字クラスが壊れる）。
 SRC="$SRC" REDACT="$REDACT" REDACT_WITH="$REDACT_WITH" python3 - <<'PY'
 import os, re, pathlib
@@ -97,15 +129,22 @@ for n, c in counts.items():
         print(f"redacted: {n} -> {rep} （{c} files）")
 PY
 
-# 3. 再 archive。
+# 4. 再 archive。
 mkdir -p "$(dirname "$OUT")"
 rm -f "$OUT"
 ( cd "$WORK" && zip -q -r "$OUT" "$PREFIX" )
 
-# 4. 検証: 伏せ漏れと秘密情報の混入を機械的に確認する。
+# 5. 検証: 除外漏れ、伏せ漏れと秘密情報の混入を機械的に確認する。
 echo
 echo "--- 検証 ---"
 leak=0
+for path in "${exclude_list[@]}"; do
+  [ -n "$path" ] || continue
+  if [ -e "$SRC/$path" ]; then
+    echo "NG: local-only path '$path' が残っている" >&2
+    leak=1
+  fi
+done
 IFS=',' read -r -a verify_list <<< "$REDACT"
 for name in ${verify_list[@]+"${verify_list[@]}"}; do
   [ -n "$name" ] || continue
