@@ -1,6 +1,6 @@
 ---
 title: v0.2.4 効果計測の最小基盤 設計
-status: review
+status: approved
 updated: 2026-08-12
 issue: https://github.com/rytich/agentic-framework/issues/34
 requirements: ../../planning/requirements/2026-08-12-v024-effect-metrics.md
@@ -64,13 +64,13 @@ local 設定に secret、remote credential、絶対 path 以外の個人情報�
 
 ### 4.2 保存モード
 
-#### A. 既存 project 内の local-only（既定）
+#### A. 既存 project 内の local-only
 
 - `<project>/.af-metrics/` に保存する。
 - 既存 Git repository では `.git/info/exclude` を使い、tracked `.gitignore` を自動変更しない。
-- 新しい repository は不要だが、複数端末では自動同期されない。
+- Git repository は不要だが、複数端末では自動同期されないため非推奨。
 
-#### B. 既存 project repository で追跡
+#### B. 既存 project repository で追跡（既定）
 
 - 新しい repository を作らず、既存 project の Git で統計を共有できる。
 - `init` は活動時刻、profile、model、成果参照から開発行動を推測できることを警告し、明示的な acknowledgement がない限り有効化しない。

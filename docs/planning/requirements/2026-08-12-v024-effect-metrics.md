@@ -1,6 +1,6 @@
 ---
 title: v0.2.4 効果計測の最小基盤
-status: review
+status: approved
 updated: 2026-08-12
 links:
   - https://github.com/rytich/agentic-framework/issues/34

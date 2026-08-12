@@ -19,7 +19,11 @@
 
 ## Drafts
 
-- [v0.2.4 効果計測の最小基盤](2026-08-12-v024-effect-metrics.md) - privacy-safe な work unit 記録、集計、保存先分離、AF 更新境界。人間のインラインレビュー待ち。
+現在なし。
+
+## Approved
+
+- [v0.2.4 効果計測の最小基盤](2026-08-12-v024-effect-metrics.md) - privacy-safe な work unit 記録、集計、保存先分離、AF 更新境界。
 
 ## Implemented
 
