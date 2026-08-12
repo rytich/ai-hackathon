@@ -6,6 +6,7 @@ import {
   mkdir,
   readFile,
   readdir,
+  realpath,
   writeFile,
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -90,6 +91,22 @@ test("initializes a dedicated local Git repository when no repository exists", a
   const result = await initMetricsStore({ cwd, metricsDir, projectId: "sample-project", mode: undefined, acknowledgeRisk: false, remoteVisibility: "private" });
   assert.equal(result.mode, "dedicated");
   assert.equal(execFileSync("git", ["-C", metricsDir, "rev-parse", "--is-inside-work-tree"], { encoding: "utf8" }).trim(), "true");
+});
+
+test("dedicated mode remains a separate repository inside an existing project", async () => {
+  const cwd = await makeGitRepo();
+  const metricsDir = path.join(cwd, "metrics-repository");
+  const result = await initMetricsStore({
+    cwd,
+    metricsDir,
+    projectId: "sample-project",
+    mode: "dedicated",
+    acknowledgeRisk: false,
+    remoteVisibility: "private",
+  });
+  const repository = execFileSync("git", ["-C", metricsDir, "rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+  assert.equal(await realpath(repository), await realpath(metricsDir));
+  assert.equal(result.mode, "dedicated");
 });
 
 test("does not overwrite an existing config", async () => {

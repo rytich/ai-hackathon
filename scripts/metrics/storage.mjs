@@ -94,7 +94,7 @@ export async function initMetricsStore({
     : resolveMetricsDir({ cwd, env: process.env, localConfig: null });
   await mkdir(selectedDir, { recursive: true, mode: 0o700 });
 
-  if (!repositoryRoot) {
+  if (selectedMode === "dedicated") {
     execFileSync("git", ["init", "--quiet", selectedDir], {
       stdio: ["ignore", "ignore", "ignore"],
     });
