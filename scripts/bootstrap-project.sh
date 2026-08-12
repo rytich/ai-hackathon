@@ -43,6 +43,24 @@ done
 
 copy_if_missing "$ROOT_DIR/scripts/complete-task.sh" "$TARGET_DIR/scripts/agentic/complete-task.sh"
 
+copy_if_missing "$ROOT_DIR/scripts/metrics.mjs" "$TARGET_DIR/scripts/agentic/metrics.mjs"
+while IFS= read -r -d '' file; do
+  rel="${file#$ROOT_DIR/scripts/metrics/}"
+  copy_if_missing "$file" "$TARGET_DIR/scripts/agentic/metrics/$rel"
+done < <(find "$ROOT_DIR/scripts/metrics" -type f -print0)
+copy_if_missing "$ROOT_DIR/scripts/check-af-update-scope.mjs" "$TARGET_DIR/scripts/agentic/check-af-update-scope.mjs"
+copy_if_missing "$ROOT_DIR/scripts/af-installation.mjs" "$TARGET_DIR/scripts/agentic/af-installation.mjs"
+copy_if_missing "$ROOT_DIR/schemas/metrics/work-unit.schema.json" "$TARGET_DIR/.agentic-framework/schemas/metrics/work-unit.schema.json"
+copy_if_missing "$ROOT_DIR/schemas/metrics/work-unit.example.json" "$TARGET_DIR/.agentic-framework/schemas/metrics/work-unit.example.json"
+
+if [ ! -e "$TARGET_DIR/.agentic-framework/installation.json" ]; then
+  node "$ROOT_DIR/scripts/create-installation-manifest.mjs" \
+    --target "$TARGET_DIR" \
+    --version "$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
+else
+  echo "skip existing: .agentic-framework/installation.json"
+fi
+
 echo
 echo "Bootstrap complete."
 echo "Next: edit AGENTS.md, .env.example, docs/knowledge/engineering/runtime.md, docs/knowledge/engineering/secrets.md, docs/framework/codex-dev-stack.md, docs/agent-handoff.md, docs/framework/ai-environment-profiles.md, docs/framework/agent-settings-replication.md, docs/framework/software-engineering-practices.md, docs/framework/github-configuration.md, and .github/pull_request_template.md for this project."

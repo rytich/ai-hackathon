@@ -79,6 +79,13 @@ function writeJson(stream, value) {
   stream.write(`${JSON.stringify(value, null, 2)}\n`);
 }
 
+async function readStandardInput() {
+  let content = "";
+  process.stdin.setEncoding("utf8");
+  for await (const chunk of process.stdin) content += chunk;
+  return content;
+}
+
 async function initCommand(args, context) {
   const options = parseOptions(args, {
     "--project-id": { key: "projectId" },
@@ -187,16 +194,25 @@ async function doctorCommand(args, context) {
 }
 
 export async function main(argv, suppliedContext) {
+  let stdinText = "";
+  if (!suppliedContext && argv[0] === "record") {
+    const inputIndex = argv.indexOf("--input");
+    if (inputIndex !== -1 && argv[inputIndex + 1] === "-") stdinText = await readStandardInput();
+  }
   const context = suppliedContext || {
     cwd: process.cwd(),
     env: process.env,
-    stdinText: "",
+    stdinText,
     stdout: process.stdout,
     stderr: process.stderr,
     now: () => new Date().toISOString(),
   };
   try {
     const [command, ...args] = argv;
+    if (command === "--help" || command === "-h" || command === "help") {
+      context.stdout.write(USAGE);
+      return 0;
+    }
     if (!command) throw new UsageError("command is required");
     if (command === "init") await initCommand(args, context);
     else if (command === "record") await recordCommand(args, context);
@@ -216,15 +232,5 @@ export async function main(argv, suppliedContext) {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const argv = process.argv.slice(2);
-  let stdinText = "";
-  if (argv[0] === "record" && argv.includes("-") ) stdinText = await readFile(0, "utf8");
-  process.exitCode = await main(argv, {
-    cwd: process.cwd(),
-    env: process.env,
-    stdinText,
-    stdout: process.stdout,
-    stderr: process.stderr,
-    now: () => new Date().toISOString(),
-  });
+  process.exitCode = await main(process.argv.slice(2));
 }

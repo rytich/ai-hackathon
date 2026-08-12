@@ -252,6 +252,13 @@ run_validation() {
 
 run_validation
 
+echo "## Effect Metrics"
+if [ -f scripts/metrics.mjs ]; then
+  node scripts/metrics.mjs doctor --completion-warning || echo "- WARNING: metrics doctor could not complete; task completion continues"
+else
+  echo "- WARNING: metrics CLI is unavailable; task completion continues"
+fi
+
 REVIEW_OUTPUT_DIR="${REVIEW_OUTPUT_DIR:-docs/work-notes}"
 DATE_STAMP="$(date +%Y-%m-%d)"
 REVIEW_FILE="$REVIEW_OUTPUT_DIR/${DATE_STAMP}-issue-${ISSUE}-objective-review.md"

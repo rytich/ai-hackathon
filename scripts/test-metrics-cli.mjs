@@ -101,6 +101,12 @@ test("usage errors return 2", async () => {
   assert.match(context.stderr.text(), /Usage:/);
 });
 
+test("help returns zero without repository state", async () => {
+  const context = await cliContext({ git: false });
+  assert.equal(await main(["--help"], context), 0);
+  assert.match(context.stdout.text(), /Usage:/);
+});
+
 test("record accepts files and stdin, then validate and report succeed", async () => {
   const context = await cliContext();
   assert.equal(await main([
