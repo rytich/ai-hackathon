@@ -186,8 +186,8 @@ export async function loadWorkUnits({ metricsDir, projectId }) {
       errors.push({ code: "invalid_json", file: path.relative(metricsDir, file) });
       continue;
     }
-    const validation = validateWorkUnit(value);
-    if (!validation.valid) {
+    const validationErrors = validateWorkUnit(value);
+    if (validationErrors.length > 0) {
       errors.push({ code: "invalid_work_unit", file: path.relative(metricsDir, file) });
       continue;
     }
