@@ -1,0 +1,5 @@
+# tool	class	check	fallback	docs
+git	must	cmd:git	-	-
+gh	must	cmd:gh	-	-
+specify	recommended	cmd:specify	plan mode ＋ docs/planning/requirements/ に要件を残す	/github/spec-kit
+crit	recommended	cmd:crit	PR のインラインコメント	-

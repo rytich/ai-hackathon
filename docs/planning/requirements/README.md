@@ -20,3 +20,7 @@
 ## Drafts
 
 - [v0.3 要件定義と v0.2 ロードマップ](2026-08-03-v0.3-requirements-and-v0.2-roadmap.md) - v0.2.2-v0.2.9 の段階的リリース案。人間のインラインレビュー待ち。
+
+## Implemented
+
+- [Ponytail の限定統合](2026-08-11-ponytail-limited-integration.md) - Codexを基準に、最小実装判断とprofile機構を限定統合した。

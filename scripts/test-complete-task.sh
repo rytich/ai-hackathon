@@ -24,6 +24,10 @@ assert_contains "requires structured human review headings" "grep -q '確認対�
 assert_contains "checks PR state again after merge" 'PR_JSON="$(fetch_pr_json "$PR_NUMBER")"'
 assert_contains "keeps Issue open when merge is not confirmed" 'Issue will remain open.'
 assert_contains "checks the Issue state immediately before close" 'ISSUE_JSON="$(fetch_issue_json)"'
+assert_contains "reviews minimal diff scope" 'echo "- 最小差分: 要件を満たさない新規依存、抽象化、設定、範囲外変更がないか確認する。"'
+assert_contains "requires dependency and abstraction rationale" 'echo "- 選択理由: 新規依存または抽象化がある場合、既存実装・標準機能・既存依存で満たせない理由が記録されているか確認する。"'
+assert_contains "protects safety boundaries from minimization" 'echo "- 安全境界: 検証、データ損失防止、セキュリティ、アクセシビリティ、承認要件を「最小化」の理由で省略していないか確認する。"'
+assert_contains "runs profile-selection regression checks" 'run bash scripts/test-select-ai-profile.sh'
 
 if [ "$FAIL" -ne 0 ]; then
   echo "FAIL: $PASS passed, $FAIL failed" >&2

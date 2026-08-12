@@ -96,11 +96,21 @@ Rules:
 
 Prefer the existing codebase pattern over new abstraction.
 
+Before adding code, stop at the first option that satisfies the verifiable requirement:
+
+1. Is it required by the current requirement at all?
+2. Can existing code or an established local pattern satisfy it?
+3. Can the standard library or a native platform feature satisfy it?
+4. Can an already-installed dependency satisfy it?
+5. Only then, add the smallest implementation that satisfies the verifiable requirement.
+
+This ladder never overrides trust-boundary validation, data-loss prevention, security controls, accessibility basics, explicitly requested tests or docs, project quality gates, or human-approval requirements.
+
 Rules:
 
-- Add abstraction only when it removes real complexity or matches an established local pattern.
-- Do not add future-proof wrappers, frameworks, or generic modules without a current requirement.
-- Keep the smallest diff that satisfies the verifiable requirement.
+- Add abstraction only when it removes current, demonstrated complexity or matches an established local pattern.
+- Do not add future-proof wrappers, frameworks, dependencies, or generic modules without a current requirement.
+- Keep the smallest diff that satisfies the verifiable requirement and the safety boundary above.
 
 ### 10. CI As Shared Truth
 

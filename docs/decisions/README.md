@@ -44,5 +44,6 @@ YYYY-MM-DD
 
 ## 最新の記録
 
+- [2026-08-11-ponytail-integration.md](2026-08-11-ponytail-integration.md): Ponytail を AF の常時プラグインとして導入しない。
 - [2026-08-03-restricted-tool-check-dsl.md](2026-08-03-restricted-tool-check-dsl.md): tools.tsv の任意 shell 評価を制限文法へ移行する。
 - [2026-08-03-cloudflare-dns-cli-publication.md](2026-08-03-cloudflare-dns-cli-publication.md): Cloudflare DNS を CLI で設定する。

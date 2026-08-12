@@ -222,11 +222,13 @@ run_validation() {
   fi
 
   [ -f scripts/bootstrap-project.sh ] && run bash -n scripts/bootstrap-project.sh
+  [ -f scripts/select-ai-profile.sh ] && run bash -n scripts/select-ai-profile.sh
   [ -f templates/project/scripts/select-ai-profile.sh ] && run bash -n templates/project/scripts/select-ai-profile.sh
   [ -f templates/project/scripts/setup-github-labels.sh ] && run bash -n templates/project/scripts/setup-github-labels.sh
   [ -f scripts/check-agent-tools.sh ] && run bash -n scripts/check-agent-tools.sh
   [ -f scripts/test-complete-task.sh ] && run bash -n scripts/test-complete-task.sh
   [ -f scripts/test-check-agent-tools.sh ] && run bash -n scripts/test-check-agent-tools.sh
+  [ -f scripts/test-select-ai-profile.sh ] && run bash -n scripts/test-select-ai-profile.sh
 
   if [ -f scripts/test-check-agent-tools.sh ]; then
     run ./scripts/test-check-agent-tools.sh
@@ -234,6 +236,10 @@ run_validation() {
 
   if [ -f scripts/test-complete-task.sh ]; then
     run bash scripts/test-complete-task.sh
+  fi
+
+  if [ -f scripts/test-select-ai-profile.sh ]; then
+    run bash scripts/test-select-ai-profile.sh
   fi
 
   if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then
@@ -330,6 +336,11 @@ fi
   fi
   echo "- Completion challenge: did we validate the real user path, or only a mock/demo path?"
   echo "- If using mock data, the real provider path or user-facing fallback must be tracked."
+  echo
+  echo "## Scope Discipline"
+  echo "- 最小差分: 要件を満たさない新規依存、抽象化、設定、範囲外変更がないか確認する。"
+  echo "- 選択理由: 新規依存または抽象化がある場合、既存実装・標準機能・既存依存で満たせない理由が記録されているか確認する。"
+  echo "- 安全境界: 検証、データ損失防止、セキュリティ、アクセシビリティ、承認要件を「最小化」の理由で省略していないか確認する。"
   echo
   echo "## GitHub State Freshness"
   echo "- Issue state was fetched from GitHub before local validation."

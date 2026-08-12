@@ -1,0 +1,9 @@
+# tool	class	check	fallback	docs
+git	must	cmd:git	-	-
+gh	must	cmd:gh	-	-
+context-mode	recommended	mcp:hermes:context-mode	出力を絞った shell/ファイル解析	/mksglu/context-mode
+serena	recommended	cmd:serena	rg/grep によるテキスト検索	/oraios/serena
+specify	recommended	cmd:specify	plan mode ＋ docs/planning/requirements/ に要件を残す	/github/spec-kit
+crit	recommended	cmd:crit	PR のインラインコメント	-
+crabbox	recommended	exec:scripts/cbx.sh	ローカル worktree で並列	-
+linear	recommended	mcp:hermes:linear	GitHub Issues のみで運用	-
