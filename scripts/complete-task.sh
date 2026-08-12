@@ -229,6 +229,16 @@ run_validation() {
   [ -f scripts/test-complete-task.sh ] && run bash -n scripts/test-complete-task.sh
   [ -f scripts/test-check-agent-tools.sh ] && run bash -n scripts/test-check-agent-tools.sh
   [ -f scripts/test-select-ai-profile.sh ] && run bash -n scripts/test-select-ai-profile.sh
+  [ -f scripts/metrics.mjs ] && run node --check scripts/metrics.mjs
+  [ -f scripts/metrics/schema.mjs ] && run node --check scripts/metrics/schema.mjs
+  [ -f scripts/metrics/storage.mjs ] && run node --check scripts/metrics/storage.mjs
+  [ -f scripts/metrics/report.mjs ] && run node --check scripts/metrics/report.mjs
+  [ -f scripts/metrics/git.mjs ] && run node --check scripts/metrics/git.mjs
+  [ -f scripts/af-installation.mjs ] && run node --check scripts/af-installation.mjs
+  [ -f scripts/create-installation-manifest.mjs ] && run node --check scripts/create-installation-manifest.mjs
+  [ -f scripts/check-af-update-scope.mjs ] && run node --check scripts/check-af-update-scope.mjs
+  [ -f templates/project/scripts/metrics.mjs ] && run node --check templates/project/scripts/metrics.mjs
+  [ -f templates/project/scripts/check-af-update-scope.mjs ] && run node --check templates/project/scripts/check-af-update-scope.mjs
 
   if [ -f scripts/test-check-agent-tools.sh ]; then
     run ./scripts/test-check-agent-tools.sh
@@ -240,6 +250,14 @@ run_validation() {
 
   if [ -f scripts/test-select-ai-profile.sh ]; then
     run bash scripts/test-select-ai-profile.sh
+  fi
+
+  if [ -f scripts/test-metrics-schema.mjs ] && [ -f scripts/test-metrics-storage.mjs ] && [ -f scripts/test-metrics-report.mjs ] && [ -f scripts/test-metrics-cli.mjs ] && [ -f scripts/test-af-installation.mjs ]; then
+    run node --test scripts/test-metrics-schema.mjs scripts/test-metrics-storage.mjs scripts/test-metrics-report.mjs scripts/test-metrics-cli.mjs scripts/test-af-installation.mjs
+  fi
+
+  if [ -f scripts/test-bootstrap-project.sh ]; then
+    run bash scripts/test-bootstrap-project.sh
   fi
 
   if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then

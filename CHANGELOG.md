@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.4 - 2026-08-12
+
+- privacy-safe work unit schema、atomic storage、欠測 coverage、work unit / Issue / PR / release / profile 別の決定的 report を追加した。
+- 既存 project repository、local-only、専用 repository の保存 mode を追加し、既存 repository 追跡には明示同意、public / unknown 可視性には警告を要求した。
+- installation manifest と HEAD/index 両側 checksum により、AF-only update へ seeded、local-data、application source が混入する変更を fail-closed で拒否するようにした。
+- bootstrap へ metrics runtime と thin wrapper を配布し、remote 作成、commit、push は自動化しない運用境界を文書化した。
+
 ## 0.2.3 - 2026-08-03
 
 - `tools.tsv` の check 欄を任意 shell の `eval` から制限文法へ移行し、未知語彙を fail-closed で拒否するようにした。

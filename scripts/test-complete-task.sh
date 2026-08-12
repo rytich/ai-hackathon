@@ -30,6 +30,10 @@ assert_contains "protects safety boundaries from minimization" 'echo "- 安全�
 assert_contains "runs profile-selection regression checks" 'run bash scripts/test-select-ai-profile.sh'
 assert_contains "runs the effect metrics completion diagnosis" 'node scripts/metrics.mjs doctor --completion-warning'
 assert_contains "keeps metrics diagnosis non-blocking" 'node scripts/metrics.mjs doctor --completion-warning || echo "- WARNING: metrics doctor could not complete; task completion continues"'
+assert_contains "syntax-checks the metrics CLI" 'run node --check scripts/metrics.mjs'
+assert_contains "syntax-checks the update scope CLI" 'run node --check scripts/check-af-update-scope.mjs'
+assert_contains "runs the complete effect metrics test set" 'run node --test scripts/test-metrics-schema.mjs scripts/test-metrics-storage.mjs scripts/test-metrics-report.mjs scripts/test-metrics-cli.mjs scripts/test-af-installation.mjs'
+assert_contains "runs bootstrap distribution regression checks" 'run bash scripts/test-bootstrap-project.sh'
 
 if [ "$FAIL" -ne 0 ]; then
   echo "FAIL: $PASS passed, $FAIL failed" >&2
