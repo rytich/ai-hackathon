@@ -25,6 +25,7 @@
 - docs/planning/requirements/README.md
 - docs/superpowers/plans/2026-08-12-v024-effect-metrics.md
 - docs/superpowers/specs/2026-08-12-v024-effect-metrics-design.md
+- docs/work-notes/2026-08-12-issue-34-objective-review.md
 - docs/work-notes/2026-08-12-v024-effect-metrics.md
 - schemas/metrics/work-unit.example.json
 - schemas/metrics/work-unit.schema.json

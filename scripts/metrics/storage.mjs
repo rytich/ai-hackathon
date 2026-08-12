@@ -12,7 +12,7 @@ import {
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 
-import { assertValidWorkUnit, validateWorkUnit } from "./schema.mjs";
+import { assertValidWorkUnit, isSafeSlug, validateWorkUnit } from "./schema.mjs";
 
 const CONFIG_FILE = "config.json";
 const DEFAULT_METRICS_DIR = ".af-metrics";
@@ -33,6 +33,15 @@ function absoluteFrom(cwd, value) {
   return path.isAbsolute(value) ? path.normalize(value) : path.resolve(cwd, value);
 }
 
+function assertSafeProjectId(projectId) {
+  if (!isSafeSlug(projectId)) throw new Error("projectId must be a privacy-safe slug");
+}
+
+function isStrictDescendant(root, candidate) {
+  const relative = path.relative(root, candidate);
+  return relative !== "" && !relative.startsWith("..") && !path.isAbsolute(relative);
+}
+
 export function resolveMetricsDir({ cwd, argvDir, env = process.env, localConfig } = {}) {
   if (!cwd) throw new TypeError("cwd is required");
   const selected = argvDir || env?.AF_METRICS_DIR || localConfig?.metrics_dir || DEFAULT_METRICS_DIR;
@@ -49,7 +58,16 @@ async function addLocalExclude(repositoryRoot, metricsDir) {
     throw new Error("local-only metrics_dir must be inside the current Git repository");
   }
 
-  const excludeFile = path.join(repositoryRoot, ".git", "info", "exclude");
+  const gitExcludePath = execFileSync("git", [
+    "-C", repositoryRoot,
+    "rev-parse", "--path-format=absolute", "--git-path", "info/exclude",
+  ], {
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "ignore"],
+  }).trim();
+  const excludeFile = path.isAbsolute(gitExcludePath)
+    ? gitExcludePath
+    : path.resolve(repositoryRoot, gitExcludePath);
   await mkdir(path.dirname(excludeFile), { recursive: true });
   let content = "";
   try {
@@ -74,7 +92,7 @@ export async function initMetricsStore({
   remoteVisibility = "unknown",
 }) {
   if (!cwd) throw new TypeError("cwd is required");
-  if (!projectId) throw new TypeError("projectId is required");
+  assertSafeProjectId(projectId);
 
   const repositoryRoot = gitRoot(cwd);
   const selectedMode = mode || (repositoryRoot ? "project-tracked" : "dedicated");
@@ -93,6 +111,20 @@ export async function initMetricsStore({
     ? absoluteFrom(cwd, metricsDir)
     : resolveMetricsDir({ cwd, env: process.env, localConfig: null });
   await mkdir(selectedDir, { recursive: true, mode: 0o700 });
+
+  if (repositoryRoot) {
+    const [canonicalRoot, canonicalSelectedDir] = await Promise.all([
+      realpath(repositoryRoot),
+      realpath(selectedDir),
+    ]);
+    if ((selectedMode === "project-tracked" || selectedMode === "local-only")
+      && !isStrictDescendant(canonicalRoot, canonicalSelectedDir)) {
+      throw new Error(`${selectedMode} metrics_dir must be inside the current Git repository`);
+    }
+    if (selectedMode === "dedicated" && canonicalRoot === canonicalSelectedDir) {
+      throw new Error("dedicated metrics_dir must be separate from the current Git repository root");
+    }
+  }
 
   if (selectedMode === "dedicated") {
     execFileSync("git", ["init", "--quiet", selectedDir], {
@@ -121,7 +153,7 @@ export async function initMetricsStore({
 async function readConfig(metricsDir) {
   const configPath = path.join(metricsDir, CONFIG_FILE);
   const config = JSON.parse(await readFile(configPath, "utf8"));
-  if (config.schema_version !== 1 || typeof config.project_id !== "string") {
+  if (config.schema_version !== 1 || !isSafeSlug(config.project_id)) {
     throw new Error(`invalid metrics config: ${configPath}`);
   }
   return config;
@@ -175,6 +207,7 @@ async function listJsonFiles(directory) {
 }
 
 export async function loadWorkUnits({ metricsDir, projectId }) {
+  assertSafeProjectId(projectId);
   const directory = path.join(metricsDir, "projects", projectId, "work-units");
   const records = [];
   const errors = [];

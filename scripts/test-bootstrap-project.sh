@@ -3,7 +3,17 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TARGET_DIR="$(mktemp -d "${TMPDIR:-/tmp}/af-bootstrap-metrics.XXXXXX")"
-trap 'rm -rf "$TARGET_DIR"' EXIT
+CONFLICT_TARGET="$(mktemp -d "${TMPDIR:-/tmp}/af-bootstrap-conflict.XXXXXX")"
+trap 'rm -rf "$TARGET_DIR" "$CONFLICT_TARGET"' EXIT
+
+mkdir -p "$CONFLICT_TARGET/scripts/agentic"
+printf 'custom user runtime\n' > "$CONFLICT_TARGET/scripts/agentic/metrics.mjs"
+if bash "$ROOT_DIR/scripts/bootstrap-project.sh" "$CONFLICT_TARGET" >/dev/null 2>&1; then
+  echo "FAIL: bootstrap adopted conflicting managed content" >&2
+  exit 1
+fi
+test ! -e "$CONFLICT_TARGET/.agentic-framework/installation.json"
+grep -Fq "custom user runtime" "$CONFLICT_TARGET/scripts/agentic/metrics.mjs"
 
 bash "$ROOT_DIR/scripts/bootstrap-project.sh" "$TARGET_DIR" >/dev/null
 

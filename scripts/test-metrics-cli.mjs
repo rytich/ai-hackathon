@@ -80,6 +80,23 @@ test("init accepts the explicit project repository risk", async () => {
   assert.equal(config.mode, "project-tracked");
 });
 
+test("init rejects incompatible mode and metrics directory combinations", async () => {
+  const context = await cliContext();
+  const outside = await makeDirectory("af-metrics-outside-");
+  assert.equal(await main([
+    "init", "--project-id", "sample-project", "--mode", "project-tracked",
+    "--metrics-dir", path.join(outside, "metrics"),
+    "--acknowledge-repository-metrics-risk",
+  ], context), 1);
+  assert.match(context.stderr.text(), /inside the current Git repository/);
+
+  const dedicated = await cliContext({ cwd: context.cwd, git: false });
+  assert.equal(await main([
+    "init", "--project-id", "sample-project", "--mode", "dedicated", "--metrics-dir", context.cwd,
+  ], dedicated), 1);
+  assert.match(dedicated.stderr.text(), /separate from the current Git repository root/);
+});
+
 test("doctor warnings are non-blocking", async () => {
   const setup = await cliContext();
   assert.equal(await main([
@@ -93,6 +110,25 @@ test("doctor warnings are non-blocking", async () => {
   assert.equal(code, 0);
   assert.match(context.stdout.text(), /WARNING/);
   assert.match(context.stdout.text(), /activity timing, profile, model, and artifact references/);
+});
+
+test("doctor warns when any local-only metrics payload is force-tracked", async () => {
+  const context = await cliContext();
+  assert.equal(await main([
+    "init", "--project-id", "sample-project", "--mode", "local-only", "--remote-visibility", "private",
+  ], context), 0);
+  const input = path.join(context.cwd, "work-unit.json");
+  await writeFile(input, `${JSON.stringify(validWorkUnit())}\n`);
+  assert.equal(await main(["record", "--input", input], context), 0);
+  const payload = path.join(
+    ".af-metrics", "projects", "sample-project", "work-units", "2026-08",
+    "11111111-1111-4111-8111-111111111111.json",
+  );
+  execFileSync("git", ["-C", context.cwd, "add", "-f", payload]);
+
+  const doctor = await cliContext({ cwd: context.cwd, git: false });
+  assert.equal(await main(["doctor"], doctor), 0);
+  assert.match(doctor.stdout.text(), /WARNING: local-only metrics files are tracked/);
 });
 
 test("usage errors return 2", async () => {

@@ -59,6 +59,10 @@ const SLUG_PATTERN = /^[a-z0-9][a-z0-9._-]{0,63}$/;
 const RELEASE_PATTERN = /^v?\d+\.\d+\.\d+(?:-[a-z0-9.-]+)?$/;
 const ZONED_TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
 
+export function isSafeSlug(value) {
+  return typeof value === "string" && SLUG_PATTERN.test(value);
+}
+
 export class MetricsValidationError extends Error {
   constructor(errors) {
     super(`Invalid work unit: ${errors.length} error(s)`);
@@ -89,7 +93,7 @@ function checkEnum(errors, value, allowed, field) {
 }
 
 function checkSlug(errors, value, field) {
-  if (typeof value !== "string" || !SLUG_PATTERN.test(value)) {
+  if (!isSafeSlug(value)) {
     issue(errors, field, "invalid_slug", "expected a lowercase non-personal slug");
   }
 }

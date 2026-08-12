@@ -51,7 +51,7 @@ token 量だけでは品質、所要時間、retry、review、手戻りを評価
 - profile selection regression: PASS（6 profiles）
 - bootstrap integration: PASS
 - Cloudflare unit: PASS 5 / FAIL 0
-- metrics / installation tests: PASS 34 / FAIL 0
+- metrics / installation tests: PASS 40 / FAIL 0
 - docs link / orphan check: PASS（107 files）
 - Codex must tools: PASS
 - branch diff hygiene / clean worktree: PASS

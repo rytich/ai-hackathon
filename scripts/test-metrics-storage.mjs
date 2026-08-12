@@ -85,6 +85,20 @@ test("local-only adds only a local Git exclude", async () => {
   assert.equal(result.mode, "local-only");
 });
 
+test("local-only resolves the real exclude path in a Git worktree", async () => {
+  const repository = await makeGitRepo();
+  await writeFile(path.join(repository, "README.md"), "fixture\n");
+  execFileSync("git", ["-C", repository, "add", "README.md"]);
+  execFileSync("git", ["-C", repository, "-c", "user.name=AF Fixture", "-c", "user.email=fixture@example.invalid", "commit", "--quiet", "-m", "initial"]);
+  const worktree = path.join(await temporaryDirectory(), "linked");
+  execFileSync("git", ["-C", repository, "worktree", "add", "--quiet", "-b", "fixture-worktree", worktree]);
+
+  const result = await initMetricsStore({ cwd: worktree, projectId: "sample-project", mode: "local-only", remoteVisibility: "unknown" });
+  const excludePath = execFileSync("git", ["-C", worktree, "rev-parse", "--path-format=absolute", "--git-path", "info/exclude"], { encoding: "utf8" }).trim();
+  assert.match(await readFile(excludePath, "utf8"), /^\.af-metrics\/$/m);
+  assert.equal(result.metrics_dir, path.join(worktree, ".af-metrics"));
+});
+
 test("initializes a dedicated local Git repository when no repository exists", async () => {
   const cwd = await temporaryDirectory();
   const metricsDir = path.join(cwd, "shared-metrics");
@@ -109,6 +123,19 @@ test("dedicated mode remains a separate repository inside an existing project", 
   assert.equal(result.mode, "dedicated");
 });
 
+test("rejects storage modes whose directories violate the Git boundary", async () => {
+  const cwd = await makeGitRepo();
+  const outside = path.join(await temporaryDirectory(), "outside-metrics");
+  await assert.rejects(
+    initMetricsStore({ cwd, metricsDir: outside, projectId: "sample-project", mode: "project-tracked", acknowledgeRisk: true, remoteVisibility: "private" }),
+    /inside the current Git repository/,
+  );
+  await assert.rejects(
+    initMetricsStore({ cwd, metricsDir: cwd, projectId: "sample-project", mode: "dedicated", remoteVisibility: "private" }),
+    /separate from the current Git repository root/,
+  );
+});
+
 test("does not overwrite an existing config", async () => {
   const cwd = await makeGitRepo();
   await initMetricsStore({ cwd, projectId: "sample-project", mode: "project-tracked", acknowledgeRisk: true, remoteVisibility: "private" });
@@ -118,6 +145,33 @@ test("does not overwrite an existing config", async () => {
   );
   const config = JSON.parse(await readFile(path.join(cwd, ".af-metrics", "config.json"), "utf8"));
   assert.equal(config.project_id, "sample-project");
+});
+
+test("rejects privacy-unsafe project identifiers before path construction", async () => {
+  for (const projectId of ["../../personal", "personal alice@example.com", "/absolute", "UPPERCASE"]) {
+    const cwd = await makeGitRepo();
+    await assert.rejects(
+      initMetricsStore({ cwd, projectId, mode: "project-tracked", acknowledgeRisk: true, remoteVisibility: "private" }),
+      /privacy-safe slug/,
+    );
+    await assert.rejects(
+      validateMetricsStore({ metricsDir: path.join(cwd, ".af-metrics"), projectId }),
+      /privacy-safe slug/,
+    );
+  }
+});
+
+test("rejects a manually crafted config with an unsafe project identifier", async () => {
+  const cwd = await makeGitRepo();
+  const metricsDir = path.join(cwd, ".af-metrics");
+  await mkdir(metricsDir, { recursive: true });
+  await writeFile(path.join(metricsDir, "config.json"), JSON.stringify({
+    schema_version: 1,
+    project_id: "../../outside",
+    mode: "project-tracked",
+    remote_visibility: "private",
+  }));
+  await assert.rejects(recordWorkUnit({ metricsDir, value: validWorkUnit() }), /invalid metrics config/);
 });
 
 test("records one validated work unit without overwriting its ID", async () => {

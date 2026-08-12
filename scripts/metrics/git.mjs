@@ -34,9 +34,11 @@ export async function inspectGitState({ cwd, metricsDir, remoteVisibility = "unk
       realpath(repository),
       realpath(metricsDir),
     ]);
-    const configRelative = path.join(path.relative(canonicalRepository, canonicalMetricsDir), "config.json");
-    tracked = git(repository, ["ls-files", "--error-unmatch", "--", configRelative]) !== null;
-    const stagedPaths = git(repository, ["diff", "--cached", "--name-only", "--", path.dirname(configRelative)]);
+    const metricsRelative = path.relative(canonicalRepository, canonicalMetricsDir);
+    const pathspec = metricsRelative || ".";
+    const trackedPaths = git(repository, ["ls-files", "--", pathspec]);
+    tracked = Boolean(trackedPaths);
+    const stagedPaths = git(repository, ["diff", "--cached", "--name-only", "--", pathspec]);
     staged = Boolean(stagedPaths);
     remote = git(repository, ["remote", "get-url", "origin"]);
   }
@@ -45,6 +47,9 @@ export async function inspectGitState({ cwd, metricsDir, remoteVisibility = "unk
   const warnings = [];
   if (mode === "project-tracked") {
     warnings.push("project-tracked metrics may expose activity timing, profile, model, and artifact references");
+  }
+  if (mode === "local-only" && tracked) {
+    warnings.push("local-only metrics files are tracked; unstage them and remove them from the Git index before committing");
   }
   if (remoteVisibility === "public") {
     warnings.push("metrics remote visibility is public; review the privacy-safe fields before every push");
