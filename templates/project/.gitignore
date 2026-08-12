@@ -8,6 +8,7 @@ outputs/tmp/
 .env
 .env.local
 .env.*.local
+.af-metrics.local.json
 
 # OS
 .DS_Store

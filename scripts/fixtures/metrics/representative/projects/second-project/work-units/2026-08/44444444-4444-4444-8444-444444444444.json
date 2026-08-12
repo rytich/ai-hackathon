@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "work_unit_id": "44444444-4444-4444-8444-444444444444",
+  "project_id": "second-project",
+  "kind": "specification",
+  "purpose": "feature",
+  "consumption_reason": "primary",
+  "profile": "hermes",
+  "model": "unknown",
+  "tokens": { "input": 12, "output": 8, "total": 20 },
+  "token_source": "manual",
+  "elapsed_ms": 60000,
+  "outcome": "completed",
+  "retry_count": 0,
+  "review_findings_count": 0,
+  "rework_count": 0,
+  "quality_gate": "pass",
+  "links": { "issue_number": 8, "release": "v1.0.0" },
+  "artifact_refs": [{ "type": "issue", "number": 8 }],
+  "collector_id": "fixture-d",
+  "recorded_at": "2026-08-11T12:00:00Z"
+}

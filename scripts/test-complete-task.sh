@@ -28,6 +28,12 @@ assert_contains "reviews minimal diff scope" 'echo "- 最小差分: 要件を満
 assert_contains "requires dependency and abstraction rationale" 'echo "- 選択理由: 新規依存または抽象化がある場合、既存実装・標準機能・既存依存で満たせない理由が記録されているか確認する。"'
 assert_contains "protects safety boundaries from minimization" 'echo "- 安全境界: 検証、データ損失防止、セキュリティ、アクセシビリティ、承認要件を「最小化」の理由で省略していないか確認する。"'
 assert_contains "runs profile-selection regression checks" 'run bash scripts/test-select-ai-profile.sh'
+assert_contains "runs the effect metrics completion diagnosis" 'node scripts/metrics.mjs doctor --completion-warning'
+assert_contains "keeps metrics diagnosis non-blocking" 'node scripts/metrics.mjs doctor --completion-warning || echo "- WARNING: metrics doctor could not complete; task completion continues"'
+assert_contains "syntax-checks the metrics CLI" 'run node --check scripts/metrics.mjs'
+assert_contains "syntax-checks the update scope CLI" 'run node --check scripts/check-af-update-scope.mjs'
+assert_contains "runs the complete effect metrics test set" 'run node --test scripts/test-metrics-schema.mjs scripts/test-metrics-storage.mjs scripts/test-metrics-report.mjs scripts/test-metrics-cli.mjs scripts/test-af-installation.mjs'
+assert_contains "runs bootstrap distribution regression checks" 'run bash scripts/test-bootstrap-project.sh'
 
 if [ "$FAIL" -ne 0 ]; then
   echo "FAIL: $PASS passed, $FAIL failed" >&2

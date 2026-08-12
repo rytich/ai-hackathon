@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "work_unit_id": "22222222-2222-4222-8222-222222222222",
+  "project_id": "sample-project",
+  "kind": "review",
+  "purpose": "maintenance",
+  "consumption_reason": "review_fix",
+  "profile": "codex",
+  "model": "unknown",
+  "tokens": { "input": null, "output": null, "total": null },
+  "token_source": "unavailable",
+  "elapsed_ms": 240000,
+  "outcome": "completed",
+  "retry_count": 2,
+  "review_findings_count": 3,
+  "rework_count": 1,
+  "quality_gate": "fail",
+  "links": { "issue_number": 34, "pr_number": 60, "release": "v0.2.4" },
+  "artifact_refs": [{ "type": "issue", "number": 34 }, { "type": "pr", "number": 60 }],
+  "collector_id": "fixture-b",
+  "recorded_at": "2026-08-10T11:00:00Z"
+}

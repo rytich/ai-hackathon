@@ -14,6 +14,11 @@ TARGET_DIR="$1"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 TEMPLATE_DIR="$ROOT_DIR/templates/project"
+INSTALLATION_MANIFEST="$TARGET_DIR/.agentic-framework/installation.json"
+MANIFEST_PRESENT=false
+if [ -e "$INSTALLATION_MANIFEST" ]; then
+  MANIFEST_PRESENT=true
+fi
 
 if [ ! -d "$TARGET_DIR" ]; then
   echo "Target directory does not exist: $TARGET_DIR" >&2
@@ -32,16 +37,57 @@ copy_if_missing() {
   fi
 }
 
+copy_managed_if_missing() {
+  local src="$1"
+  local dest="$2"
+  if [ -e "$dest" ]; then
+    if [ "$MANIFEST_PRESENT" = false ] && ! cmp -s "$src" "$dest"; then
+      echo "conflicting managed file requires explicit migration: ${dest#$TARGET_DIR/}" >&2
+      return 1
+    fi
+    echo "skip existing managed: ${dest#$TARGET_DIR/}"
+  else
+    mkdir -p "$(dirname "$dest")"
+    cp "$src" "$dest"
+    echo "created managed: ${dest#$TARGET_DIR/}"
+  fi
+}
+
 while IFS= read -r -d '' file; do
   rel="${file#$TEMPLATE_DIR/}"
-  copy_if_missing "$file" "$TARGET_DIR/$rel"
+  case "$rel" in
+    scripts/metrics.mjs|scripts/check-af-update-scope.mjs)
+      copy_managed_if_missing "$file" "$TARGET_DIR/$rel"
+      ;;
+    *)
+      copy_if_missing "$file" "$TARGET_DIR/$rel"
+      ;;
+  esac
 done < <(find "$TEMPLATE_DIR" -type f -print0)
 
-for doc in README.md knowledge-base.md ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md software-engineering-practices.md github-configuration.md quality-gates.md toolchain-flow.md project-adoption.md project-update.md; do
+for doc in README.md knowledge-base.md ai-execution-framework.md collaboration-rules.md environment-reproducibility.md codex-dev-stack.md agent-handoff.md ai-environment-profiles.md agent-settings-replication.md software-engineering-practices.md github-configuration.md quality-gates.md effect-metrics.md toolchain-flow.md project-adoption.md project-update.md; do
   copy_if_missing "$ROOT_DIR/docs/framework/$doc" "$TARGET_DIR/docs/framework/$doc"
 done
 
-copy_if_missing "$ROOT_DIR/scripts/complete-task.sh" "$TARGET_DIR/scripts/agentic/complete-task.sh"
+copy_managed_if_missing "$ROOT_DIR/scripts/complete-task.sh" "$TARGET_DIR/scripts/agentic/complete-task.sh"
+
+copy_managed_if_missing "$ROOT_DIR/scripts/metrics.mjs" "$TARGET_DIR/scripts/agentic/metrics.mjs"
+while IFS= read -r -d '' file; do
+  rel="${file#$ROOT_DIR/scripts/metrics/}"
+  copy_managed_if_missing "$file" "$TARGET_DIR/scripts/agentic/metrics/$rel"
+done < <(find "$ROOT_DIR/scripts/metrics" -type f -print0)
+copy_managed_if_missing "$ROOT_DIR/scripts/check-af-update-scope.mjs" "$TARGET_DIR/scripts/agentic/check-af-update-scope.mjs"
+copy_managed_if_missing "$ROOT_DIR/scripts/af-installation.mjs" "$TARGET_DIR/scripts/agentic/af-installation.mjs"
+copy_managed_if_missing "$ROOT_DIR/schemas/metrics/work-unit.schema.json" "$TARGET_DIR/.agentic-framework/schemas/metrics/work-unit.schema.json"
+copy_managed_if_missing "$ROOT_DIR/schemas/metrics/work-unit.example.json" "$TARGET_DIR/.agentic-framework/schemas/metrics/work-unit.example.json"
+
+if [ "$MANIFEST_PRESENT" = false ]; then
+  node "$ROOT_DIR/scripts/create-installation-manifest.mjs" \
+    --target "$TARGET_DIR" \
+    --version "$(tr -d '[:space:]' < "$ROOT_DIR/VERSION")"
+else
+  echo "skip existing: .agentic-framework/installation.json"
+fi
 
 echo
 echo "Bootstrap complete."

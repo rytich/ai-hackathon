@@ -11,6 +11,10 @@ outputs/*
 # AI agent worktree isolation
 .worktrees/
 
+# AF effect metrics are stored in a separate private repository for AF development.
+.af-metrics/
+.af-metrics.local.json
+
 # Serena が生成する端末ローカルの project 設定と memory
 .serena/
 

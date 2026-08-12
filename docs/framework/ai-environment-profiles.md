@@ -161,6 +161,12 @@ Typical files:
 AGENTS.md
 ```
 
+## Effect Metrics の profile / model
+
+work unit の `profile` には `.ai/active-profile` に対応する非個人 slug（例: `codex`, `claude`, `codex-claude`, `hermes`）を記録する。`model` は確認できた非個人 slug を使い、確認できない場合は推測せず `unknown` とする。自由記述、利用者名、host 名、prompt、credential は記録しない。
+
+profile 別 report は記述統計であり、coverage が異なる cohort は `not_comparable` とする。profile や model の優劣、因果効果、統計的有意差を断定しない。保存 mode と access 境界は [effect-metrics.md](effect-metrics.md) に従う。
+
 ## Work Note Field
 
 Work notes should include:

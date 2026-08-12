@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "work_unit_id": "33333333-3333-4333-8333-333333333333",
+  "project_id": "sample-project",
+  "kind": "test",
+  "purpose": "maintenance",
+  "consumption_reason": "retry",
+  "profile": "claude",
+  "model": "unknown",
+  "tokens": { "input": 20, "output": 10, "total": 30 },
+  "token_source": "agent_reported",
+  "elapsed_ms": 180000,
+  "outcome": "failed",
+  "retry_count": 1,
+  "review_findings_count": 2,
+  "rework_count": 2,
+  "quality_gate": "fail",
+  "links": { "issue_number": 34, "pr_number": 61, "release": "v0.2.4" },
+  "artifact_refs": [{ "type": "issue", "number": 34 }, { "type": "pr", "number": 61 }],
+  "collector_id": "fixture-c",
+  "recorded_at": "2026-08-11T10:00:00Z"
+}

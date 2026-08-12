@@ -22,6 +22,7 @@ local validation commands match CI, or differences are documented
 objective review report generated and posted to PR
 real-use path or explicit user-facing fallback validated for usable/v1/production-ready claims
 docs freshness: affected docs/knowledge categories are updated, and planning/decisions artifacts exist for planned work
+effect metrics doctor warning reviewed; measurement remains non-blocking and never substitutes for product acceptance
 ```
 
 ## Verifiable Done
@@ -67,6 +68,8 @@ Avoid:
 - 新しい抽象化は現在の要求に必要か、既存 project pattern に沿っている。
 - error handling は fail fast で、silent fallback がある場合は理由と検証がある。
 - rollback または migration recovery の考慮がある。
+- `node scripts/metrics.mjs doctor --completion-warning` の警告を確認した。metrics 欠測や doctor 失敗は completion を機械的に止めないが、repository 可視性と push 対象は人間が確認している。
+- AF update の場合は `node scripts/check-af-update-scope.mjs --staged` が通り、seeded、application source、local-data が同じ commit に混ざっていない。
 
 ## Real-use Gate
 
