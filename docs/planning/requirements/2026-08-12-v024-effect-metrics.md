@@ -5,11 +5,12 @@ updated: 2026-08-12
 links:
   - https://github.com/rytich/agentic-framework/issues/34
   - ../../superpowers/specs/2026-08-12-v024-effect-metrics-design.md
+  - ../../superpowers/plans/2026-08-12-v024-effect-metrics.md
 ---
 
 # v0.2.4 効果計測の最小基盤 要件
 
-詳細設計は [v0.2.4 効果計測の最小基盤 設計](../../superpowers/specs/2026-08-12-v024-effect-metrics-design.md) を参照する。
+詳細設計は [v0.2.4 効果計測の最小基盤 設計](../../superpowers/specs/2026-08-12-v024-effect-metrics-design.md)、実装手順は [v0.2.4 Effect Metrics Implementation Plan](../../superpowers/plans/2026-08-12-v024-effect-metrics.md) を参照する。
 
 ## 背景
 
