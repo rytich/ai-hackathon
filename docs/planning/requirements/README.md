@@ -19,8 +19,9 @@
 
 ## Drafts
 
-- [v0.3 要件定義と v0.2 ロードマップ](2026-08-03-v0.3-requirements-and-v0.2-roadmap.md) - v0.2.2-v0.2.9 の段階的リリース案。人間のインラインレビュー待ち。
+- [v0.2.4 効果計測の最小基盤](2026-08-12-v024-effect-metrics.md) - privacy-safe な work unit 記録、集計、保存先分離、AF 更新境界。人間のインラインレビュー待ち。
 
 ## Implemented
 
+- [v0.3 要件定義と v0.2 ロードマップ](2026-08-03-v0.3-requirements-and-v0.2-roadmap.md) - PR #48 で承認済みの v0.2.2-v0.2.9 段階的リリース計画。
 - [Ponytail の限定統合](2026-08-11-ponytail-limited-integration.md) - Codexを基準に、最小実装判断とprofile機構を限定統合した。
