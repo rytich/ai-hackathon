@@ -32,6 +32,7 @@ docs/framework/                              # フレームワーク運用ルー
   software-engineering-practices.md          #   エージェント時代も捨てない開発規律
   github-configuration.md                    #   GitHub labels、Issue/PR、branch protection 設定
   quality-gates.md                           #   品質ゲートと自動 merge 判定
+  effect-metrics.md                          #   AI 作業の効果測定、privacy、保存・Git 運用境界
   project-adoption.md                        #   既存プロジェクトへの導入手順
   project-update.md                          #   導入済みプロジェクトの AF 最新化手順
 docs/knowledge/                              # system of record（現状 stock、開発＋非開発）
@@ -71,6 +72,7 @@ docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-frame
 8. `docs/framework/software-engineering-practices.md` の Done、scope、CI、human gate。
 9. `docs/framework/github-configuration.md` の labels、branch protection、required checks。
 10. `.github/pull_request_template.md` の project-specific checklist。
+11. `docs/framework/effect-metrics.md` の保存 mode、repository 可視性、privacy 境界。
 
 **既に AF を導入済みのプロジェクトへ最新の変更を反映する場合**は、`bootstrap-project.sh` を再実行するのではなく
 [docs/framework/project-update.md](/Users/ichie/github/agentic-framework/docs/framework/project-update.md) の手順に従ってください。

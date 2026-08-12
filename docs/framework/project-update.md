@@ -74,6 +74,20 @@ diff <導入先の対応ファイル> /path/to/agentic-framework/docs/framework/
 - 導入先で「これは AF のルールとして守るべきか」という疑問が出たとき。
 - 定期棚卸し（例: 月次）で、AF の `docs/decisions/` に新しい意思決定記録が増えていないか確認する。
 
+## AF-only update scope
+
+AF 更新はアプリの機能変更や実測 metrics と同じ commit に混ぜない。candidate manifest と managed file だけを stage し、両側 checksum と ownership を検査する。
+
+```bash
+git add .agentic-framework scripts/agentic scripts/metrics.mjs scripts/check-af-update-scope.mjs
+node scripts/check-af-update-scope.mjs --staged
+git commit -m "chore: update agentic framework"
+```
+
+`AGENTS.md`、`.ai/`、`.github/`、project 固有 docs などの `seeded` file、アプリ source、`.af-metrics/` と `.af-metrics.local.json` は AF 更新 commit に含めない。scope check は remote 作成、commit、push を行わないため、成功後も staged diff を人間が確認する。
+
+この検査は local Git command を直接実行すれば迂回できる。v0.2.4 の保証は staged scope の fail-closed 検査までであり、remote での強制ではない。v0.2.5 で CODEOWNERS と branch protection の guidance を追加する。それまでは AF-only commit の review を必須とし、「厳守できる」と誇張しない。
+
 ## チェックリスト
 
 - [ ] 導入先の `docs/` 構造（標準 / 独自）を確認した

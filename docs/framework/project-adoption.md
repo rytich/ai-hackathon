@@ -17,7 +17,8 @@
 11. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
 12. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
 13. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
-14. 効果測定を始める。
+14. `docs/framework/effect-metrics.md` を読み、保存 mode と repository 可視性を決める。既存 project repository を使う場合は `node scripts/metrics.mjs init --project-id <slug> --acknowledge-repository-metrics-risk --remote-visibility <private|public|unknown>`、端末内だけなら `--mode local-only`、別 repository なら `--mode dedicated` で初期化する。
+15. `node scripts/metrics.mjs doctor` で Git、remote、可視性、追跡状態を確認する。AF は metrics の remote 作成、commit、push を自動実行しない。
 
 ## GitHub Setup
 
@@ -72,7 +73,7 @@ specify -> plan -> tasks -> implement
 
 ## Adoption Metrics
 
-2 週間ごとに見る。
+`scripts/metrics.mjs` の privacy-safe work unit と report を正本にし、2 週間ごとに見る。欠測は 0 に置き換えず coverage として扱い、`not_comparable` の cohort に数値差を付けない。
 
 - AI 作業 PR 数
 - PR lead time
