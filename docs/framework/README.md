@@ -18,6 +18,7 @@ AI エージェント（Codex / Claude Code など）が並行開発するため
 | [release-checklist.md](release-checklist.md) | VERSION、tag、CHANGELOG、公開 ZIP の release 整合性確認 |
 | [environment-reproducibility.md](environment-reproducibility.md) | 別端末での再現手順 |
 | [codex-dev-stack.md](codex-dev-stack.md) | macOS/Codex 用の開発スタック導入・検証 |
+| [context7.md](context7.md) | context7のCodex/Claude Code導入、secret境界、利用・検証rule |
 | [github-configuration.md](github-configuration.md) | GitHub labels、Issue/PR、branch protection |
 | [agent-handoff.md](agent-handoff.md) | AI エージェント間の引き継ぎ手順 |
 | [site-hosting.md](site-hosting.md) | 説明サイトのホスティング（Cloudflare Pages）と独自ドメイン設定 |

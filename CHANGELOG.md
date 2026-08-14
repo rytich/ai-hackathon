@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.5 - 2026-08-14
+
+- release metadataとSHA-256を検証し、公開ZIPを一時展開して導入するinstallerを追加した。
+- 初回導入の全pathを事前検査し、競合時は通常pathを変更せずcandidate overlayとreportへ隔離するようにした。
+- review済みseeded fileだけを明示的に採用できる`--accept-existing`を追加し、managed・symbolic link・file/directory競合はfail-closedにした。
+- MIT License（Copyright (c) 2026 株式会社 点）を設定した。
+- Codex / Claude Code向けcontext7導入、secret境界、library ID解決、単一concept queryの利用ruleを追加した。
+
 ## 0.2.4 - 2026-08-12
 
 - privacy-safe work unit schema、atomic storage、欠測 coverage、work unit / Issue / PR / release / profile 別の決定的 report を追加した。

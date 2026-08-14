@@ -44,6 +44,8 @@ YYYY-MM-DD
 
 ## 最新の記録
 
+- [2026-08-14-context7-integration.md](2026-08-14-context7-integration.md): context7を対象taskで優先するrecommended toolとして採用する。
+- [2026-08-14-safe-installer-conflict-strategy.md](2026-08-14-safe-installer-conflict-strategy.md): 初回導入の競合時は通常pathを書き換えず、candidate overlayとreportへ隔離する。
 - [2026-08-11-ponytail-integration.md](2026-08-11-ponytail-integration.md): Ponytail を AF の常時プラグインとして導入しない。
 - [2026-08-03-restricted-tool-check-dsl.md](2026-08-03-restricted-tool-check-dsl.md): tools.tsv の任意 shell 評価を制限文法へ移行する。
 - [2026-08-03-cloudflare-dns-cli-publication.md](2026-08-03-cloudflare-dns-cli-publication.md): Cloudflare DNS を CLI で設定する。

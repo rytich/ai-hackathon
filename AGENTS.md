@@ -6,6 +6,7 @@
 
 - 大量出力、ログ、広い検索、集計、比較、parse は、生データを会話へ流さず要約してから判断する。使う手段は profile ごとの entrypoint に従う。
 - コード理解と refactor は symbol 単位の理解を優先する。手段は profile ごとの entrypoint に従う。
+- library/framework/SDK/API/CLI/cloud serviceのcode generation、setup、configuration、現行documentation確認はcontext7を優先する。library IDを解決してからqueryを単一conceptへ絞る。一般的なrefactor、business logicのdebug、repository固有codeのreviewには自動適用しない。
 - 仕様や product intent は Spec Kit の specify/plan/tasks/implement flow に寄せる。未導入なら plan mode で要件を書き `docs/planning/requirements/` に残す。
 - raw secret、個人情報、production data を会話、ログ、fixture、commit に出さない。
 

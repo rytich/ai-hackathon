@@ -16,3 +16,7 @@
 - 確定した事実は [../../knowledge/](../../knowledge/) へ、判断は [../../decisions/](../../decisions/) へ反映する。
 
 記入例: [_example-research.md](_example-research.md)
+
+## 最新の調査
+
+- [context7導入調査](2026-08-14-context7.md) - Codex / Claude Code導入、認証、tool contract、routing境界。

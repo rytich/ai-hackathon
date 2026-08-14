@@ -1,6 +1,6 @@
 # agentic-framework
 
-Version: 0.2.1
+Version: 0.2.5
 
 複数の AI エージェントが、自律的かつ並行してソフトウェア開発を進めるための軽量フレームワークです。
 
@@ -26,6 +26,7 @@ docs/framework/                              # フレームワーク運用ルー
   collaboration-rules.md                     #   branch/worktree/PR/作業ログの運用
   environment-reproducibility.md             #   別端末での再現手順
   codex-dev-stack.md                         #   macOS/Codex 用の開発スタック導入・検証手順
+  context7.md                                #   現行library/API documentationの取得・検証手順
   agent-handoff.md                           #   AI エージェント間の引き継ぎ手順
   ai-environment-profiles.md                 #   Codex/Claude など AI 環境別 profile 切り替え
   agent-settings-replication.md              #   AGENTS/CLAUDE/Copilot/skills の再現設計
@@ -42,6 +43,7 @@ docs/decisions/                              # 意思決定記録（情報ソー
 docs/work-notes/                             # 作業サマリー
 docs/templates/                              # 作業サマリー、判断ログ、PR テンプレート
 scripts/bootstrap-project.sh                 # 他プロジェクトへのテンプレート導入
+scripts/install.sh                           # 公開releaseの取得・検証・一時展開・導入
 scripts/check-doc-links.sh                   # docs の broken link / 孤立ノート検出
 scripts/build-public-archive.sh              # 外部配布用 archive の作成（sanitize とローカル公開資産の除外付き）
 scripts/deploy-site.sh                       # 説明サイトを Cloudflare Pages へデプロイ
@@ -54,7 +56,20 @@ docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-frame
 
 ## クイックスタート
 
-既存プロジェクトへ導入する場合:
+公開版を導入する場合、ZIPを手動展開する必要はありません。
+
+```bash
+curl -fsSLo /tmp/agentic-framework-install.sh https://ai.microdotz.net/install.sh
+bash /tmp/agentic-framework-install.sh /path/to/target-project
+```
+
+installerはrelease metadataとZIPを一時directoryへ取得し、byte数とSHA-256を検証してから導入し、一時fileを削除します。既存projectのfileと競合した場合は通常pathを変更せず、`.agentic-framework/incoming/`へ候補とreportを保存して終了します。reportを確認し、seeded fileを既存内容のまま採用すると判断した場合だけ次を実行します。
+
+```bash
+bash /tmp/agentic-framework-install.sh --accept-existing /path/to/target-project
+```
+
+repository checkoutから導入する場合も、同じpreflightを通ります。
 
 ```bash
 ./scripts/bootstrap-project.sh /path/to/target-project
@@ -73,9 +88,10 @@ docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-frame
 9. `docs/framework/github-configuration.md` の labels、branch protection、required checks。
 10. `.github/pull_request_template.md` の project-specific checklist。
 11. `docs/framework/effect-metrics.md` の保存 mode、repository 可視性、privacy 境界。
+12. `docs/framework/context7.md` のuser scope導入、secret境界、動作確認。
 
 **既に AF を導入済みのプロジェクトへ最新の変更を反映する場合**は、`bootstrap-project.sh` を再実行するのではなく
-[docs/framework/project-update.md](/Users/ichie/github/agentic-framework/docs/framework/project-update.md) の手順に従ってください。
+[docs/framework/project-update.md](docs/framework/project-update.md) の手順に従ってください。
 導入先が独自の docs 構造にカスタマイズされている場合、単純な再配布は二重構造を生みます。
 
 AI 環境を明示的に切り替える場合:
@@ -103,6 +119,7 @@ Codex と Claude Code を同じ checkout で使う場合は `codex-claude` を�
 - Codex: 実装、検証、PR 作成。
 - Serena: symbol-aware なコード理解とリファクタリング。
 - context-mode: 大量出力、ログ、検索、session memory の token-efficient 処理。
+- context7: library、SDK、API、CLI、cloud serviceの現行公式documentation取得。
 - GitHub Issues/PR: 作業単位、レビュー、merge gate。
 - Docker or devcontainer: 端末差分を減らす実行環境。
 
@@ -119,3 +136,7 @@ Issue ready
 ```
 
 詳細は [docs/framework/ai-execution-framework.md](/Users/ichie/github/agentic-framework/docs/framework/ai-execution-framework.md) を参照してください。
+
+## License
+
+[MIT License](LICENSE) — Copyright (c) 2026 株式会社 点

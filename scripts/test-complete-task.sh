@@ -34,6 +34,8 @@ assert_contains "syntax-checks the metrics CLI" 'run node --check scripts/metric
 assert_contains "syntax-checks the update scope CLI" 'run node --check scripts/check-af-update-scope.mjs'
 assert_contains "runs the complete effect metrics test set" 'run node --test scripts/test-metrics-schema.mjs scripts/test-metrics-storage.mjs scripts/test-metrics-report.mjs scripts/test-metrics-cli.mjs scripts/test-af-installation.mjs'
 assert_contains "runs bootstrap distribution regression checks" 'run bash scripts/test-bootstrap-project.sh'
+assert_contains "runs installer regression checks" 'run bash scripts/test-install.sh'
+assert_contains "runs context7 integration checks" 'run bash scripts/test-context7-integration.sh'
 
 if [ "$FAIL" -ne 0 ]; then
   echo "FAIL: $PASS passed, $FAIL failed" >&2

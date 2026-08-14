@@ -175,7 +175,7 @@ hermes のように AF の外で運用されるエージェントも、この re
 | context-mode | must | codex, claude, codex-claude | - |
 | superpowers | must | claude, codex-claude | - |
 | Serena | recommended | codex, claude, codex-claude | rg/grep によるテキスト検索 |
-| context7 | recommended | codex, claude, codex-claude | WebSearch/WebFetch で公式ドキュメントを直接取得 |
+| context7 | recommended | codex, claude, codex-claude | `context7.md` の公式手順でuser scopeへ導入し、未接続中だけ公式Web documentationへ縮退 |
 | Spec Kit | recommended | 全 | plan mode で要件を書き `docs/planning/requirements/` に残して Issue 化 |
 | crit | recommended | 全 | PR のインラインコメントでレビュー |
 | skills | recommended | claude, codex-claude | AF `complete-task.sh` と real-use gate のみで検証 |

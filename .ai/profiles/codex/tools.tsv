@@ -3,7 +3,7 @@ git	must	cmd:git	-	-
 gh	must	cmd:gh	-	-
 context-mode	must	mcp:codex:context-mode	-	/mksglu/context-mode
 serena	recommended	cmd:serena	rg/grep によるテキスト検索	/oraios/serena
-context7	recommended	mcp:codex:context7	WebSearch/WebFetch で公式ドキュメントを直接取得	/upstash/context7
+context7	recommended	mcp:codex:context7	docs/framework/context7.md の公式手順でuser scopeへ導入	/upstash/context7
 specify	recommended	cmd:specify	plan mode ＋ docs/planning/requirements/ に要件を残す	/github/spec-kit
 crit	recommended	cmd:crit	PR のインラインコメント	-
 linear	recommended	mcp:codex:linear	GitHub Issues のみで運用	-

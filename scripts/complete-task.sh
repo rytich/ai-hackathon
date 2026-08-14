@@ -222,6 +222,7 @@ run_validation() {
   fi
 
   [ -f scripts/bootstrap-project.sh ] && run bash -n scripts/bootstrap-project.sh
+  [ -f scripts/install.sh ] && run bash -n scripts/install.sh
   [ -f scripts/select-ai-profile.sh ] && run bash -n scripts/select-ai-profile.sh
   [ -f templates/project/scripts/select-ai-profile.sh ] && run bash -n templates/project/scripts/select-ai-profile.sh
   [ -f templates/project/scripts/setup-github-labels.sh ] && run bash -n templates/project/scripts/setup-github-labels.sh
@@ -229,6 +230,8 @@ run_validation() {
   [ -f scripts/test-complete-task.sh ] && run bash -n scripts/test-complete-task.sh
   [ -f scripts/test-check-agent-tools.sh ] && run bash -n scripts/test-check-agent-tools.sh
   [ -f scripts/test-select-ai-profile.sh ] && run bash -n scripts/test-select-ai-profile.sh
+  [ -f scripts/test-install.sh ] && run bash -n scripts/test-install.sh
+  [ -f scripts/test-context7-integration.sh ] && run bash -n scripts/test-context7-integration.sh
   [ -f scripts/metrics.mjs ] && run node --check scripts/metrics.mjs
   [ -f scripts/metrics/schema.mjs ] && run node --check scripts/metrics/schema.mjs
   [ -f scripts/metrics/storage.mjs ] && run node --check scripts/metrics/storage.mjs
@@ -258,6 +261,14 @@ run_validation() {
 
   if [ -f scripts/test-bootstrap-project.sh ]; then
     run bash scripts/test-bootstrap-project.sh
+  fi
+
+  if [ -f scripts/test-install.sh ]; then
+    run bash scripts/test-install.sh
+  fi
+
+  if [ -f scripts/test-context7-integration.sh ]; then
+    run bash scripts/test-context7-integration.sh
   fi
 
   if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then

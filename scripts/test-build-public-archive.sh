@@ -91,3 +91,12 @@ for reference in "site/" "scripts/deploy-site.sh" "docs/framework/site-hosting.m
 done
 
 echo "PASS: Cloudflare and site publication assets are excluded from the public archive"
+
+for required in LICENSE scripts/install.sh; do
+  if ! printf '%s\n' "$entries" | grep -Fq "$PREFIX/$required"; then
+    echo "FAIL: public archive is missing required distribution file: $required" >&2
+    exit 1
+  fi
+done
+
+echo "PASS: license and installer are included in the public archive"

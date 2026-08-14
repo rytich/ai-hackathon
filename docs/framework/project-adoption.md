@@ -4,21 +4,29 @@
 
 ## For Existing Projects
 
-1. `scripts/bootstrap-project.sh /path/to/project` を実行する。
+1. 公開installerまたは`bootstrap-project.sh`を実行する。公開版はZIPを手動展開しない。
+
+   ```bash
+   curl -fsSLo /tmp/agentic-framework-install.sh https://ai.microdotz.net/install.sh
+   bash /tmp/agentic-framework-install.sh /path/to/project
+   ```
+
+   競合があれば通常pathは変更されず、`.agentic-framework/incoming/`に候補overlayと`CONFLICTS.md`が作成される。差分を確認・統合し、seeded fileを既存内容のまま採用する場合だけ`--accept-existing`付きで再実行する。managed file、symbolic link、file/directory競合は配布版と一致する状態へ解決するまで導入しない。
 2. 生成された `AGENTS.md` と docs を project に合わせて編集する。
 3. `docs/README.md` と `docs/framework/knowledge-base.md` を読み、知識ベース構造（framework / knowledge / planning / decisions）と維持ルールを確認する。
 4. `docs/knowledge/` の各カテゴリ（product / engineering / business / support / materials）に owner を割り当て、`docs/framework/knowledge-base.md` の「維持機構」表を project に合わせて調整する。
 5. 現在の README、CI、package scripts、runtime docs と矛盾がないか確認する。
 6. Codex stack を使う場合は `docs/framework/codex-dev-stack.md` の導入・検証手順を端末ごとに確認する。
-7. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
-8. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
-9. `./scripts/check-agent-tools.sh` で必須ツールの導入状況を確認する。must が欠落していたら、先に導入してから次へ進む。recommended の欠落は縮退先で運用できるため、必須ではない。
-10. `docs/framework/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
-11. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
-12. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
-13. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
-14. `docs/framework/effect-metrics.md` を読み、保存 mode と repository 可視性を決める。既存 project repository を使う場合は `node scripts/metrics.mjs init --project-id <slug> --acknowledge-repository-metrics-risk --remote-visibility <private|public|unknown>`、端末内だけなら `--mode local-only`、別 repository なら `--mode dedicated` で初期化する。
-15. `node scripts/metrics.mjs doctor` で Git、remote、可視性、追跡状態を確認する。AF は metrics の remote 作成、commit、push を自動実行しない。
+7. `docs/framework/context7.md`に従い、利用するCodex / Claude Codeのuser scopeへcontext7を登録し、library ID解決とdocumentation queryを確認する。
+8. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
+9. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
+10. `./scripts/check-agent-tools.sh` で必須ツールの導入状況を確認する。must が欠落していたら、先に導入してから次へ進む。recommended の欠落は縮退先で運用できるため、必須ではない。
+11. `docs/framework/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
+12. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
+13. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
+14. 最初の 3 PR は trial として運用し、重すぎるルールを削る。
+15. `docs/framework/effect-metrics.md` を読み、保存 mode と repository 可視性を決める。既存 project repository を使う場合は `node scripts/metrics.mjs init --project-id <slug> --acknowledge-repository-metrics-risk --remote-visibility <private|public|unknown>`、端末内だけなら `--mode local-only`、別 repository なら `--mode dedicated` で初期化する。
+16. `node scripts/metrics.mjs doctor` で Git、remote、可視性、追跡状態を確認する。AF は metrics の remote 作成、commit、push を自動実行しない。
 
 ## GitHub Setup
 

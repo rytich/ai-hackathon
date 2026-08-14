@@ -132,8 +132,9 @@ Recommended routing:
 1. Planning/product intent -> Spec Kit.
 2. Codebase structure, symbols, references, refactors -> Serena.
 3. Large output, repeated searches, long-running context, web/raw data -> context-mode.
-4. Small direct file edits and focused test/build commands -> Codex built-in tools.
-5. Unattended, tracker-driven runs across many issues -> Symphony (see below). Interactive work stays in the Codex session.
+4. Current library/framework/SDK/API/CLI/cloud documentation -> context7 (`context7.md`).
+5. Small direct file edits and focused test/build commands -> Codex built-in tools.
+6. Unattended, tracker-driven runs across many issues -> Symphony (see below). Interactive work stays in the Codex session.
 
 ## Symphony（任意 / 無人実行）
 
@@ -153,6 +154,7 @@ Recommended routing:
 ```bash
 codex mcp list
 codex plugin list | grep context-mode
+codex plugin list | grep context7
 specify --version
 serena --version
 node --version
@@ -163,6 +165,7 @@ Expected important entries:
 
 ```text
 context-mode ... enabled
+context7 ... enabled
 serena ... enabled
 context-mode@context-mode installed, enabled
 specify ...
@@ -173,6 +176,7 @@ node ...
 Restart Codex after changing global config. In a new Codex session:
 
 - Type `ctx stats` or `ctx doctor` to verify context-mode tools.
+- Resolve a library ID and run one focused documentation query to verify context7; see `context7.md`.
 - Ask Serena to activate the current project and read initial instructions.
 - In Spec Kit projects, use the Spec Kit prompt/skill flow.
 

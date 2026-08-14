@@ -8,11 +8,12 @@ Project: <PROJECT_NAME>
 2. `docs/knowledge/engineering/runtime.md`
 3. `docs/knowledge/engineering/secrets.md`
 4. `docs/framework/codex-dev-stack.md`
-5. `docs/framework/ai-execution-framework.md`
-6. `docs/framework/collaboration-rules.md`
-7. `docs/framework/agent-settings-replication.md`
-8. `docs/framework/software-engineering-practices.md`
-9. `docs/framework/knowledge-base.md`
+5. `docs/framework/context7.md`
+6. `docs/framework/ai-execution-framework.md`
+7. `docs/framework/collaboration-rules.md`
+8. `docs/framework/agent-settings-replication.md`
+9. `docs/framework/software-engineering-practices.md`
+10. `docs/framework/knowledge-base.md`
 
 Add project-specific specs here.
 
@@ -48,6 +49,7 @@ Replace with real commands.
 - Local validation commands must match CI, or the difference must be documented.
 - Do not revert unrelated user or agent changes.
 - Update docs when runtime, secrets, permissions, or deployment assumptions change.
+- library/framework/SDK/API/CLI/cloud serviceのcode generation、setup、configuration、現行documentation確認はcontext7を優先する。library IDを解決してからqueryを単一conceptへ絞る。一般的なrefactor、business logicのdebug、repository固有codeのreviewには自動適用しない。
 - ドキュメントは `docs/` 配下に日本語で構造化して保存する（開発外の知識も `docs/knowledge/` に置く）。企画（調査・要件定義）と実作業を分離し、成果物を `docs/planning/` と `docs/decisions/` に残してから実装に入る。意思決定は情報ソース付きで `docs/decisions/` に残す。詳細は `docs/framework/knowledge-base.md`。
 - 指示・Issue には What / Why / How を含める。重要な作業ほど Why（背景・経緯）を厚く書く。欠けたまま着手せず補完を依頼する（`docs/framework/collaboration-rules.md` の Instruction Pattern）。
 - 企画成果物は実装着手前に人間のインラインレビューを通す。指摘には差分で応答し、指摘のない箇所を作り直さない（同 Inline Review）。
