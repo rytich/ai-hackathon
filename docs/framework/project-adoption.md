@@ -21,7 +21,7 @@
 8. 利用する AI 環境ごとの profile を `.ai/profiles/` に設定する。
 9. `./scripts/select-ai-profile.sh <profile>` で初期 profile を明示的に選ぶ。
 10. `./scripts/check-agent-tools.sh` で必須ツールの導入状況を確認する。must が欠落していたら、先に導入してから次へ進む。recommended の欠落は縮退先で運用できるため、必須ではない。
-11. `docs/framework/github-configuration.md` に沿って labels、Issue template、PR template、branch protection、required checks を設定する。
+11. `.github/CODEOWNERS`の`@YOUR-GITHUB-OWNER`をwrite accessのあるuser/teamへ置換し、`docs/framework/github-configuration.md` に沿ってlabels、Issue template、PR template、branch protection、Code Owner review、required checksを設定・実動確認する。
 12. Spec Kit task と GitHub Issue の completion synchronization policy を確認する。
 13. `scripts/complete-task.sh --issue <number> --stage-all --merge --close-issue` を試行する。
 14. 最初の 3 PR は trial として運用し、重すぎるルールを削る。

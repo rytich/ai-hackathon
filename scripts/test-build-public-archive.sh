@@ -75,6 +75,7 @@ for path in \
   "scripts/configure-cloudflare-pages-domain.mjs" \
   "scripts/test-configure-cloudflare-pages-domain.mjs" \
   "scripts/deploy-site.sh" \
+  ".github/CODEOWNERS" \
   "docs/framework/site-hosting.md" \
   "docs/decisions/2026-08-03-cloudflare-dns-cli-publication.md"; do
   if printf '%s\n' "$entries" | grep -Fq "$PREFIX/$path"; then
@@ -100,3 +101,10 @@ for required in LICENSE scripts/install.sh; do
 done
 
 echo "PASS: license and installer are included in the public archive"
+
+if ! printf '%s\n' "$entries" | grep -Fq "$PREFIX/templates/project/.github/CODEOWNERS"; then
+  echo "FAIL: public archive is missing the configurable CODEOWNERS template" >&2
+  exit 1
+fi
+
+echo "PASS: private repository CODEOWNERS is excluded and the configurable template is included"

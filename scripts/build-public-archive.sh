@@ -26,7 +26,7 @@ OUT="${2:-$ROOT_DIR/outputs/agentic-framework-${TAG}-public.zip}"
 
 # 既定の sanitize ルール。プロジェクトの実情に合わせて上書きする。
 DROP="${PUBLIC_ARCHIVE_DROP:-docs/work-notes}"
-LOCAL_ONLY_EXCLUDE="site/,scripts/configure-cloudflare-pages-domain.mjs,scripts/test-configure-cloudflare-pages-domain.mjs,scripts/deploy-site.sh,docs/framework/site-hosting.md,docs/decisions/2026-08-03-cloudflare-dns-cli-publication.md"
+LOCAL_ONLY_EXCLUDE="site/,.github/CODEOWNERS,scripts/configure-cloudflare-pages-domain.mjs,scripts/test-configure-cloudflare-pages-domain.mjs,scripts/deploy-site.sh,docs/framework/site-hosting.md,docs/decisions/2026-08-03-cloudflare-dns-cli-publication.md"
 EXTRA_EXCLUDE="${PUBLIC_ARCHIVE_EXTRA_EXCLUDE:-}"
 REDACT="${PUBLIC_ARCHIVE_REDACT:-ten_matcha,bonsmith_corporate,kdic,innovation-team-hy,tenjp}"
 REDACT_WITH="${PUBLIC_ARCHIVE_REDACT_WITH:-導入先プロジェクト}"

@@ -64,6 +64,34 @@ stable branch に推奨する設定:
 - Do not allow force pushes.
 - Do not allow deletions.
 
+### CODEOWNERSと承認必須path
+
+`.github/CODEOWNERS`をbase branchへ置き、次の人間承認領域をuserまたはteamへ割り当てる。
+
+- GitHub workflow、Issue/PR template、CODEOWNERS自体: `/.github/`
+- agentの共通rule: `/AGENTS.md`
+- license: `/LICENSE`
+- quality gateとGitHub保護設定: `/docs/framework/quality-gates.md`、`/docs/framework/github-configuration.md`
+- legal/privacy knowledge: `/docs/knowledge/business/legal/`
+- release取得・公開archive: `/scripts/install.sh`、`/scripts/build-public-archive.sh`
+- 導入先templateの同等path: `/templates/project/...`
+
+bootstrapで配布される`.github/CODEOWNERS`の`@YOUR-GITHUB-OWNER`を、実在するGitHub userまたは`@org/team`へ必ず置換する。teamにはrepositoryへの**明示的なwrite access**が必要。CODEOWNERSはbase branchごとに評価され、上から下へ読み、**最後に一致したpattern**だけがownerを決める。`!`による否定、`[a-z]`の文字class、先頭`#`のescapeは使えず、fileは3 MB未満に保つ。
+
+CODEOWNERSを置くだけではmergeを強制停止できない。stable branchのbranch protectionまたはrulesetで次を有効にする。
+
+- Require a pull request before merging
+- Require approvals（1件以上）
+- **Require review from Code Owners**
+- Dismiss stale pull request approvals when new commits are pushed
+- 必要に応じてRequire approval of the most recent reviewable push
+
+1つのpathに複数ownerを指定した場合、GitHubのCode Owner review要件はそのうち1人の承認で満たせる。複数組織・役割それぞれの承認が必要なら、CODEOWNERSだけに依存せず追加のrequired review運用またはruleset/checkを設計する。
+
+設定後は承認対象pathだけを変更するtest PRを作り、ownerへのreview requestとmerge blockをGitHub UI/APIで確認する。ownerが無効、write access不足、pattern不一致の場合は行が機能しないため、syntax highlightingとPRのreview requestを実動確認する。
+
+公式情報: [About code owners](https://docs.github.com/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners) / [Managing a branch protection rule](https://docs.github.com/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+
 required checks は project ごとに設定する。例:
 
 - lint

@@ -49,6 +49,7 @@ scripts/build-public-archive.sh              # 外部配布用 archive の作成
 scripts/deploy-site.sh                       # 説明サイトを Cloudflare Pages へデプロイ
 site/                                        # 公開サイトの中身（index.html。zip は毎回生成）
 templates/project/                           # bootstrap で配布される雛形
+  .github/CODEOWNERS                         #   承認必須pathのowner template（導入後に置換）
 ```
 
 docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-framework/docs/README.md)、

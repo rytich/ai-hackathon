@@ -90,6 +90,8 @@ Issue / PR close 前の challenge:
 
 次の変更は自動 merge しない。
 
+対応pathは`.github/CODEOWNERS`でownerを割り当て、stable branchの`Require review from Code Owners`と組み合わせる。CODEOWNERS単体はmerge gateではない。具体的なpatternと設定・検証手順は[github-configuration.md](github-configuration.md#codeownersと承認必須path)を参照する。
+
 - destructive migration
 - auth、token、secret、permission、scope
 - billing、payment

@@ -7,6 +7,7 @@
 - review済みseeded fileだけを明示的に採用できる`--accept-existing`を追加し、managed・symbolic link・file/directory競合はfail-closedにした。
 - MIT License（Copyright (c) 2026 株式会社 点）を設定した。
 - Codex / Claude Code向けcontext7導入、secret境界、library ID解決、単一concept queryの利用ruleを追加した。
+- CODEOWNERS templateとbranch protection guidanceにより、人間承認領域のowner reviewを設定・検証できるようにした。
 
 ## 0.2.4 - 2026-08-12
 

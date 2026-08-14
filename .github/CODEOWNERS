@@ -1,0 +1,15 @@
+# AF repository owners. The last matching pattern takes precedence.
+/.github/ @rytich
+/AGENTS.md @rytich
+/LICENSE @rytich
+/docs/framework/quality-gates.md @rytich
+/docs/framework/github-configuration.md @rytich
+/docs/knowledge/business/legal/ @rytich
+/scripts/build-public-archive.sh @rytich
+/scripts/install.sh @rytich
+/templates/project/.github/ @rytich
+/templates/project/AGENTS.md @rytich
+/templates/project/docs/knowledge/business/legal/ @rytich
+
+# Protect the ownership policy itself explicitly.
+/.github/CODEOWNERS @rytich

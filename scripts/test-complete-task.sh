@@ -36,6 +36,7 @@ assert_contains "runs the complete effect metrics test set" 'run node --test scr
 assert_contains "runs bootstrap distribution regression checks" 'run bash scripts/test-bootstrap-project.sh'
 assert_contains "runs installer regression checks" 'run bash scripts/test-install.sh'
 assert_contains "runs context7 integration checks" 'run bash scripts/test-context7-integration.sh'
+assert_contains "runs CODEOWNERS regression checks" 'run bash scripts/test-codeowners.sh'
 
 if [ "$FAIL" -ne 0 ]; then
   echo "FAIL: $PASS passed, $FAIL failed" >&2

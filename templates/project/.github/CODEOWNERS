@@ -1,0 +1,16 @@
+# Replace @YOUR-GITHUB-OWNER with a user or @org/team that has explicit write access.
+# The last matching pattern takes precedence.
+/.github/ @YOUR-GITHUB-OWNER
+/AGENTS.md @YOUR-GITHUB-OWNER
+/LICENSE @YOUR-GITHUB-OWNER
+/docs/framework/quality-gates.md @YOUR-GITHUB-OWNER
+/docs/framework/github-configuration.md @YOUR-GITHUB-OWNER
+/docs/knowledge/business/legal/ @YOUR-GITHUB-OWNER
+/scripts/build-public-archive.sh @YOUR-GITHUB-OWNER
+/scripts/install.sh @YOUR-GITHUB-OWNER
+/templates/project/.github/ @YOUR-GITHUB-OWNER
+/templates/project/AGENTS.md @YOUR-GITHUB-OWNER
+/templates/project/docs/knowledge/business/legal/ @YOUR-GITHUB-OWNER
+
+# Keep this rule last so changes to CODEOWNERS always request the configured owner.
+/.github/CODEOWNERS @YOUR-GITHUB-OWNER

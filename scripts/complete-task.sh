@@ -232,6 +232,7 @@ run_validation() {
   [ -f scripts/test-select-ai-profile.sh ] && run bash -n scripts/test-select-ai-profile.sh
   [ -f scripts/test-install.sh ] && run bash -n scripts/test-install.sh
   [ -f scripts/test-context7-integration.sh ] && run bash -n scripts/test-context7-integration.sh
+  [ -f scripts/test-codeowners.sh ] && run bash -n scripts/test-codeowners.sh
   [ -f scripts/metrics.mjs ] && run node --check scripts/metrics.mjs
   [ -f scripts/metrics/schema.mjs ] && run node --check scripts/metrics/schema.mjs
   [ -f scripts/metrics/storage.mjs ] && run node --check scripts/metrics/storage.mjs
@@ -269,6 +270,10 @@ run_validation() {
 
   if [ -f scripts/test-context7-integration.sh ]; then
     run bash scripts/test-context7-integration.sh
+  fi
+
+  if [ -f scripts/test-codeowners.sh ]; then
+    run bash scripts/test-codeowners.sh
   fi
 
   if [ -f scripts/check-agent-tools.sh ] && [ -f templates/project/scripts/check-agent-tools.sh ]; then
