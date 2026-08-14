@@ -14,6 +14,8 @@
 #   PUBLIC_ARCHIVE_EXTRA_EXCLUDE="path/to/local-only"   # 配布しない追加パス（カンマ区切り）
 #   PUBLIC_ARCHIVE_REDACT="name1,name2"                  # 伏せる固有名（カンマ区切り）
 #   PUBLIC_ARCHIVE_REDACT_WITH="導入先プロジェクト"        # 置換後の表記
+#   PUBLIC_ARCHIVE_OWNER="source-owner"                  # 公開元 owner 名
+#   PUBLIC_ARCHIVE_OWNER_WITH="OWNER"                    # owner の置換後表記
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -28,6 +30,8 @@ LOCAL_ONLY_EXCLUDE="site/,scripts/configure-cloudflare-pages-domain.mjs,scripts/
 EXTRA_EXCLUDE="${PUBLIC_ARCHIVE_EXTRA_EXCLUDE:-}"
 REDACT="${PUBLIC_ARCHIVE_REDACT:-ten_matcha,bonsmith_corporate,kdic,innovation-team-hy,tenjp}"
 REDACT_WITH="${PUBLIC_ARCHIVE_REDACT_WITH:-導入先プロジェクト}"
+OWNER="${PUBLIC_ARCHIVE_OWNER:-rytich}"
+OWNER_WITH="${PUBLIC_ARCHIVE_OWNER_WITH:-OWNER}"
 
 if ! git rev-parse "$TAG" >/dev/null 2>&1; then
   echo "tag が見つかりません: $TAG" >&2
@@ -107,18 +111,30 @@ PY
 
 # 3. 固有名を伏せ、置換で崩れた日本語を整える。
 #    日本語を扱うため python3 で処理する（byte 単位の sed/perl では文字クラスが壊れる）。
-SRC="$SRC" REDACT="$REDACT" REDACT_WITH="$REDACT_WITH" python3 - <<'PY'
+SRC="$SRC" REDACT="$REDACT" REDACT_WITH="$REDACT_WITH" OWNER="$OWNER" OWNER_WITH="$OWNER_WITH" python3 - <<'PY'
 import os, re, pathlib
 
 src = pathlib.Path(os.environ["SRC"])
 names = [n for n in os.environ["REDACT"].split(",") if n]
 rep = os.environ["REDACT_WITH"]
+owner = os.environ["OWNER"]
+owner_with = os.environ["OWNER_WITH"]
+repo = "agentic-framework"
 # 長い名前から先に置換する（部分一致で短い名前が先に食わないように）
 names.sort(key=len, reverse=True)
 
 R = re.escape(rep)
 CJK = r"[　-〿぀-ヿ一-鿿]"
 counts = {n: 0 for n in names}
+repo_posix = re.compile(
+    rf"/(?:Users|home)/[^/\s\"'<>`]+/(?:[^/\s\"'<>`]+/)*{re.escape(repo)}/"
+)
+repo_windows = re.compile(
+    rf"[A-Za-z]:\\Users\\[^\\\s\"'<>`]+\\(?:[^\\\s\"'<>`]+\\)*{re.escape(repo)}\\",
+    re.IGNORECASE,
+)
+posix_home = re.compile(r"/(?:Users|home)/[^/\s\"'<>`]+")
+windows_home = re.compile(r"[A-Za-z]:\\Users\\[^\\\s\"'<>`]+", re.IGNORECASE)
 
 for f in src.rglob("*"):
     if not f.is_file():
@@ -127,6 +143,17 @@ for f in src.rglob("*"):
         s = orig = f.read_text(encoding="utf-8")
     except (UnicodeDecodeError, OSError):
         continue
+    if owner:
+        s = s.replace(
+            f"https://github.com/{owner}/{repo}",
+            f"https://github.com/{owner_with}/{repo}",
+        )
+    s = repo_posix.sub("", s)
+    s = repo_windows.sub("", s)
+    s = posix_home.sub("$HOME", s)
+    s = windows_home.sub("%USERPROFILE%", s)
+    if owner:
+        s = s.replace(owner, owner_with)
     for n in names:
         if n in s:
             counts[n] += 1
@@ -167,6 +194,40 @@ for name in ${verify_list[@]+"${verify_list[@]}"}; do
     leak=1
   fi
 done
+if ! SRC="$SRC" OWNER="$OWNER" python3 - <<'PY'
+import os
+import pathlib
+import re
+import sys
+
+src = pathlib.Path(os.environ["SRC"])
+owner = os.environ["OWNER"]
+posix_home = re.compile(r"/(?:Users|home)/[^/\s\"'<>`]+")
+windows_home = re.compile(r"[A-Za-z]:\\Users\\[^\\\s\"'<>`]+", re.IGNORECASE)
+leaks = []
+
+for f in src.rglob("*"):
+    if not f.is_file():
+        continue
+    try:
+        text = f.read_text(encoding="utf-8")
+    except (UnicodeDecodeError, OSError):
+        continue
+    relative = f.relative_to(src)
+    if owner and owner in text:
+        leaks.append(("public owner", relative))
+    if posix_home.search(text):
+        leaks.append(("POSIX user-home path", relative))
+    if windows_home.search(text):
+        leaks.append(("Windows user-profile path", relative))
+
+for kind, relative in leaks:
+    print(f"NG: {kind} が残っている: {relative}", file=sys.stderr)
+sys.exit(1 if leaks else 0)
+PY
+then
+  leak=1
+fi
 if grep -rqE '(sk-[A-Za-z0-9]{16}|ghp_[A-Za-z0-9]{20}|AKIA[0-9A-Z]{12}|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY)' "$SRC" 2>/dev/null; then
   echo "NG: 秘密情報らしき値が含まれている" >&2
   leak=1

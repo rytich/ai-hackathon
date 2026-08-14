@@ -23,6 +23,7 @@
 
 ## Approved
 
+- [v0.2.4 公開アーカイブ再サニタイズ・Release](2026-08-14-v024-release-sanitization.md) - owner名と個人環境pathを除去し、既存タグを動かさず検証済み成果物をReleaseする。
 - [v0.2.4 効果計測の最小基盤](2026-08-12-v024-effect-metrics.md) - privacy-safe な work unit 記録、集計、保存先分離、AF 更新境界。
 
 ## Implemented

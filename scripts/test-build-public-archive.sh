@@ -7,6 +7,8 @@ MISMATCH_TAG="v9.9.9"
 TMP_DIR="$(mktemp -d)"
 OUT="$TMP_DIR/public.zip"
 PREFIX="agentic-framework-${TAG#v}"
+FIXTURE_PATH="docs/archive-sanitization-fixture.txt"
+FIXTURE_CONTENT="$TMP_DIR/archive-sanitization-fixture.txt"
 
 cleanup() {
   git -C "$ROOT_DIR" tag -d "$TAG" >/dev/null 2>&1 || true
@@ -15,8 +17,51 @@ cleanup() {
 }
 trap cleanup EXIT
 
-git -C "$ROOT_DIR" tag "$TAG" HEAD
+cat > "$FIXTURE_CONTENT" <<'FIXTURE'
+owner=https://github.com/rytich/agentic-framework/issues/34
+repo-posix=/Users/example/github/agentic-framework/docs/README.md
+home-posix=/Users/example/.codex/example.json
+home-windows=C:\Users\example\.codex\example.json
+FIXTURE
+
+FIXTURE_BLOB="$(git -C "$ROOT_DIR" hash-object -w "$FIXTURE_CONTENT")"
+TEST_INDEX="$TMP_DIR/index"
+GIT_INDEX_FILE="$TEST_INDEX" git -C "$ROOT_DIR" read-tree HEAD
+GIT_INDEX_FILE="$TEST_INDEX" git -C "$ROOT_DIR" update-index \
+  --add --cacheinfo "100644,$FIXTURE_BLOB,$FIXTURE_PATH"
+FIXTURE_TREE="$(GIT_INDEX_FILE="$TEST_INDEX" git -C "$ROOT_DIR" write-tree)"
+FIXTURE_COMMIT="$(printf '%s\n' 'test: add archive sanitization fixture' | \
+  GIT_AUTHOR_NAME='Archive Test' GIT_AUTHOR_EMAIL='archive-test@example.invalid' \
+  GIT_COMMITTER_NAME='Archive Test' GIT_COMMITTER_EMAIL='archive-test@example.invalid' \
+  git -C "$ROOT_DIR" commit-tree "$FIXTURE_TREE" -p HEAD)"
+git -C "$ROOT_DIR" tag "$TAG" "$FIXTURE_COMMIT"
 "$ROOT_DIR/scripts/build-public-archive.sh" "$TAG" "$OUT" >/dev/null
+
+EXTRACTED="$TMP_DIR/extracted"
+unzip -q "$OUT" -d "$EXTRACTED"
+
+actual_fixture="$(cat "$EXTRACTED/$PREFIX/$FIXTURE_PATH")"
+expected_fixture="$(cat <<'EXPECTED'
+owner=https://github.com/OWNER/agentic-framework/issues/34
+repo-posix=docs/README.md
+home-posix=$HOME/.codex/example.json
+home-windows=%USERPROFILE%\.codex\example.json
+EXPECTED
+)"
+if [ "$actual_fixture" != "$expected_fixture" ]; then
+  echo "FAIL: public archive did not normalize owner and user-home paths" >&2
+  diff -u \
+    <(printf '%s\n' "$expected_fixture") \
+    <(printf '%s\n' "$actual_fixture") >&2 || true
+  exit 1
+fi
+
+for leaked in "rytich" "/Users/example" 'C:\Users\example'; do
+  if grep -rqF -- "$leaked" "$EXTRACTED/$PREFIX"; then
+    echo "FAIL: public archive contains unsanitized value: $leaked" >&2
+    exit 1
+  fi
+done
 
 git -C "$ROOT_DIR" tag "$MISMATCH_TAG" HEAD
 if "$ROOT_DIR/scripts/build-public-archive.sh" "$MISMATCH_TAG" "$TMP_DIR/mismatch.zip" >/dev/null 2>&1; then
