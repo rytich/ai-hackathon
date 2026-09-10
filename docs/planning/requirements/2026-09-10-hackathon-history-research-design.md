@@ -2,7 +2,7 @@
 
 ## 目的
 
-第1回から第4回までの AI Agent / Agentic AI Hackathon with Google Cloud について、公式に公開された提出プロジェクトと受賞プロジェクトを再利用可能な形で収集する。調査・企画の成果物と、今後開発するアプリケーションのソースコードを明確に分離する。
+第5回 Agentic AI Hackathon with Google Cloud で優勝を狙う製品企画の参考情報として、第1回から第4回までの公式提出・受賞プロジェクトを再利用可能な形で収集・分析する。外部リンクが失効しても作品の文脈を把握できる人間用HTMLとAI向けMarkdownを残し、調査・企画の成果物と、今後開発するアプリケーションのソースコードを明確に分離する。
 
 ## 対象範囲
 
@@ -16,6 +16,8 @@
 - 各プロジェクトの記事から取得できる範囲で、説明記事、作者またはチーム、GitHub、デモ、利用技術を記録する。
 - 公式ページまたは提出記事で確認できない値は推測せず `null` とし、確認状態を記録する。
 - 記事本文に記載された外部リンクの存在は記録できるが、サービスの現在の稼働やリポジトリ内容の正当性までは本調査の完了条件に含めない。
+- 第5回の公式審査基準・必須技術・提出条件を確認し、過去4回の傾向より優先する企画ゲートとして明示する。
+- 過去作品をキーワードで課題領域・機能シグナルへ分類し、提出数・受賞数・受賞率を比較する。ただし相関を受賞理由の因果として扱わない。
 
 ## ファイル境界
 
@@ -27,6 +29,8 @@ docs/
     vol-2.md
     vol-3.md
     vol-4.md
+    vol1-4-strategy-report.html   # 人間用の単体HTMLレポート
+    vol1-4-strategy-context.md    # AI向けの全件コンテキスト
   work-notes/
     2026-09-10-hackathon-history-research.md
 data/
@@ -34,6 +38,9 @@ data/
     projects.json             # 正規化した全提出プロジェクト
     projects.csv              # 表計算・目視確認用の同等データ
     schema.json               # 項目、型、null、列挙値の定義
+scripts/
+  research/
+    generate-strategy-report.mjs # JSONから2レポートを再生成
 src/                          # 今後のアプリケーションコード専用。今回コードは作らない
 vendor/                       # 外部リポジトリの取り込み物。調査データは置かない
 ```
@@ -50,6 +57,7 @@ AF 自体の運用スクリプトは既存の `scripts/` に維持し、プロ�
 | 第2回 | https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects | 全提出作品、結果発表、受賞区分 |
 | 第3回 | https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects | 全提出作品、結果発表、受賞区分 |
 | 第4回 | https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects | 全提出作品、結果発表、受賞区分 |
+| 第5回 | https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol5 | 審査基準、必須技術、提出条件、日程 |
 | 全体一覧 | https://zenn.dev/challenges?type=hackathon | 開催期間、提出数の照合 |
 
 提出記事は公式プロジェクト一覧からリンクされた Zenn 記事だけを起点にする。検索結果や第三者のまとめは候補発見には利用できるが、確定値の根拠にはしない。
@@ -116,10 +124,15 @@ CSV は配列項目を ` | ` 区切りで表現し、JSON と同じ行数・同�
 - 各回の公式一覧件数と収集件数を調査メモに記録する。
 - `./scripts/check-doc-links.sh` が成功する。
 - `src/` に調査データや調査メモを置かない。
+- HTMLが外部CSS・JavaScriptへ依存せず、589件の作品名・公式説明・保存URL文字列を内包する。
+- HTMLとAI向けMarkdownに、第5回の公式3評価軸、GitHub連携、デプロイ、認証時のテストアカウントとサンプルデータ、説明・構成図・YouTubeデモ、12月1日までの維持条件がある。
+- AI向けMarkdownに分析の限界、企画ゲート、全589作品のコンテキストがある。
+- HTMLとMarkdownへ保存する文字列を無害化し、URL項目はHTTP(S)だけを受け付ける。
+- HTMLとMarkdownが同じ `projects.json` から再生成でき、回別件数・受賞件数が一致する。
 
 ## 完了条件
 
-第1〜4回の全提出作品が JSON と CSV に格納され、受賞作品を `awards` で抽出できること。取得不能な情報は推測ではなく null または未確認状態として明示され、一次情報・確認日・件数照合の結果を各回の Markdown から追跡できること。
+第1〜4回の全提出作品が JSON と CSV に格納され、受賞作品を `awards` で抽出できること。取得不能な情報は推測ではなく null または未確認状態として明示され、一次情報・確認日・件数照合の結果を各回の Markdown から追跡できること。加えて、第5回の製品企画に使う人間用HTMLとAI向けMarkdownが生成され、リンク切れ後も作品説明と分析根拠を参照できること。
 
 ## 実行計画
 
