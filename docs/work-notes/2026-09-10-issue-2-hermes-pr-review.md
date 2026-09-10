@@ -41,10 +41,11 @@
 - `./scripts/check-doc-links.sh`: broken links 0、orphans 0。
 - `git diff --check`: 成功。
 - secret-like value scan: 検出0件。
+- GitHub Actions `verify`: HEAD `6b4f425526bc59085f28312ced994f9a97a4ac75`で42秒、SUCCESS（[run 34543183635](https://github.com/rytich/ai-hackathon/actions/runs/34543183635)）。
 
 ## Real-use Gate
 
-repository contractのローカル検証は完了したが、GitHub Actions `verify`、Webhook delivery、Hermes formal review、Approve、Mergeはまだ観測していない。fixture成功をlive運用完了として扱わない。
+repository contractのローカル検証とGitHub Actions `verify`は確認したが、Webhook delivery、Hermes formal review、Approve、Mergeはまだ観測していない。fixture成功やCI成功をlive運用完了として扱わない。
 
 ## 人間承認とBootstrap
 
@@ -54,7 +55,6 @@ Webhook、Ruleset、repository専用Secret・token、自動Mergeのlive有効化
 
 ## 未完了 / 次の作業
 
-- PR #4の最新HEADでGitHub Actions `verify`の実結果を確認する。
 - `knryt`がPR #4を手動レビュー・Mergeする。
 - Issue #3でHermes Route、Secret、token、Webhook、effective Rulesetを段階的に有効化する。
 - PR #1の`synchronize`から同一HEADのformal review、Approve、Mergeまでをreal E2E確認する。
