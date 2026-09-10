@@ -102,15 +102,40 @@ function isKnownDeploymentHost(hostname) {
   ].some((suffix) => hostname.endsWith(suffix));
 }
 
+function githubRepositoryRoot(value) {
+  const url = new URL(value);
+  const segments = url.pathname.split("/").filter(Boolean);
+  if (segments.length < 2) return null;
+  const repository = segments[1].replace(/\.git$/, "");
+  if (/^zenn-(content|contents)$/i.test(repository)) return null;
+  return `https://github.com/${segments[0]}/${repository}`;
+}
+
 export function classifyLinks(article) {
-  const githubUrls = [...article.githubUrls];
+  const githubUrls = article.githubUrls
+    .map(githubRepositoryRoot)
+    .filter(Boolean);
+  const bodyGithubCandidates = new Map();
   const demoUrls = [];
   const anchorPattern = /<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
   for (const match of article.bodyHtml.matchAll(anchorPattern)) {
     const rawUrl = match[1].replaceAll("&amp;", "&");
     const url = new URL(rawUrl);
     if (url.hostname === "github.com" || url.hostname === "www.github.com") {
-      githubUrls.push(normalizeUrl(rawUrl));
+      const repositoryUrl = githubRepositoryRoot(rawUrl);
+      if (repositoryUrl) {
+        const start = Math.max(0, match.index - 100);
+        const context = `${plainText(article.bodyHtml.slice(start, match.index))} ${plainText(match[2])}`;
+        const candidate = bodyGithubCandidates.get(repositoryUrl) ?? {
+          count: 0,
+          explicit: false,
+        };
+        candidate.count += 1;
+        candidate.explicit ||= /(GitHub|Gitリポジトリ|リポジトリ|repository|source code|ソースコード)/i.test(
+          context,
+        );
+        bodyGithubCandidates.set(repositoryUrl, candidate);
+      }
       continue;
     }
     const start = Math.max(0, match.index - 120);
@@ -126,6 +151,9 @@ export function classifyLinks(article) {
     ) {
       demoUrls.push(normalizeUrl(rawUrl));
     }
+  }
+  for (const [repositoryUrl, candidate] of bodyGithubCandidates) {
+    if (candidate.explicit || candidate.count >= 2) githubUrls.push(repositoryUrl);
   }
   return {
     githubUrls: unique(githubUrls),
