@@ -92,17 +92,17 @@
 - Consumes: root repositoryのtool profile、`scripts/test-*.mjs`、`scripts/test-*.sh`、docs、Git diff。
 - Produces: ローカルとCIで同一のquality gateを実行する`./scripts/verify.sh`。
 
-- [ ] **Step 1: 一時fixtureを使う失敗テストを追加する**
+- [x] **Step 1: 一時fixtureを使う失敗テストを追加する**
 
   fixtureにstub commandを配置し、`check-agent-tools`、Node tests、自分自身を除くshell tests、docs link、`git diff --check`の順序とfail-fastを確認する。
 
-- [ ] **Step 2: REDを確認する**
+- [x] **Step 2: REDを確認する**
 
   Run: `bash scripts/test-verify.sh`
 
   Expected: `scripts/verify.sh`欠落でFAIL。
 
-- [ ] **Step 3: verify runnerを最小実装する**
+- [x] **Step 3: verify runnerを最小実装する**
 
   `set -euo pipefail`を使い、repository rootへ移動して全gateを実行する。`test-verify.sh`自身の再帰実行を明示的に除外する。
 
@@ -121,7 +121,7 @@
   git diff --check
   ```
 
-- [ ] **Step 4: GREENを確認する**
+- [x] **Step 4: GREENを確認する**
 
   Run: `bash scripts/test-verify.sh`
 
