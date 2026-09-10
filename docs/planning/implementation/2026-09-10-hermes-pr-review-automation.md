@@ -73,7 +73,7 @@
 
   Expected: 正本はPASSし、repository、base、identity、action、verdict順序、no-write、merge条件を1項目ずつ変えたfixtureはFAIL。
 
-- [ ] **Step 6: Task 1をcommitする**
+- [x] **Step 6: Task 1をcommitする**
 
   ```bash
   git add .agents/skills/ai-hackathon-reviewer/SKILL.md scripts/validate-reviewer-skill.mjs scripts/test-reviewer-skill-contract.mjs
@@ -127,7 +127,7 @@
 
   Expected: PASS。失敗fixtureは非0終了し、後続gateを実行しない。
 
-- [ ] **Step 5: Task 2をcommitする**
+- [x] **Step 5: Task 2をcommitする**
 
   ```bash
   git add scripts/verify.sh scripts/test-verify.sh
@@ -185,7 +185,7 @@
 
   Expected: PASS。
 
-- [ ] **Step 5: Task 3をcommitする**
+- [x] **Step 5: Task 3をcommitする**
 
   ```bash
   git add .github/workflows/verify.yml scripts/test-reviewer-skill-contract.mjs
@@ -207,17 +207,17 @@
 - Consumes: Issue #2要件のbootstrap、review、CI、security、docs同期規則。
 - Produces: 人間・Codex・Hermesが同じ承認境界とPR証拠項目を参照できる文書contract。
 
-- [ ] **Step 1: repository文書contractの失敗テストを追加する**
+- [x] **Step 1: repository文書contractの失敗テストを追加する**
 
   `AGENTS.md`にreviewer skill path、`main`、`./scripts/verify.sh`、bootstrap例外、Operational stopを要求する。`CONTRIBUTING.md`、PR template、workflow docにはIssue連携、approved design/plan、base/head OID、検証、real-use、security、docs、Assessment、GitHub Action結果、exact-headとMerge直前再確認を要求する。
 
-- [ ] **Step 2: REDを確認する**
+- [x] **Step 2: REDを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 
   Expected: `CONTRIBUTING.md`または`docs/development/workflow.md`欠落でFAIL。
 
-- [ ] **Step 3: 文書とテンプレートを最小実装する**
+- [x] **Step 3: 文書とテンプレートを最小実装する**
 
   既存`AGENTS.md`を正本の入口として維持し、詳細手順は`docs/development/workflow.md`へ分離する。PR templateは証拠inventoryでありauthorityではないことを明記する。
 
@@ -228,7 +228,7 @@
   .github/pull_request_template.md -> 再検証可能な証拠inventory
   ```
 
-- [ ] **Step 4: GREENを確認する**
+- [x] **Step 4: GREENを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 

@@ -2,13 +2,32 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { validateReviewerSkill } from "./validate-reviewer-skill.mjs";
+import {
+  validateRepositoryDocumentation,
+  validateReviewerSkill,
+} from "./validate-reviewer-skill.mjs";
 
 const skillPath = new URL(
   "../.agents/skills/ai-hackathon-reviewer/SKILL.md",
   import.meta.url,
 );
 const workflowPath = new URL("../.github/workflows/verify.yml", import.meta.url);
+const repositoryRoot = new URL("../", import.meta.url);
+
+function loadRepositoryDocumentation() {
+  return {
+    agents: readFileSync(new URL("AGENTS.md", repositoryRoot), "utf8"),
+    contributing: readFileSync(new URL("CONTRIBUTING.md", repositoryRoot), "utf8"),
+    pullRequestTemplate: readFileSync(
+      new URL(".github/pull_request_template.md", repositoryRoot),
+      "utf8",
+    ),
+    workflow: readFileSync(
+      new URL("docs/development/workflow.md", repositoryRoot),
+      "utf8",
+    ),
+  };
+}
 
 function loadSkill() {
   return readFileSync(skillPath, "utf8");
@@ -126,3 +145,37 @@ test("runs verify for the four allowed pull request actions with read-only permi
   assert.match(workflow, /AF_VERIFY_PROFILE: generic/);
   assert.match(workflow, /run: \.\/scripts\/verify\.sh/);
 });
+
+test("accepts repository documentation with every review safety boundary", () => {
+  assert.doesNotThrow(() =>
+    validateRepositoryDocumentation(loadRepositoryDocumentation()),
+  );
+});
+
+for (const [name, field, phrase] of [
+  ["trusted reviewer skill", "agents", ".agents/skills/ai-hackathon-reviewer/SKILL.md"],
+  ["bootstrap exception", "agents", "PR #4"],
+  ["operational no-write stop", "agents", "Operational stop"],
+  ["issue branch PR discipline", "contributing", "1 Issue = 1 branch = 1 PR"],
+  ["local verification", "contributing", "./scripts/verify.sh"],
+  ["approved plan evidence", "pullRequestTemplate", "Approved implementation plan"],
+  ["reviewed head evidence", "pullRequestTemplate", "headRefOid"],
+  ["real-use evidence", "pullRequestTemplate", "Real-use Gate"],
+  ["security evidence", "pullRequestTemplate", "Security / Secret / Permissions"],
+  ["assessment evidence", "pullRequestTemplate", "Reviewer Assessment"],
+  ["exact head review", "workflow", "exact base/head"],
+  ["stale approval invalidation", "workflow", "stale approval"],
+  ["ruleset verification", "workflow", "effective Ruleset"],
+  ["atomic merge binding", "workflow", "--match-head-commit"],
+  ["issue retention", "workflow", "Issueを自動closeしない"],
+]) {
+  test(`rejects repository documentation missing ${name}`, () => {
+    const documentation = loadRepositoryDocumentation();
+    assert.ok(documentation[field].includes(phrase), `fixture must contain ${phrase}`);
+    documentation[field] = documentation[field].replaceAll(phrase, "removed-required-phrase");
+    assert.throws(
+      () => validateRepositoryDocumentation(documentation),
+      /repository documentation/,
+    );
+  });
+}
