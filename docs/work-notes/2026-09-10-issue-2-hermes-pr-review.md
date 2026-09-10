@@ -34,10 +34,11 @@
 
 ## 検証
 
-- `node --test scripts/test-reviewer-skill-contract.mjs`: 途中段階30件成功。
-- `./scripts/verify.sh`: Task 2時点で成功。最終HEADでは全変更後に再実行する。
+- `node --test scripts/test-reviewer-skill-contract.mjs`: 38件成功。
+- `./scripts/verify.sh`: 全変更を含むローカルHEADで成功。Node tests 83件成功、shell test suite成功、must tools成功。
 - `./scripts/check-doc-links.sh`: broken links 0、orphans 0。
 - `git diff --check`: 成功。
+- secret-like value scan: 検出0件。
 
 ## Real-use Gate
 
@@ -51,7 +52,7 @@ Webhook、Ruleset、repository専用Secret・token、自動Mergeのlive有効化
 
 ## 未完了 / 次の作業
 
-- PR #4をpushし、GitHub Actions `verify`の実結果を確認する。
+- PR #4の最新HEADでGitHub Actions `verify`の実結果を確認する。
 - `knryt`がPR #4を手動レビュー・Mergeする。
 - Issue #3でHermes Route、Secret、token、Webhook、effective Rulesetを段階的に有効化する。
 - PR #1の`synchronize`から同一HEADのformal review、Approve、Mergeまでをreal E2E確認する。

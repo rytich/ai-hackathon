@@ -283,7 +283,7 @@
 
   Expected: PASS。
 
-- [ ] **Step 5: Task 5をcommitする**
+- [x] **Step 5: Task 5をcommitする**
 
   ```bash
   git add docs/decisions docs/planning docs/work-notes docs/index.md scripts/test-reviewer-skill-contract.mjs
@@ -302,29 +302,29 @@
 - Consumes: Tasks 1-5の全成果物。
 - Produces: ローカル検証証跡、objective review、手動bootstrap review可能なPR #4。
 
-- [ ] **Step 1: 全quality gateを実行する**
+- [x] **Step 1: 全quality gateを実行する**
 
   Run: `./scripts/verify.sh`
 
   Expected: 全Node/シェルテスト、tool check、docs link、diff checkが成功。
 
-- [ ] **Step 2: secretとscopeを確認する**
+- [x] **Step 2: secretとscopeを確認する**
 
   Run: `git diff --check && git diff --name-only main...HEAD`
 
   Expected: Issue #2のrepository実装だけが含まれ、Secret、token、Hermes host設定が含まれない。
 
-- [ ] **Step 3: work noteへ実測結果を記録する**
+- [x] **Step 3: work noteへ実測結果を記録する**
 
   テスト件数、成功結果、未実施のlive gate、bootstrap例外、Issue #3依存を記録する。
 
-- [ ] **Step 4: 変更をpushする**
+- [x] **Step 4: 変更をpushする**
 
   ```bash
   git push origin 1a-m4/issue-2-hermes-pr-review
   ```
 
-- [ ] **Step 5: GitHub実状態を再取得してPR #4を更新する**
+- [x] **Step 5: GitHub実状態を再取得してPR #4を更新する**
 
   PRがOpenかつ同じHEADであることを確認してから、Related Issue、What / Why / How、requirements/plan path、base/head OID、検証結果、real-use gate、security、docs、Operational stop、Assessment、bootstrap例外を本文へ反映する。
 
