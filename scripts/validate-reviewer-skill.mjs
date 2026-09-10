@@ -111,6 +111,52 @@ export function validateReviewerSkillFile(path) {
   return validateReviewerSkill(readFileSync(path, "utf8"));
 }
 
+const DOCUMENTATION_REQUIREMENTS = {
+  agents: [
+    ".agents/skills/ai-hackathon-reviewer/SKILL.md",
+    "./scripts/verify.sh",
+    "PR #4",
+    "Operational stop",
+  ],
+  contributing: ["1 Issue = 1 branch = 1 PR", "What / Why / How", "./scripts/verify.sh"],
+  pullRequestTemplate: [
+    "Related Issue",
+    "What / Why / How",
+    "Approved design",
+    "Approved implementation plan",
+    "baseRefOid",
+    "headRefOid",
+    "Real-use Gate",
+    "Security / Secret / Permissions",
+    "Docs / Knowledge",
+    "Operational stop",
+    "Reviewer Assessment",
+    "GitHub Action Result",
+  ],
+  workflow: [
+    "exact base/head",
+    "stale approval",
+    "effective Ruleset",
+    "--match-head-commit",
+    "Issueを自動closeしない",
+    "source branchを自動削除しない",
+  ],
+};
+
+export function validateRepositoryDocumentation(documentation) {
+  for (const [name, requiredPhrases] of Object.entries(DOCUMENTATION_REQUIREMENTS)) {
+    const content = documentation[name];
+    if (typeof content !== "string") {
+      fail(`repository documentation is missing: ${name}`);
+    }
+    for (const phrase of requiredPhrases) {
+      if (!content.includes(phrase)) {
+        fail(`repository documentation ${name} is missing: ${phrase}`);
+      }
+    }
+  }
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const path = process.argv[2] ?? ".agents/skills/ai-hackathon-reviewer/SKILL.md";
   validateReviewerSkillFile(path);
