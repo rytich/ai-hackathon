@@ -234,7 +234,7 @@
 
   Expected: PASS。
 
-- [ ] **Step 5: Task 4をcommitする**
+- [x] **Step 5: Task 4をcommitする**
 
   ```bash
   git add AGENTS.md CONTRIBUTING.md .github/pull_request_template.md docs/development/workflow.md scripts/test-reviewer-skill-contract.mjs
@@ -257,17 +257,17 @@
 - Consumes: requirements、implementation plan、Issue #2/#3、PR #4。
 - Produces: 採用理由、却下案、bootstrap例外、実装・検証・未完了の追跡可能な記録。
 
-- [ ] **Step 1: docs contractの失敗テストを追加する**
+- [x] **Step 1: docs contractの失敗テストを追加する**
 
   ADRに採用方式、理由、却下案、再検討条件、公式情報源、Issue #2/#3を要求する。work noteにAI profile、TDD、検証、bootstrap、人間承認、Issue #3への残作業を要求する。
 
-- [ ] **Step 2: REDを確認する**
+- [x] **Step 2: REDを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 
   Expected: ADRまたはwork note欠落でFAIL。
 
-- [ ] **Step 3: ADR、work note、索引を追加する**
+- [x] **Step 3: ADR、work note、索引を追加する**
 
   live webhook、Ruleset、token、autoMergeは未実施であることを明記し、Issue #3をOpenのまま残す。Secret値は記載しない。
 
@@ -277,7 +277,7 @@
   再検討条件: 同じRoute導入を3 repository以上で反復した場合。
   ```
 
-- [ ] **Step 4: GREENを確認する**
+- [x] **Step 4: GREENを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 

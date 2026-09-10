@@ -26,6 +26,20 @@ function loadRepositoryDocumentation() {
       new URL("docs/development/workflow.md", repositoryRoot),
       "utf8",
     ),
+    decision: readFileSync(
+      new URL(
+        "docs/decisions/2026-09-10-use-hermes-automated-pr-reviewer.md",
+        repositoryRoot,
+      ),
+      "utf8",
+    ),
+    workNote: readFileSync(
+      new URL(
+        "docs/work-notes/2026-09-10-issue-2-hermes-pr-review.md",
+        repositoryRoot,
+      ),
+      "utf8",
+    ),
   };
 }
 
@@ -168,6 +182,14 @@ for (const [name, field, phrase] of [
   ["ruleset verification", "workflow", "effective Ruleset"],
   ["atomic merge binding", "workflow", "--match-head-commit"],
   ["issue retention", "workflow", "Issueを自動closeしない"],
+  ["staged bootstrap decision", "decision", "段階的ブートストラップ"],
+  ["rejected Hermes-first approach", "decision", "Hermes先行"],
+  ["decision source", "decision", "https://docs.github.com/"],
+  ["issue dependency", "decision", "Issue #3"],
+  ["AI profile", "workNote", "AI profile: codex"],
+  ["TDD evidence", "workNote", "## TDD"],
+  ["human approval boundary", "workNote", "人間承認"],
+  ["remaining live work", "workNote", "Issue #3"],
 ]) {
   test(`rejects repository documentation missing ${name}`, () => {
     const documentation = loadRepositoryDocumentation();

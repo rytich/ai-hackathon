@@ -141,6 +141,20 @@ const DOCUMENTATION_REQUIREMENTS = {
     "Issueを自動closeしない",
     "source branchを自動削除しない",
   ],
+  decision: [
+    "段階的ブートストラップ",
+    "Hermes先行",
+    "Issue #2",
+    "Issue #3",
+    "https://docs.github.com/",
+  ],
+  workNote: [
+    "AI profile: codex",
+    "## TDD",
+    "人間承認",
+    "Issue #3",
+    "./scripts/verify.sh",
+  ],
 };
 
 export function validateRepositoryDocumentation(documentation) {
