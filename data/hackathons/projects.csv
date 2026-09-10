@@ -302,7 +302,7 @@ BigQueryテーブルのメタデータ不足を自動検出し、AIが適切な�
 また、「読む」場面では、難しい表現を平易にしてくれる「ここだけ現代語訳」、読書中の様々な疑問に答える「解説エージェント」、シーンを絵にしてより楽しめる「挿絵を生成」、「動く挿絵を生成」の機能を利用できます。",,https://zenn.dev/tea_py/articles/236d753168681e,individual,,,,,,,https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects,2026-09-10,official-list-only,
 3,10,初めての子育てをAIがサポート｜Sukusuku,すべての親御さんを支えるAI育児アシスタントアプリ「Sukusuku」です。従来のチャット型AIとは異なり、育児日記と赤ちゃんの生育情報を元に毎日の状態や育児日記の分析を毎日自動で行います。Vertex AIによる分析と、厚生労働省の乳幼児健診データをRAG技術で活用した科学的根拠に基づく総合評価を実施します。不足情報はGoogle Search機能で自動補完し、毎日育児専門家からアドバイスを受けているような安心感のある育児支援を提供します。,,https://zenn.dev/mmol93/articles/3bc9849cb0af95,individual,,,,,,,https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects,2026-09-10,official-list-only,
 3,11,たべぶい,肉好き必見！牛・豚・鳥の各部位を食べた記録を管理し、制覇率をゲーミフィケーションで楽しめるWebアプリです。最大の特徴は、Gemini APIを活用した「Agent食べ歩きコンシェルジュ」機能。ユーザーの未制覇部位を分析し、その部位が食べられる最適なお店を自動推薦します。React + FastAPI + MySQLで構築し、Google OAuth認証で手軽にログイン。写真付きで食べた部位を記録しながら、AIが次の食べ歩き先を提案してくれる、肉愛好家のための革新的なアプリケーションです。,,https://zenn.dev/articles/79518edd9ed12e/edit,team,ものたの,,,,,,https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects,2026-09-10,official-list-only,
-3,12,detection-game,"カメラで撮影して獲得したスコアで友だちと競い合おう！ 
+3,12,detection-game,"カメラで撮影して獲得したスコアで友だちと競い合おう！
 Cloud Vision APIによる物体検出結果を元にスコアを算出。
 ただし同じような画像を何度撮影してもスコアは獲得できない。
 いろんなものを撮影できるところでポイントを稼ごう！ただし勝手に人や人のものを撮影するのはやめましょう。",,https://zenn.dev/megane_otoko/articles/94_ai_agent_hackathon_3rd,individual,,,,,,,https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects,2026-09-10,official-list-only,"同一記事URLが公式一覧内で複数回掲載: entry_order 12, 14"

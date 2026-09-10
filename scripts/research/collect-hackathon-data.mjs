@@ -273,7 +273,7 @@ export function normalizeProjects(
 }
 
 function csvValue(value) {
-  const text = value == null ? "" : String(value);
+  const text = value == null ? "" : String(value).replace(/[ \t]+(?=\r?\n|$)/g, "");
   return /[",\r\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 
@@ -293,12 +293,22 @@ function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
+export function currentTokyoDate(date = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Tokyo",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 async function fetchText(url) {
   let lastError;
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     try {
       const response = await fetch(url, {
         headers: { "user-agent": "rytich-ai-hackathon-research/1.0" },
+        signal: AbortSignal.timeout(15_000),
       });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       return await response.text();
@@ -310,14 +320,28 @@ async function fetchText(url) {
   throw new Error(`Failed to fetch ${url}: ${lastError?.message}`);
 }
 
-async function loadEdition(entry, cacheDirectory) {
+async function loadEdition(entry, cacheDirectory, options = {}) {
   fs.mkdirSync(cacheDirectory, { recursive: true });
   const cachePath = path.join(cacheDirectory, `vol-${entry.edition}.html`);
-  if (!fs.existsSync(cachePath)) {
+  const metadataPath = `${cachePath}.json`;
+  if (!options.offlineCache) {
     const html = await fetchText(entry.url);
     fs.writeFileSync(cachePath, html);
+    fs.writeFileSync(
+      metadataPath,
+      `${JSON.stringify({ sourceUrl: entry.url, checkedAt: options.checkedAt }, null, 2)}\n`,
+    );
+  } else if (!fs.existsSync(cachePath) || !fs.existsSync(metadataPath)) {
+    throw new Error(`Offline cache or metadata is missing for edition ${entry.edition}`);
   }
-  return extractNextData(fs.readFileSync(cachePath, "utf8"));
+  const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8"));
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(metadata.checkedAt ?? "")) {
+    throw new Error(`Offline cache metadata has no valid checkedAt for edition ${entry.edition}`);
+  }
+  return {
+    hackathon: extractNextData(fs.readFileSync(cachePath, "utf8")),
+    checkedAt: metadata.checkedAt,
+  };
 }
 
 function parseOptions(args) {
@@ -328,6 +352,7 @@ function parseOptions(args) {
     reportAwardMismatches: null,
     enrichAwards: null,
     cacheDirectory: ".cache/hackathons",
+    offlineCache: false,
   };
   for (let index = 0; index < args.length; index += 1) {
     const value = args[index];
@@ -335,6 +360,7 @@ function parseOptions(args) {
     else if (value === "--output") options.output = args[++index];
     else if (value === "--csv-output") options.csvOutput = args[++index];
     else if (value === "--cache-directory") options.cacheDirectory = args[++index];
+    else if (value === "--offline-cache") options.offlineCache = true;
     else if (value === "--report-award-mismatches") {
       options.reportAwardMismatches = args[++index];
     } else if (value === "--enrich-awards") {
@@ -344,12 +370,32 @@ function parseOptions(args) {
   return options;
 }
 
-async function enrichAwardProjects(datasetPath, csvOutput, cacheDirectory) {
+export function resetAwardEnrichment(project) {
+  project.article_title = null;
+  project.github_urls = [];
+  project.demo_urls = [];
+  project.technologies = [];
+  project.verification_status = "official-list-only";
+  const retainedNotes = (project.notes ?? "")
+    .split("; ")
+    .filter(
+      (note) => note.length > 0 && !note.startsWith("受賞記事を取得・解析できず:"),
+    );
+  project.notes = retainedNotes.length > 0 ? retainedNotes.join("; ") : null;
+}
+
+async function enrichAwardProjects(datasetPath, csvOutput, cacheDirectory, offlineCache) {
   if (!csvOutput) throw new Error("--enrich-awards requires --csv-output");
   const dataset = JSON.parse(fs.readFileSync(datasetPath, "utf8"));
   const winners = dataset.projects.filter((project) => project.awards.length > 0);
   const articleCache = path.join(cacheDirectory, "articles");
   fs.mkdirSync(articleCache, { recursive: true });
+  const actualCheckedAt = currentTokyoDate();
+  if (!offlineCache && dataset.checked_at !== actualCheckedAt) {
+    throw new Error(
+      `Dataset checked_at ${dataset.checked_at} differs from article fetch date ${actualCheckedAt}; refresh the dataset first`,
+   );
+  }
   let checked = 0;
   let failed = 0;
   for (const [index, project] of winners.entries()) {
@@ -357,9 +403,24 @@ async function enrichAwardProjects(datasetPath, csvOutput, cacheDirectory) {
       articleCache,
       `vol-${project.edition}-entry-${project.entry_order}.html`,
     );
+    const metadataPath = `${cachePath}.json`;
+    resetAwardEnrichment(project);
     try {
-      if (!fs.existsSync(cachePath)) {
+      if (!offlineCache) {
         fs.writeFileSync(cachePath, await fetchText(project.article_url));
+        fs.writeFileSync(
+          metadataPath,
+          `${JSON.stringify({ sourceUrl: project.article_url, checkedAt: actualCheckedAt }, null, 2)}\n`,
+        );
+      } else if (!fs.existsSync(cachePath) || !fs.existsSync(metadataPath)) {
+        throw new Error("offline cache or metadata is missing");
+      } else {
+        const metadata = JSON.parse(fs.readFileSync(metadataPath, "utf8"));
+        if (metadata.checkedAt !== dataset.checked_at) {
+          throw new Error(
+            `offline article cache checkedAt ${metadata.checkedAt ?? "missing"} differs from dataset ${dataset.checked_at}`,
+          );
+        }
       }
       const article = extractArticleData(fs.readFileSync(cachePath, "utf8"));
       const links = classifyLinks(article);
@@ -383,16 +444,55 @@ async function enrichAwardProjects(datasetPath, csvOutput, cacheDirectory) {
   if (failed > 0) process.exitCode = 1;
 }
 
-async function reportAwardMismatches(datasetPath, cacheDirectory) {
-  const dataset = JSON.parse(fs.readFileSync(datasetPath, "utf8"));
-  const keys = new Set(dataset.projects.map((project) => project.article_url));
+function awardKey(record) {
+  return `${record.edition}:${record.entry_order}`;
+}
+
+function sortedAwards(record) {
+  return [...(record?.awards ?? [])].sort();
+}
+
+export function compareAwardAssignments(actualRecords, expectedRecords) {
+  const actual = new Map(actualRecords.map((record) => [awardKey(record), record]));
+  const expected = new Map(expectedRecords.map((record) => [awardKey(record), record]));
   const mismatches = [];
-  for (const entry of EDITIONS) {
-    const hackathon = await loadEdition(entry, cacheDirectory);
-    for (const articleUrl of extractAwards(hackathon.resultMarkdown).keys()) {
-      if (!keys.has(articleUrl)) mismatches.push(`${entry.edition}: ${articleUrl}`);
+  for (const key of new Set([...actual.keys(), ...expected.keys()])) {
+    const actualRecord = actual.get(key);
+    const expectedRecord = expected.get(key);
+    const actualAwards = sortedAwards(actualRecord).join(" | ") || "none";
+    const expectedAwards = sortedAwards(expectedRecord).join(" | ") || "none";
+    if (
+      !actualRecord ||
+      !expectedRecord ||
+      actualRecord.article_url !== expectedRecord.article_url ||
+      actualAwards !== expectedAwards
+    ) {
+      mismatches.push(
+        `${key}: expected ${expectedAwards} at ${expectedRecord?.article_url ?? "missing"}; got ${actualAwards} at ${actualRecord?.article_url ?? "missing"}`,
+      );
     }
   }
+  return mismatches;
+}
+
+async function reportAwardMismatches(datasetPath, cacheDirectory, offlineCache) {
+  const dataset = JSON.parse(fs.readFileSync(datasetPath, "utf8"));
+  const expectedRecords = [];
+  for (const entry of EDITIONS) {
+    const loaded = await loadEdition(entry, cacheDirectory, {
+      offlineCache,
+      checkedAt: currentTokyoDate(),
+    });
+    expectedRecords.push(
+      ...normalizeProjects(
+        loaded.hackathon,
+        entry.edition,
+        entry.url,
+        loaded.checkedAt,
+      ),
+    );
+  }
+  const mismatches = compareAwardAssignments(dataset.projects, expectedRecords);
   console.log(`award mismatches: ${mismatches.length}`);
   mismatches.forEach((value) => console.log(`- ${value}`));
   if (mismatches.length > 0) process.exitCode = 1;
@@ -405,6 +505,7 @@ async function main() {
       options.enrichAwards,
       options.csvOutput,
       options.cacheDirectory,
+      options.offlineCache,
     );
     return;
   }
@@ -412,32 +513,45 @@ async function main() {
     await reportAwardMismatches(
       options.reportAwardMismatches,
       options.cacheDirectory,
+      options.offlineCache,
     );
     return;
   }
-  if (!options.checkedAt || !options.output || !options.csvOutput) {
+  if ((!options.checkedAt && !options.offlineCache) || !options.output || !options.csvOutput) {
     throw new Error(
-      "Usage: collect-hackathon-data.mjs --checked-at YYYY-MM-DD --output FILE --csv-output FILE",
+      "Usage: collect-hackathon-data.mjs (--checked-at YYYY-MM-DD | --offline-cache) --output FILE --csv-output FILE",
     );
   }
 
   const projects = [];
+  const checkedDates = new Set();
   for (const [index, entry] of EDITIONS.entries()) {
-    const hackathon = await loadEdition(entry, options.cacheDirectory);
+    const loaded = await loadEdition(entry, options.cacheDirectory, {
+      offlineCache: options.offlineCache,
+      checkedAt: options.checkedAt,
+    });
+    checkedDates.add(loaded.checkedAt);
     const records = normalizeProjects(
-      hackathon,
+      loaded.hackathon,
       entry.edition,
       entry.url,
-      options.checkedAt,
+      loaded.checkedAt,
     );
     projects.push(...records);
     console.log(`edition ${entry.edition}: ${records.length}`);
     if (index < EDITIONS.length - 1) await sleep(500);
   }
 
+  if (checkedDates.size !== 1) {
+    throw new Error(
+      `Cached editions have different checkedAt values: ${[...checkedDates].join(", ")}`,
+    );
+  }
+  const [datasetCheckedAt] = checkedDates;
+
   const dataset = {
     schema_version: "1.0.0",
-    checked_at: options.checkedAt,
+    checked_at: datasetCheckedAt,
     projects,
   };
   fs.mkdirSync(path.dirname(options.output), { recursive: true });

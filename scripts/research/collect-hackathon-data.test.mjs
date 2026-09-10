@@ -3,11 +3,13 @@ import test from "node:test";
 
 import {
   classifyLinks,
+  compareAwardAssignments,
   extractAwards,
   extractArticleData,
   extractExplicitTechnologies,
   extractNextData,
   normalizeProjects,
+  resetAwardEnrichment,
   toCsv,
 } from "./collect-hackathon-data.mjs";
 
@@ -204,4 +206,43 @@ test("本文に明示された許可技術だけを抽出する", () => {
     "Gemini API",
     "Firebase",
   ]);
+});
+
+test("公式結果とdatasetの賞名を双方向に比較する", () => {
+  const officialRecords = normalizeProjects(hackathon, 4, sourceUrl, "2026-09-10");
+  const changed = structuredClone(officialRecords);
+  changed[0].awards = ["優秀賞"];
+
+  const mismatches = compareAwardAssignments(changed, officialRecords);
+
+  assert.ok(mismatches.some((value) => value.includes("expected 最優秀賞")));
+});
+
+test("受賞記事の再確認前に古い派生値と確認状態を消去する", () => {
+  const record = {
+    ...normalizeProjects(hackathon, 4, sourceUrl, "2026-09-10")[0],
+    article_title: "古いタイトル",
+    github_urls: ["https://github.com/example/old"],
+    demo_urls: ["https://old.example"],
+    technologies: ["Cloud Run"],
+    verification_status: "article-checked",
+    notes: "公式一覧の説明が空欄; 受賞記事を取得・解析できず: HTTP 500",
+  };
+
+  resetAwardEnrichment(record);
+
+  assert.equal(record.article_title, null);
+  assert.deepEqual(record.github_urls, []);
+  assert.deepEqual(record.demo_urls, []);
+  assert.deepEqual(record.technologies, []);
+  assert.equal(record.verification_status, "official-list-only");
+  assert.equal(record.notes, "公式一覧の説明が空欄");
+});
+
+test("notesが未設定なら再確認後もnullを維持する", () => {
+  const record = normalizeProjects(hackathon, 4, sourceUrl, "2026-09-10")[0];
+
+  resetAwardEnrichment(record);
+
+  assert.equal(record.notes, null);
 });

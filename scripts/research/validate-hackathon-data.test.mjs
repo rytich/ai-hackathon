@@ -117,3 +117,44 @@ test("有効なJSONとCSVの同一レコードを受理する", () => {
 
   assert.deepEqual(errors, []);
 });
+
+test("CSVの非キー列がJSONと異なる場合を拒否する", () => {
+  const record = project({ awards: ["最優秀賞"] });
+  const changedCsv = csvRow(record).replace("最優秀賞", "優秀賞");
+  const errors = validateDataset(dataset([record]), `${header}\n${changedCsv}\n`);
+
+  assert.ok(errors.some((error) => error.includes("JSON/CSV value mismatch")));
+});
+
+test("schemaで許可されない型と追加プロパティを拒否する", () => {
+  const invalid = project({ is_finalist: "yes", unexpected: true });
+  const errors = validateDataset(
+    dataset([invalid]),
+    `${header}\n${csvRow(invalid)}\n`,
+  );
+
+  assert.ok(errors.some((error) => error.includes("is_finalist")));
+  assert.ok(errors.some((error) => error.includes("unexpected property")));
+});
+
+test("datasetとrecordの確認日不一致を拒否する", () => {
+  const record = project({ checked_at: "2026-09-09" });
+  const errors = validateDataset(
+    dataset([record]),
+    `${header}\n${csvRow(record)}\n`,
+  );
+
+  assert.ok(errors.some((error) => error.includes("checked_at differs")));
+});
+
+test("期待件数とentry_orderの欠落を拒否する", () => {
+  const first = project({ entry_order: 1 });
+  const third = project({ entry_order: 3, article_url: "https://zenn.dev/example/articles/third" });
+  const errors = validateDataset(
+    dataset([first, third]),
+    `${header}\n${csvRow(first)}\n${csvRow(third)}\n`,
+    { expectedCounts: { 1: 3, 2: 0, 3: 0, 4: 0 } },
+  );
+
+  assert.ok(errors.some((error) => error.includes("entry_order sequence")));
+});

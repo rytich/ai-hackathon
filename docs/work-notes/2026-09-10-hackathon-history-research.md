@@ -5,7 +5,7 @@
 - Issue: なし（ユーザーの直接依頼）
 - Branch: `1a-m4/hackathon-history-research`
 - PR: 未作成
-- Spec/Task: `docs/superpowers/specs/2026-09-10-hackathon-history-research-design.md` / `docs/superpowers/plans/2026-09-10-hackathon-history-research.md`
+- Spec/Task: `docs/planning/requirements/2026-09-10-hackathon-history-research-design.md` / `docs/planning/implementation/2026-09-10-hackathon-history-research.md`
 - Agent: Codex
 - AI profile: `codex`
 
@@ -15,14 +15,14 @@
 - Labels: なし
 - Depends on: Zenn公式ハッカソンページと提出記事の公開状態
 - Dependency decision: Proceed with guardrails
-- Parallel safety: 専用worktreeで単独実行。サブエージェント不使用。
+- Parallel safety: 専用worktreeで実装し、完了前に読み取り専用レビューエージェントで客観レビューした。
 
 ## Spec Kit / GitHub 同期
 
 - Spec Kit tasks: 未使用
 - GitHub Issue: 未作成。ユーザーが直接依頼し、このセッションで設計・計画をレビューしたため専用ブランチで実行した。
 - Completed task IDs: 実行計画 Task 1〜6
-- Remaining task IDs: Task 7（remote push）
+- Remaining task IDs: なし（remote push済み。レビュー修正分は追加push予定）
 - Issue state: 該当なし
 - GitHub state re-fetched before comment/merge/close: GitHubへのcomment、merge、closeなし
 - Closed Issue comment avoided: 該当なし
@@ -43,6 +43,7 @@
 - 公式結果発表から第1回8件、第2回9件、第3回6件、第4回9件、合計32件の受賞情報を記事URLで対応付けた。
 - 受賞32件の記事本文を確認し、プロジェクトGitHub URLが確認できた9件、明確な公開デモURLが確認できた3件、限定語彙で明示された技術を記録した。
 - Zenn記事同期用GitHubリポジトリ、単発の依存ライブラリ、競合サービスURLをプロジェクトURLとして扱わない回帰テストを追加した。
+- 客観レビュー後、通常取得時のキャッシュ強制更新、オフラインキャッシュの確認日メタデータ、受賞名の双方向照合、JSON/CSV全17列一致、JSON Schema検証、回別件数・掲載順検証、記事再確認失敗時の古い派生値消去を追加した。
 - 公式一覧で説明文が空欄の5件は `project_description: null` とした。
 - 第3回entry order 12と14の同一記事URL二重掲載は統合せず、公式掲載どおり2件を維持して `notes` に記録した。
 
@@ -63,16 +64,16 @@
 
 - [x] lint/static analysis: `git diff --check`
 - [x] typecheck: Node.js実行時import・構文検証をunit testで確認
-- [x] unit test: `node --test scripts/research/*.test.mjs` — 15 passed / 0 failed
-- [x] integration/e2e: 公式4ページと受賞32記事を取得、589件生成、award mismatches 0
+- [x] unit test: `node --test scripts/research/*.test.mjs` — 22 passed / 0 failed
+- [x] integration/e2e: 公式4ページと受賞32記事を再取得、589件生成、schema/JSON/CSV errors 0、award mismatches 0
 - [x] build: JSON/CSV生成成功
 - observable outcome: 第1〜4回が128 / 158 / 108 / 195件、合計589件。JSON/CSV errors 0。docs broken links 0、orphans 0。秘密値パターン一致0。
 - local/CI difference: 専用CIは未追加。公開ページの再取得にはネットワークが必要で、unit testはオフライン実行可能。
 
 ## 未完了 / 次の作業
 
-- ブランチをremoteへpushする。
-- PR作成、レビュー、mainへのmergeは未実施。
+- レビュー修正コミットをremoteへpushし、PRを作成する。
+- mainへのmergeは未実施。
 - 非受賞作品のGitHub・デモ・技術情報を必要とする場合は、取得負荷と検証基準を別途定めて段階的に確認する。
 
 ## 関連リンク

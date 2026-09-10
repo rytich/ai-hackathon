@@ -8,7 +8,7 @@
 
 **Tech Stack:** Node.js 標準ライブラリ、JSON Schema Draft 2020-12、CSV、Markdown、Node.js test runner
 
-**Spec:** `docs/superpowers/specs/2026-09-10-hackathon-history-research-design.md`
+**Spec:** `docs/planning/requirements/2026-09-10-hackathon-history-research-design.md`
 
 ## Global Constraints
 

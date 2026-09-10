@@ -123,4 +123,4 @@ CSV は配列項目を ` | ` 区切りで表現し、JSON と同じ行数・同�
 
 ## 実行計画
 
-[第1〜4回 AI Agent Hackathon 調査データ Implementation Plan](../plans/2026-09-10-hackathon-history-research.md)
+[第1〜4回 AI Agent Hackathon 調査データ Implementation Plan](../implementation/2026-09-10-hackathon-history-research.md)
