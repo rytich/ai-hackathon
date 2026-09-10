@@ -119,3 +119,7 @@ CSV は配列項目を ` | ` 区切りで表現し、JSON と同じ行数・同�
 ## 完了条件
 
 第1〜4回の全提出作品が JSON と CSV に格納され、受賞作品を `awards` で抽出できること。取得不能な情報は推測ではなく null または未確認状態として明示され、一次情報・確認日・件数照合の結果を各回の Markdown から追跡できること。
+
+## 実行計画
+
+[第1〜4回 AI Agent Hackathon 調査データ Implementation Plan](../plans/2026-09-10-hackathon-history-research.md)
