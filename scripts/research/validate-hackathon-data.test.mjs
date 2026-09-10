@@ -7,6 +7,7 @@ const header = [
   "edition",
   "entry_order",
   "project_name",
+  "project_description",
   "article_title",
   "article_url",
   "participant_type",
@@ -27,6 +28,7 @@ function project(overrides = {}) {
     edition: 1,
     entry_order: 1,
     project_name: "Sample",
+    project_description: "Official description",
     article_title: "Sample article",
     article_url: "https://zenn.dev/example/articles/sample",
     participant_type: "individual",
@@ -58,6 +60,7 @@ function csvRow(record) {
     record.edition,
     record.entry_order,
     record.project_name,
+    record.project_description ?? "",
     record.article_title ?? "",
     record.article_url,
     record.participant_type,
@@ -103,4 +106,14 @@ test("必須URLと確認日の欠落を拒否する", () => {
   );
 
   assert.ok(errors.some((error) => error.includes("required field")));
+});
+
+test("有効なJSONとCSVの同一レコードを受理する", () => {
+  const record = project();
+  const errors = validateDataset(
+    dataset([record]),
+    `${header}\n${csvRow(record)}\n`,
+  );
+
+  assert.deepEqual(errors, []);
 });

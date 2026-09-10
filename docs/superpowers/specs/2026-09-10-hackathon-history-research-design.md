@@ -73,6 +73,7 @@ AF 自体の運用スクリプトは既存の `scripts/` に維持し、プロ�
 | `edition` | integer | 1〜4 |
 | `entry_order` | integer | 公式一覧内の掲載順 |
 | `project_name` | string | 公式一覧の作品名 |
+| `project_description` | string/null | 公式一覧に掲載された作品説明 |
 | `article_title` | string/null | 提出記事のタイトル |
 | `article_url` | string | 公式一覧がリンクする Zenn 記事 |
 | `participant_type` | string | `individual`、`team`、`unknown` |

@@ -5,6 +5,7 @@ export const CSV_COLUMNS = [
   "edition",
   "entry_order",
   "project_name",
+  "project_description",
   "article_title",
   "article_url",
   "participant_type",
@@ -142,8 +143,9 @@ export function validateDataset(dataset, csvText) {
       (record) => `${record.edition}:${record.entry_order}:${record.article_url}`,
     ),
   );
+  const articleUrlIndex = csvHeader.indexOf("article_url");
   for (const row of csvRows) {
-    const csvKey = `${row[0]}:${row[1]}:${row[4]}`;
+    const csvKey = `${row[0]}:${row[1]}:${row[articleUrlIndex]}`;
     if (!jsonKeys.has(csvKey)) errors.push(`CSV key missing from JSON: ${csvKey}`);
   }
   return errors;
