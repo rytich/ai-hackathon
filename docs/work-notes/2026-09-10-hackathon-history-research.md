@@ -4,7 +4,7 @@
 
 - Issue: なし（ユーザーの直接依頼）
 - Branch: `1a-m4/hackathon-history-research`
-- PR: 未作成
+- PR: https://github.com/rytich/ai-hackathon/pull/1
 - Spec/Task: `docs/planning/requirements/2026-09-10-hackathon-history-research-design.md` / `docs/planning/implementation/2026-09-10-hackathon-history-research.md`
 - Agent: Codex
 - AI profile: `codex`
@@ -24,7 +24,7 @@
 - Completed task IDs: 実行計画 Task 1〜6
 - Remaining task IDs: なし（remote push済み。レビュー修正分は追加push予定）
 - Issue state: 該当なし
-- GitHub state re-fetched before comment/merge/close: GitHubへのcomment、merge、closeなし
+- GitHub state re-fetched before PR creation: 同一headブランチの既存PRなし、remote head `d09c5db`
 - Closed Issue comment avoided: 該当なし
 - Mismatch rationale: Issue未作成のため同期対象なし。レビュー用PRはユーザーの明示指示がある場合だけ作成する。
 
@@ -72,8 +72,8 @@
 
 ## 未完了 / 次の作業
 
-- レビュー修正コミットをremoteへpushし、PRを作成する。
-- mainへのmergeは未実施。
+- PR #1を作成し、base `main`、head `1a-m4/hackathon-history-research`、mergeableを確認した。
+- mainへのmergeは未実施。PRレビュー後に判断する。
 - 非受賞作品のGitHub・デモ・技術情報を必要とする場合は、取得負荷と検証基準を別途定めて段階的に確認する。
 
 ## 関連リンク
