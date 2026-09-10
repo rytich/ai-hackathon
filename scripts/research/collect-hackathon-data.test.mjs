@@ -83,3 +83,33 @@ test("CSVは固定ヘッダーを持ちカンマを引用する", () => {
   assert.match(csv, /^edition,entry_order,project_name,project_description,/);
   assert.match(csv, /"A, B"/);
 });
+
+test("公式説明の欠落と同一記事URLの重複をnotesに残す", () => {
+  const duplicateUrl = "https://zenn.dev/alice/articles/duplicate";
+  const records = normalizeProjects(
+    {
+      resultMarkdown: "",
+      projects: [
+        {
+          projectName: "First",
+          teamName: "",
+          url: duplicateUrl,
+          description: "",
+        },
+        {
+          projectName: "Second",
+          teamName: "",
+          url: duplicateUrl,
+          description: "別作品として掲載",
+        },
+      ],
+    },
+    3,
+    sourceUrl,
+    "2026-09-10",
+  );
+
+  assert.match(records[0].notes, /公式一覧の説明が空欄/);
+  assert.match(records[0].notes, /entry_order 1, 2/);
+  assert.match(records[1].notes, /entry_order 1, 2/);
+});
