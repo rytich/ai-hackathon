@@ -17,6 +17,7 @@
 | 指示の書き方（What/Why/How）を知る | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
 | 企画・差分にレビューを返す | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
 | 調査メモを残す / 読む（情報ソース付き） | [planning/research/](planning/research/) |
+| 第1〜4回 AI Agent Hackathon の提出・受賞作品を調査する | [superpowers/specs/2026-09-10-hackathon-history-research-design.md](superpowers/specs/2026-09-10-hackathon-history-research-design.md) |
 | 要件定義を残す / 読む | [planning/requirements/](planning/requirements/) |
 | なぜそう決めたかを残す / 読む | [decisions/](decisions/) |
 | 作業サマリーを残す / 読む | [work-notes/](work-notes/) |
