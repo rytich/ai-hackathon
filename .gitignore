@@ -11,6 +11,9 @@ outputs/*
 # AI agent worktree isolation
 .worktrees/
 
+# Public-page fetch cache used by research scripts
+/.cache/hackathons/
+
 # AF effect metrics are stored in a separate private repository for AF development.
 .af-metrics/
 .af-metrics.local.json

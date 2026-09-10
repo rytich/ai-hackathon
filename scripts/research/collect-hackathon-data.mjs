@@ -80,14 +80,32 @@ export function normalizeProjects(
   checkedAt,
 ) {
   const awards = extractAwards(hackathon.resultMarkdown);
+  const normalizedUrls = hackathon.projects.map((project) =>
+    normalizeUrl(project.url),
+  );
+  const duplicateOrders = new Map();
+  normalizedUrls.forEach((articleUrl, index) => {
+    const orders = duplicateOrders.get(articleUrl) ?? [];
+    orders.push(index + 1);
+    duplicateOrders.set(articleUrl, orders);
+  });
   return hackathon.projects.map((project, index) => {
-    const articleUrl = normalizeUrl(project.url);
+    const articleUrl = normalizedUrls[index];
     const teamName = project.teamName?.trim() || null;
+    const projectDescription = project.description?.trim() || null;
+    const notes = [];
+    if (!projectDescription) notes.push("公式一覧の説明が空欄");
+    const matchingOrders = duplicateOrders.get(articleUrl) ?? [];
+    if (matchingOrders.length > 1) {
+      notes.push(
+        `同一記事URLが公式一覧内で複数回掲載: entry_order ${matchingOrders.join(", ")}`,
+      );
+    }
     return {
       edition,
       entry_order: index + 1,
       project_name: project.projectName.trim(),
-      project_description: project.description?.trim() || null,
+      project_description: projectDescription,
       article_title: null,
       article_url: articleUrl,
       participant_type: teamName ? "team" : "individual",
@@ -100,7 +118,7 @@ export function normalizeProjects(
       source_url: sourceUrl,
       checked_at: checkedAt,
       verification_status: "official-list-only",
-      notes: null,
+      notes: notes.length > 0 ? notes.join("; ") : null,
     };
   });
 }
