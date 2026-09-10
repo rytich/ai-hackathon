@@ -46,6 +46,11 @@
 - 客観レビュー後、通常取得時のキャッシュ強制更新、オフラインキャッシュの確認日メタデータ、受賞名の双方向照合、JSON/CSV全17列一致、JSON Schema検証、回別件数・掲載順検証、記事再確認失敗時の古い派生値消去を追加した。
 - 公式一覧で説明文が空欄の5件は `project_description: null` とした。
 - 第3回entry order 12と14の同一記事URL二重掲載は統合せず、公式掲載どおり2件を維持して `notes` に記録した。
+- ユーザーが目的を「第5回で優勝するために開発する製品企画の有益な参考情報」と明確化したため、第5回の公式審査軸・必須技術・提出条件を2026-09-10に再確認した。
+- 外部リンクが失効しても参照できるよう、人間用単体HTMLとAI向けMarkdownへ全589件の作品名、公式説明、受賞、参加形態、URL文字列、確認状態を収録した。
+- 人間用HTMLへ歴代最優秀賞、回別・課題領域別グラフ、機能シグナル比較、6つの企画ゲート、回・受賞・参加形態フィルターを追加した。
+- 過去傾向を第5回の受賞理由と誤認しないよう、キーワード一次分類、相関と因果の境界、受賞作品だけに記事由来技術があるという比較制約を明記した。
+- `generate-strategy-report.mjs` と9件のテストを追加し、分類誤判定、HTML/Markdownインジェクション、非HTTP(S) URL、外部アセット依存、提出条件・全件コンテキスト欠落、参加形態不明の誤表示を検査した。
 
 ## Scope Discipline
 
@@ -64,7 +69,9 @@
 
 - [x] lint/static analysis: `git diff --check`
 - [x] typecheck: Node.js実行時import・構文検証をunit testで確認
-- [x] unit test: `node --test scripts/research/*.test.mjs` — 22 passed / 0 failed
+- [x] unit test: `node --test scripts/research/*.test.mjs` — 31 passed / 0 failed（うち戦略レポート9件）
+- [x] repository Node tests: `node --test scripts/test-*.mjs scripts/research/*.test.mjs` — 76 passed / 0 failed
+- [x] repository shell tests: `for f in scripts/test-*.sh; do bash "$f"; done` — 全スクリプト成功
 - [x] integration/e2e: 公式4ページと受賞32記事を再取得、589件生成、schema/JSON/CSV errors 0、award mismatches 0
 - [x] build: JSON/CSV生成成功
 - observable outcome: 第1〜4回が128 / 158 / 108 / 195件、合計589件。JSON/CSV errors 0。docs broken links 0、orphans 0。秘密値パターン一致0。

@@ -8,6 +8,7 @@ sources:
   - https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects
   - https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects
   - https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects
+  - https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol5
 ---
 
 # 第1〜4回 AI Agent Hackathon 提出・受賞プロジェクト調査
@@ -21,6 +22,8 @@ Zenn主催「AI Agent / Agentic AI Hackathon with Google Cloud」の第1〜4回�
 - [全589件のJSON](../../../../data/hackathons/projects.json)
 - [全589件のCSV](../../../../data/hackathons/projects.csv)
 - [JSON Schema](../../../../data/hackathons/schema.json)
+- [第5回優勝に向けた人間用HTMLレポート](vol1-4-strategy-report.html)
+- [第5回優勝に向けたAIコンテキスト](vol1-4-strategy-context.md)
 - [第1回](vol-1.md)（128件、受賞8件）
 - [第2回](vol-2.md)（158件、受賞9件）
 - [第3回](vol-3.md)（108件、受賞6件）
@@ -37,6 +40,14 @@ Zenn主催「AI Agent / Agentic AI Hackathon with Google Cloud」の第1〜4回�
 - `demo_urls`: 受賞記事に明示された公開アプリ用ホストまたは明確なデモリンクだけを保存している。
 - `technologies`: 記事本文に明示された限定語彙だけを保存しており、技術構成全体を網羅する値ではない。
 - `null` / 空配列: 公式ページまたは記事から確認できなかった。検索による推測補完はしていない。
+
+## 第5回の製品企画への利用
+
+人間用HTMLとAI向けMarkdownは、過去4回の全589件と第5回の公式審査条件を同じ視点で参照するための派生成果物である。第5回では審査軸が「課題の新規性と解決策の有効性」「自律性・エージェントらしさ」「実装品質と拡張性」に刷新されているため、過去の受賞率は発想の補助線に留め、公式3軸を優先する。
+
+- HTML: 回別・領域別グラフ、歴代最優秀賞、機能シグナル比較、企画ゲート、全作品フィルターを持つ。外部CSS・JavaScriptに依存しない。
+- Markdown: AIが企画候補の比較や競合作品の検索に使えるよう、分析前提、公式条件、全589件の説明とURL文字列を定型で保持する。
+- 分類は作品名・公式説明・記事タイトルへのキーワード規則による一次分類であり、各作品の完全な機能分類でも受賞理由の因果分析でもない。
 
 ## 集計
 
@@ -69,6 +80,10 @@ node scripts/research/collect-hackathon-data.mjs \
   --csv-output data/hackathons/projects.csv
 node scripts/research/validate-hackathon-data.mjs \
   data/hackathons/projects.json data/hackathons/projects.csv
+node scripts/research/generate-strategy-report.mjs \
+  --input data/hackathons/projects.json \
+  --html-output docs/planning/research/hackathons/vol1-4-strategy-report.html \
+  --markdown-output docs/planning/research/hackathons/vol1-4-strategy-context.md
 ```
 
 通常実行は公式ページを再取得してキャッシュを更新する。`--checked-at` には実行日を指定する。既存キャッシュを使う場合だけ `--offline-cache` を指定し、各回のキャッシュメタデータに保存された確認日を採用する。受賞記事キャッシュも同じ確認日のメタデータを持ち、datasetと日付が違う場合はenrichmentを停止する。受賞情報の再照合は次で行う。
@@ -81,6 +96,7 @@ node scripts/research/collect-hackathon-data.mjs \
 ## 確認境界
 
 - 確認日: 2026-09-10（Asia/Tokyo）
+- 第5回公式ルールの確認日: 2026-09-10（Asia/Tokyo）
 - 全提出記事の本文確認はしていない。非受賞作品は公式一覧に掲載された情報のみ。
 - GitHubリポジトリやデモの現在の稼働、ソースコード内容、ライセンスは検証対象外。
 - 第1回4件、第2回1件は公式一覧の説明が空欄。

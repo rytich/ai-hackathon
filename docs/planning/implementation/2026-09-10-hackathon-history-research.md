@@ -10,6 +10,17 @@
 
 **Spec:** `docs/planning/requirements/2026-09-10-hackathon-history-research-design.md`
 
+## 追加実装: 第5回優勝に向けた戦略レポート
+
+ユーザーの目的明確化を受け、`projects.json` から次を決定論的に生成する。
+
+- `docs/planning/research/hackathons/vol1-4-strategy-report.html`: 人間用の単体HTML。歴代最優秀賞、図表、企画ゲート、全件フィルターを含む。
+- `docs/planning/research/hackathons/vol1-4-strategy-context.md`: AI向けの第5回条件、分析、全589件の文脈。
+- `scripts/research/generate-strategy-report.mjs`: 共通分析・生成処理。
+- `scripts/research/generate-strategy-report.test.mjs`: 集計、文脈保持、単体HTML、エスケープ、分類の回帰テスト。
+
+第5回の公式条件は2026-09-10時点の公式ページを根拠にする。過去作品のキーワード分類は仮説探索用であり、受賞理由の因果として扱わない。
+
 ## Global Constraints
 
 - 確定値の一次情報はZenn公式ハッカソンページと、そこからリンクされた提出記事だけに限定する。
