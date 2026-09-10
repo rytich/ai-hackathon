@@ -146,17 +146,17 @@
 - Consumes: `pull_request`の`opened`、`synchronize`、`reopened`、`ready_for_review`。
 - Produces: job/check名`verify`、read-only permissions、`./scripts/verify.sh`を実行するCI。
 
-- [ ] **Step 1: workflow contractの失敗テストを追加する**
+- [x] **Step 1: workflow contractの失敗テストを追加する**
 
   workflow実ファイルについて、`permissions: contents: read`、4 action、job ID `verify`、checkout、`./scripts/verify.sh`を確認する。
 
-- [ ] **Step 2: REDを確認する**
+- [x] **Step 2: REDを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 
   Expected: `.github/workflows/verify.yml`欠落でFAIL。
 
-- [ ] **Step 3: workflowを最小実装する**
+- [x] **Step 3: workflowを最小実装する**
 
   `pull_request`のみをtriggerにし、`actions/checkout`でPR HEADをcheckoutして`./scripts/verify.sh`を実行する。write permission、secret、`pull_request_target`は追加しない。
 
@@ -170,12 +170,16 @@
   jobs:
     verify:
       runs-on: ubuntu-latest
+      env:
+        AF_VERIFY_PROFILE: generic
       steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v7
+          with:
+            persist-credentials: false
         - run: ./scripts/verify.sh
   ```
 
-- [ ] **Step 4: GREENを確認する**
+- [x] **Step 4: GREENを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 

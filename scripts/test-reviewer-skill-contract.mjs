@@ -8,6 +8,7 @@ const skillPath = new URL(
   "../.agents/skills/ai-hackathon-reviewer/SKILL.md",
   import.meta.url,
 );
+const workflowPath = new URL("../.github/workflows/verify.yml", import.meta.url);
 
 function loadSkill() {
   return readFileSync(skillPath, "utf8");
@@ -105,4 +106,23 @@ test("requires the stable verdict section order", () => {
   );
 
   assert.throws(() => validateReviewerSkill(markdown), /verdict section order/);
+});
+
+test("runs verify for the four allowed pull request actions with read-only permissions", () => {
+  const workflow = readFileSync(workflowPath, "utf8");
+
+  assert.match(workflow, /^name: verify$/m);
+  assert.match(workflow, /^  pull_request:$/m);
+  assert.match(
+    workflow,
+    /^    types: \[opened, synchronize, reopened, ready_for_review\]$/m,
+  );
+  assert.doesNotMatch(workflow, /pull_request_target/);
+  assert.match(workflow, /^permissions:\n  contents: read$/m);
+  assert.doesNotMatch(workflow, /^\s+\w[\w-]*: write$/m);
+  assert.match(workflow, /^  verify:$/m);
+  assert.match(workflow, /uses: actions\/checkout@v7/);
+  assert.match(workflow, /persist-credentials: false/);
+  assert.match(workflow, /AF_VERIFY_PROFILE: generic/);
+  assert.match(workflow, /run: \.\/scripts\/verify\.sh/);
 });
