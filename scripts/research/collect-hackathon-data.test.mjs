@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  classifyLinks,
   extractAwards,
+  extractArticleData,
+  extractExplicitTechnologies,
   extractNextData,
   normalizeProjects,
   toCsv,
@@ -112,4 +115,76 @@ test("公式説明の欠落と同一記事URLの重複をnotesに残す", () => 
   assert.match(records[0].notes, /公式一覧の説明が空欄/);
   assert.match(records[0].notes, /entry_order 1, 2/);
   assert.match(records[1].notes, /entry_order 1, 2/);
+});
+
+test("提出記事からタイトルと本文データを抽出する", () => {
+  const article = {
+    title: "Sample Award Project",
+    bodyHtml:
+      '<p>Cloud Run と Gemini API を利用。</p><p>デモ: <a href="https://sample.run.app">アプリを試す</a></p><a href="https://github.com/example/project">GitHub</a>',
+  };
+  const articleHtml = `<script id="__NEXT_DATA__" type="application/json">${JSON.stringify(
+    {
+      props: {
+        pageProps: {
+          article,
+          githubUrl: "https://github.com/example/project",
+          githubRepository: {
+            htmlUrl: "https://github.com/example/project",
+          },
+        },
+      },
+    },
+  )}</script>`;
+
+  const extracted = extractArticleData(articleHtml);
+  assert.equal(extracted.title, "Sample Award Project");
+  assert.match(extracted.bodyHtml, /sample\.run\.app/);
+  assert.deepEqual(extracted.githubUrls, ["https://github.com/example/project"]);
+});
+
+test("記事リンクをGitHubとデモへ分類する", () => {
+  const article = {
+    githubUrls: ["https://github.com/example/project"],
+    bodyHtml:
+      '<p>公開URL: <a href="https://sample.run.app">デモアプリ</a></p><p><a href="https://youtube.com/watch?v=abc">デモ動画</a></p>',
+  };
+
+  assert.deepEqual(classifyLinks(article), {
+    githubUrls: ["https://github.com/example/project"],
+    demoUrls: ["https://sample.run.app/"],
+  });
+});
+
+test("競合アプリへのリンクをデモURLとして扱わない", () => {
+  const article = {
+    githubUrls: [],
+    bodyHtml:
+      '<h2>競合アプリとの比較</h2><p>旅行アプリ <a href="https://competitor.example">Plaru</a> との違い</p>',
+  };
+
+  assert.deepEqual(classifyLinks(article).demoUrls, []);
+});
+
+test("公開アプリ用ホストのURLをデモとして扱う", () => {
+  const article = {
+    githubUrls: [],
+    bodyHtml:
+      '<p><a href="https://sample.web.app">https://sample.web.app/</a></p><p><a href="https://service.a.run.app/demo">service</a></p>',
+  };
+
+  assert.deepEqual(classifyLinks(article).demoUrls, [
+    "https://sample.web.app/",
+    "https://service.a.run.app/demo",
+  ]);
+});
+
+test("本文に明示された許可技術だけを抽出する", () => {
+  const text = "Cloud Run と Gemini API、Firebase を利用。React も使用。";
+
+  assert.deepEqual(extractExplicitTechnologies(text), [
+    "Cloud Run",
+    "Gemini API",
+    "Firebase",
+  ]);
 });

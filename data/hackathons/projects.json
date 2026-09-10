@@ -235,7 +235,7 @@
       "entry_order": 13,
       "project_name": "BLOOMS",
       "project_description": "BLOOMS - 見つめてみよう。妊婦のあなたの日々の体調",
-      "article_title": null,
+      "article_title": "BLOOMS - 見つめてみよう。妊婦のあなたの日々の体調",
       "article_url": "https://zenn.dev/kingu/articles/a36196c5c66171",
       "participant_type": "individual",
       "participant_name": null,
@@ -243,12 +243,23 @@
         "🏅 Firebase賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/KoheiKanagu/zenn-content/blob/master/articles/a36196c5c66171.md",
+        "https://github.com/KoheiKanagu/zenn-content",
+        "https://github.com/KoheiKanagu/blooms/blob/v1.0.1/firebase/functions/src/features/condition/application/setupGenerativeModel.ts",
+        "https://github.com/KoheiKanagu/blooms/tree/v1.0.1"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Functions",
+        "Vertex AI",
+        "Imagen",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -427,7 +438,7 @@
       "entry_order": 23,
       "project_name": "eCoino",
       "project_description": "想定外のズレをすぐに取り戻す！対話型AIシステム eCoino",
-      "article_title": null,
+      "article_title": "想定外のズレをすぐに取り戻す！対話型AIシステム eCoino",
       "article_url": "https://zenn.dev/nayus/articles/45d29a213c4213",
       "participant_type": "team",
       "participant_name": "セイゾウギョウのチカラ",
@@ -435,12 +446,19 @@
         "🥇 最優秀賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/takesei/namapn-council/blob/master/webcli/genai/models/txt2sql.py",
+        "https://github.com/takesei/namapn-council/blob/master/webcli/genai/models/organizer.py",
+        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/sample_strategy.json",
+        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/strategy.md",
+        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/schema_strategy.json",
+        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/workflow_strategy.md"
+      ],
       "demo_urls": [],
       "technologies": [],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -448,7 +466,7 @@
       "entry_order": 24,
       "project_name": "ココいく",
       "project_description": "おでかけプランニング AI エージェントを作った話【ハッカソン】",
-      "article_title": null,
+      "article_title": "おでかけプランニング AI エージェントを作った話【ハッカソン】",
       "article_url": "https://zenn.dev/kikagaku/articles/ae47497f5beed9",
       "participant_type": "individual",
       "participant_name": null,
@@ -456,12 +474,20 @@
         "🏅 Tech Deep Dive賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
-      "demo_urls": [],
-      "technologies": [],
+      "github_urls": [
+        "https://github.com/tishibashi1003/ai-event-guide"
+      ],
+      "demo_urls": [
+        "https://zenn-hackathon-b8dca.web.app/"
+      ],
+      "technologies": [
+        "Cloud Run",
+        "Cloud Functions",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -906,7 +932,7 @@
       "entry_order": 48,
       "project_name": "Menu Bite",
       "project_description": "Flutter × AI で実現！海外の飲食店で使えるメニュー認識アプリの開発【AI Agent Hackathon】",
-      "article_title": null,
+      "article_title": "【AI Agent Hackathon 受賞🏆】海外の飲食店で使えるメニュー認識アプリの開発",
       "article_url": "https://zenn.dev/kanda9685/articles/69d5d02de3b724",
       "participant_type": "team",
       "participant_name": "京大にんじんサークル",
@@ -916,10 +942,13 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "App Engine",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -1630,7 +1659,7 @@
       "entry_order": 86,
       "project_name": "Manabiya AI",
       "project_description": "ManabiyaAI：新人教師でも、ベテランでも、その先の学び舎へ。​​​​​​​​【AI Agent Hackathon】",
-      "article_title": null,
+      "article_title": "ManabiyaAI：新人教師でも、ベテランでも、その先の学び舎へ。​​​​​​​​【AI Agent Hackathon】",
       "article_url": "https://zenn.dev/coco9122/articles/manabiya-ai-coco9122",
       "participant_type": "team",
       "participant_name": "Manabiya AI",
@@ -1638,12 +1667,19 @@
         "🥈 2位"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/CoCo9122/zenn-contents/blob/main/articles/manabiya-ai-coco9122.md",
+        "https://github.com/CoCo9122/zenn-contents"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -1955,7 +1991,7 @@
       "entry_order": 103,
       "project_name": "Flare",
       "project_description": "\"Flare\" -新時代のモバイルアプリ開発AI Agent-",
-      "article_title": null,
+      "article_title": "\"Flare\" -新時代のモバイルアプリ開発AI Agent-",
       "article_url": "https://zenn.dev/flare_dev/articles/385d87dae6e0a9",
       "participant_type": "team",
       "participant_name": "Flare",
@@ -1965,10 +2001,16 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Cloud Functions",
+        "Vertex AI",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -2090,7 +2132,7 @@
       "entry_order": 110,
       "project_name": "絵本の読み聞かせアプリ「AI StoryTeller」",
       "project_description": "絵本の読み聞かせアプリ「AI StoryTeller」による課題解決と実装方法",
-      "article_title": null,
+      "article_title": "絵本の読み聞かせアプリ「AI StoryTeller」による課題解決と実装方法",
       "article_url": "https://zenn.dev/knmknm/articles/4d08429c8e6864",
       "participant_type": "team",
       "participant_name": "AI StoryTeller",
@@ -2100,10 +2142,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Vertex AI",
+        "Imagen",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -2111,7 +2157,7 @@
       "entry_order": 111,
       "project_name": "社内のぞき見新聞 ～The Internal Times～",
       "project_description": "社内のぞき見新聞 ～The Internal Times～【AI Agent Hackathon with Google Cloud】",
-      "article_title": null,
+      "article_title": "社内のぞき見新聞 ～The Internal Times～【AI Agent Hackathon with Google Cloud】",
       "article_url": "https://zenn.dev/kaitat1231/articles/afce2c2202fa2b",
       "participant_type": "team",
       "participant_name": "シャリ無しわさび増し",
@@ -2119,12 +2165,18 @@
         "🥉 3位"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/qodo-ai/pr-agent"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Imagen"
+      ],
       "source_url": "https://zenn.dev/hackathons/2024-google-cloud-japan-ai-hackathon?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -2626,7 +2678,7 @@
       "entry_order": 10,
       "project_name": "AIry Recipe",
       "project_description": "料理体験をアップデートするレシピアプリ「AIry Recipe」の開発",
-      "article_title": null,
+      "article_title": "料理体験をアップデートするレシピアプリ「AIry Recipe」の開発",
       "article_url": "https://zenn.dev/hal1986/articles/20250630-hackathon",
       "participant_type": "individual",
       "participant_name": null,
@@ -2636,10 +2688,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Vertex AI",
+        "Gemma",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -3103,7 +3159,7 @@
       "entry_order": 35,
       "project_name": "KnockAI",
       "project_description": "KnockAI: 職人の見積もり\"暗黙知\"を継承するAIエージェント - Google Cloudで実現する製造業DX",
-      "article_title": null,
+      "article_title": "KnockAI: 職人の見積もり\"暗黙知\"を継承するAIエージェント - Google Cloudで実現する製造業DX",
       "article_url": "https://zenn.dev/enostech/articles/8a4a3f2589afd7",
       "participant_type": "team",
       "participant_name": "KnockAI",
@@ -3113,10 +3169,15 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "ADK",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -3542,7 +3603,7 @@
       "entry_order": 58,
       "project_name": "CraftMate AI",
       "project_description": "CraftMate AI ― DIYの設計をサポートするAI",
-      "article_title": null,
+      "article_title": "CraftMate AI ― DIYの設計をサポートするAI",
       "article_url": "https://zenn.dev/sagara22/articles/535c03c31416e7",
       "participant_type": "team",
       "participant_name": "CraftMate AI",
@@ -3552,10 +3613,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "App Engine",
+        "Vertex AI",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -3886,7 +3951,7 @@
       "entry_order": 76,
       "project_name": "AIMeeBo",
       "project_description": "リアルタイムでグラフィカルな\"議事ボード\"を自動作成する「AI Meeting Board」を開発",
-      "article_title": null,
+      "article_title": "リアルタイムでグラフィカルな\"議事ボード\"を自動作成する「AI Meeting Board」を開発",
       "article_url": "https://zenn.dev/marcosan/articles/80c0b704e88191",
       "participant_type": "individual",
       "participant_name": null,
@@ -3894,12 +3959,21 @@
         "🏅 Firebase賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
-      "demo_urls": [],
-      "technologies": [],
+      "github_urls": [
+        "https://github.com/marcosanyo/AIMeeBo.git"
+      ],
+      "demo_urls": [
+        "https://aimeebo-demo.web.app/"
+      ],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Gemini API",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -4192,7 +4266,7 @@
       "entry_order": 92,
       "project_name": "linguasafetrip",
       "project_description": "LinguaSafeTrip - 言葉の壁をなくし、災害から旅を守る !",
-      "article_title": null,
+      "article_title": "LinguaSafeTrip - 言葉の壁をなくし、災害から旅を守る !",
       "article_url": "https://zenn.dev/hamaup/articles/b34190ed8787bd",
       "participant_type": "individual",
       "participant_name": null,
@@ -4202,10 +4276,15 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -4479,7 +4558,7 @@
       "entry_order": 107,
       "project_name": "FlatJam",
       "project_description": "創造性を育む音楽教育ツール FlatJam",
-      "article_title": null,
+      "article_title": "創造性を育む音楽教育ツール FlatJam",
       "article_url": "https://zenn.dev/nayus/articles/82e226cac28e53",
       "participant_type": "team",
       "participant_name": "IBUKI",
@@ -4489,10 +4568,15 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Gemini API",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -5051,7 +5135,7 @@
       "entry_order": 137,
       "project_name": "Vibe Planning",
       "project_description": "Vibe Planning",
-      "article_title": null,
+      "article_title": "Vibe Planning",
       "article_url": "https://zenn.dev/huku/articles/e1addc5cf3837c",
       "participant_type": "team",
       "participant_name": "Vibe Coders",
@@ -5061,10 +5145,12 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Vertex AI"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -5205,7 +5291,7 @@
       "entry_order": 145,
       "project_name": "Smart Twin Room",
       "project_description": "Smart Twin Room ～誰もがAIデジタルツインを持つ世の中へ～",
-      "article_title": null,
+      "article_title": "Smart Twin Room ～誰もがAIデジタルツインを持つ世の中へ～",
       "article_url": "https://zenn.dev/yumabo/articles/21cf9234d07328",
       "participant_type": "individual",
       "participant_name": null,
@@ -5215,10 +5301,13 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -5359,7 +5448,7 @@
       "entry_order": 153,
       "project_name": "学校だよりAI",
       "project_description": "【学校だよりAI】なくならない “紙” 文化｡それなら「今」を照らそう｡AIと｡",
-      "article_title": null,
+      "article_title": "【学校だよりAI】なくならない \"紙\" 文化｡それなら「今」を照らそう｡AIと｡",
       "article_url": "https://zenn.dev/gakkoudayoriai/articles/d7c61ec828913d",
       "participant_type": "team",
       "participant_name": "わきAIAI@AI木曜会",
@@ -5369,10 +5458,16 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Gemini API",
+        "ADK",
+        "Firebase",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol2?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -5874,7 +5969,7 @@
       "entry_order": 22,
       "project_name": "魔法の天秤 with Gemini",
       "project_description": "日常にあふれる「目玉焼きは醤油派かソース派？」「犬派か猫派？」といったどうでもいい論争を、本気のディベートに変える装置が「魔法の天秤」です。参加者は魔法使いビーバーの声に導かれ、交互に主張を述べます。その内容はLLMによって司会・採点され、論理性や根拠の有無など多角的に評価されます。結果はモーター制御によって物理的な天秤の揺れとして可視化され、言葉が現実を動かす瞬間を体験できます。遊びながら論理的思考を鍛え、笑いと驚きを共有できる新感覚のディベートゲームです。",
-      "article_title": null,
+      "article_title": "MCP ✖️ BLEで、どんなことでも弁論大会にできる【魔法の天秤】作ってみた！",
       "article_url": "https://zenn.dev/beavers_hive/articles/bde66a38b4b978",
       "participant_type": "individual",
       "participant_name": null,
@@ -5887,7 +5982,7 @@
       "technologies": [],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -5952,7 +6047,7 @@
       "entry_order": 26,
       "project_name": "PawMate",
       "project_description": "PawMateは、愛するペットが迷子になってしまった飼い主さんと、ペットを見つけた方をAI技術でつなぐWebサービスです。Google CloudのAI技術を活用し、2つのAIエージェント（画像を分析する探偵AIと、ペットの行動を予測するAI）が24時間体制でペット探しをサポート。天気や時間帯、地形などのデータから「今どこにいる可能性が高いか」を地図上にヒートマップで表示し、効率的な捜索を実現します。また、見つけた方が写真を投稿すると、AIが自動で似ているペットを判定してマッチング。飼い主さんへ即座に通知が届き、チャット機能で直接やり取りができます。従来の「ポスターを貼って探す」方法から、データとAIを活用した新しいペット捜索の形を提案します。",
-      "article_title": null,
+      "article_title": "AIエージェントが迷子のペットを探す時代へ",
       "article_url": "https://zenn.dev/jagaimo_poteto/articles/0a74c4f4e64b90",
       "participant_type": "individual",
       "participant_name": null,
@@ -5962,10 +6057,16 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Gemini API",
+        "ADK",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -6087,7 +6188,7 @@
       "entry_order": 33,
       "project_name": "フクシア",
       "project_description": "社会福祉士の現場では、煩雑なアセスメント作成や膨大な支援制度情報の検索が負担となり、本来利用者に寄り添う時間が削られています。私たちの開発した 「フクシア」 は、会話ログから自動でアセスメントを生成し、利用者に適した支援制度を検索・提案する AI Agent です。社会福祉士の業務を効率化し、支援が必要な人により多くの時間と心を注げる社会の実現を目指します。",
-      "article_title": null,
+      "article_title": "【フクシア】社会福祉士をサポートし支援が必要な人たちの生活をより豊かに",
       "article_url": "https://zenn.dev/teritama/articles/aa54b4fbed1231",
       "participant_type": "team",
       "participant_name": "てりたま",
@@ -6095,12 +6196,18 @@
         "最優秀賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/teritamas/fukushia"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -6241,7 +6348,7 @@
       "entry_order": 41,
       "project_name": "RouteKeeperAI",
       "project_description": "「RouteKeeperAI」は、複数の専門AIエージェントが協調して道路の安全性を分析\n  し、人々の日常移動をより安全で豊かにするシステムです。\n\n  ルート分析エージェントがGoogle Street\n  Viewで収集した画像を、危険検知エージェントがGemini\n  Visionで解析。さらに安全アドバイザーエージェントが、検出されたリスクに対す\n  る具体的な対策を提案します。\n\n  これらのAIエージェントは、単に危険を警告するだけでなく、「なぜその場所が危\n  険なのか」「どう行動すれば安全か」を対話的に教えてくれます。\n\n  AIエージェントが現実世界の道路を仮想的に「事前検証」することで、実際の移動\n  をより安心で豊かなものに変えます。",
-      "article_title": null,
+      "article_title": "道を知り、命を守る。～AI危険予知システム RouteKeeperAI～",
       "article_url": "https://zenn.dev/riti0208/articles/314c8bfae02b4b",
       "participant_type": "individual",
       "participant_name": null,
@@ -6251,10 +6358,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Functions",
+        "Veo",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -6281,7 +6392,7 @@
       "entry_order": 43,
       "project_name": "FutureRun",
       "project_description": "「Future Run」は、マラソン大会前にわかるコース情報＋気象予報と個々のランナーの目標や過去のデータを掛け合わせ、最適なレース戦略を 動画付きアドバイス として提供する AI パーソナルマラソン支援アプリです。重要な地点でのペース配分、給水／給食タイミング、走り方などのアドバイスを動画（テロップ付き）で可視化して提示します。FutureRunを利用することでランナーはレース中のリスクとなる地点の理解とその対応方針をじど前検討することでリスクを最小化し、レース中のパフォーマンスを最大化するという価値を提供します。",
-      "article_title": null,
+      "article_title": "Future Run 〜マラソンの理想の未来をデザインする〜",
       "article_url": "https://zenn.dev/sagara22/articles/77f231a8468a40",
       "participant_type": "team",
       "participant_name": "FutureRun",
@@ -6289,12 +6400,19 @@
         "優秀賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/sagara-221/FutureRun"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Veo",
+        "Flutter"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -7024,7 +7142,7 @@
       "entry_order": 82,
       "project_name": "添削AI 言の葉",
       "project_description": "私が制作したアプリケーションは、端的に言えば、\"手書き答案の添削をAIがアシストしてくれるアプリケーション\"です。\n\n答案における「よい考え方」や「誤りの原因」を丁寧にフィードバックすることで、生徒の「長所」と、「つまずきポイント」が明確化され、復習がしやすくなります。それにより、学習のPDCAが自然と回っていきます。\n\n一方で、テストの評価ではそのほとんどがただの採点に留まっているのが現状です。\nこれを添削という形にすることで、生徒の思考力の増強につながっていきます。\n\n採点に留めざるを得ない原因の一つとして、現実に教員の平均残業時間は月88時間を超えており、採点から添削に移行するためには工数不足という非常に大きな壁が存在します。\n\nそのため今回はAIを用いることで、答案の添削にかかってしまう時間と労力の削減に挑戦しました。",
-      "article_title": null,
+      "article_title": "復習したい生徒と面倒を見てあげたい先生の想いを叶える　「添削AI 言の葉」",
       "article_url": "https://zenn.dev/mugi007/articles/cf764e26f3adeb",
       "participant_type": "individual",
       "participant_name": null,
@@ -7034,10 +7152,12 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Gemini API"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol3?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -7577,7 +7697,7 @@
       "entry_order": 3,
       "project_name": "Agentic Traffic Market",
       "project_description": "AIエージェントが交差点で通行権を自律交渉し、マイクロペイメントで合意形成する「Agentic Traffic Market」を開発。Gemini 3（Vertex AI）とVercel AI SDKで判断・交渉を行い、EIP‑7702で鍵を渡さず安全に決済を実行。JPYCの利用で即時に少額決済を実現。自動運転が当たり前の未来の交通のあり方の提案です。",
-      "article_title": null,
+      "article_title": "自動運転が当たり前の未来の交通を考える ~AIエージェント×ステーブルコイン決済~",
       "article_url": "https://zenn.dev/mameta29/articles/325569b451b2a0",
       "participant_type": "individual",
       "participant_name": null,
@@ -7585,12 +7705,35 @@
         "奨励賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
-      "demo_urls": [],
-      "technologies": [],
+      "github_urls": [
+        "https://github.com/Mameta29/zenn-content/blob/main/articles/325569b451b2a0.md",
+        "https://github.com/Mameta29/zenn-content",
+        "https://github.com/Mameta29/Agentic-Traffic-Market",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/vertex-ai.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/.github/workflows/deploy-cloud-run.yml",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/services/traffic-simulation.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/app/agent/page.tsx",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/services/ai-to-ai-negotiation.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/mcp-server/index.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/actions/agent.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/types/agent-context.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/eip-7702-correct.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/authorization-store.ts",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/TrafficAgentContract.sol",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/TrafficAgentContractV2.sol",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/AgentIdentityRegistry.sol",
+        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/agent-context.ts"
+      ],
+      "demo_urls": [
+        "https://agentic-traffic-market-jgdosuuqxa-uc.a.run.app/agent"
+      ],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -8282,7 +8425,7 @@
       "entry_order": 40,
       "project_name": "Bananacraft",
       "project_description": "子どもの「こんなやつ作って！」が、そのままマインクラフトの「街」になる。 Bananacraftは、Nano Banana Proの表現力とGemini 3 Proのマルチモーダル認識性能を駆使した建築AIエージェントです。 「葉っぱで作ったかっこいい街」のような曖昧な言葉から、美しいマインクラフトの街並み/建築物のコンセプト画像を生成。そしてその画像をGeminiが視覚的に解析。「どこが壁で、どこが窓か」を構造的に理解して設計図データへ変換し、マインクラフトの世界で瞬時に施工します。プログラミングと生成AIの力で、子供たちの創造力を最大限に引き出すプロジェクトです。",
-      "article_title": null,
+      "article_title": "Bananacraft: 4歳の息子と遊ぶために、GeminiでマイクラAI建築エージェントを作った話",
       "article_url": "https://zenn.dev/nakaniship/articles/9f6eb4b7f8a44e",
       "participant_type": "individual",
       "participant_name": null,
@@ -8292,10 +8435,12 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Compute Engine"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -8588,7 +8733,7 @@
       "entry_order": 56,
       "project_name": "DIAMONDMIND",
       "project_description": "野球コンサルアプリ「DIAMONDMIND」は、指導者や資金が不足しているチームの課題を解決する、AI搭載の統合プラットフォームです。従来の「感覚」に頼った曖昧な指導を、最新の姿勢推定技術（YOLO）とGeminiにより、「数値と言語」による定量的な評価へとアップデートします。 主な機能は、動画解析による動作診断、ポジション別の悩み相談、専門的なトレーニングメニュー提案の3点です。Google Cloudのサーバーレス構成を活用することで、低コストながらプロレベルの分析環境を実現しました。 地方の選手や限られた環境で戦うチームに最新の野球理論を届け、誰もが平等に上達できる環境を提供することで、様々な野球人を全力でバックアップします！",
-      "article_title": null,
+      "article_title": "「感覚」の野球指導をAIで「数値と言語」へ。野球コンサルアプリ「DIAMONDMIND」",
       "article_url": "https://zenn.dev/maoya23/articles/276c97e2c3e7f3",
       "participant_type": "team",
       "participant_name": "BPSD",
@@ -8598,10 +8743,15 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Gemini API",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -9483,7 +9633,7 @@
       "entry_order": 103,
       "project_name": "Anatom-AI",
       "project_description": "AIで直感的かつ柔軟な操作を可能にしたAtlasアプリ, Anatom-AIです。 人体の理解の本質の1つに臓器の立体的な配置の学問、すなわち解剖学があります。一般にatlasとよばれる解剖図アプリケーションを介して解剖の勉強を医師・医学部生は行っています。 しかし、そもそもの解剖があまりにも複雑なために、1つの解剖を理解するのに極めて煩雑な操作を伴っています。また、病気や手術など複数臓器が関与してくるような事象では、さらに複雑な操作が必要です。本プロジェクトでは多くの場面で専門家相当の知性を持ち、multimodal性能も高いGeminiを活用することで、「膵臓みせて」や「中大脳動脈が詰まるとどこが虚血になる？」など、煩雑な操作を要する課題解決を自然言語を介して可能にしています。",
-      "article_title": null,
+      "article_title": "Anatom-AI - 自然言語で動かす3D人体解剖図",
       "article_url": "https://zenn.dev/jcs300/articles/5511ded660f522",
       "participant_type": "team",
       "participant_name": "JCS 300 (Japan Changing System 300)",
@@ -9491,12 +9641,14 @@
         "最優秀賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/chicken-salad/Anatomography"
+      ],
       "demo_urls": [],
       "technologies": [],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -10055,7 +10207,7 @@
       "entry_order": 133,
       "project_name": "KOTOWARI Link",
       "project_description": "「KOTOWARI Link」は、日常の風景を「学びの入り口」に変えるARアプリです。 ふとした瞬間に感じる「なぜ？」に対し、スマホをかざすだけで、Googleの最新AIが対象を解析。噴水の放物線や橋の力学構造など、目に見えない科学法則をARで現実空間に直接可視化します。 検索の手間なく、目の前の現象と法則を直感的にリンクさせることで、「世界の解像度」を上げる体験を提供。単なる風景を意味のある構造として再認識させ、ユーザーの知的好奇心を自然な形で学問的な探究へと接続します。",
-      "article_title": null,
+      "article_title": "偶然の興味を、学問の入口へ — KOTOWARI Link",
       "article_url": "https://zenn.dev/sagara22/articles/81257d3d7f5f61",
       "participant_type": "team",
       "participant_name": "KOTOWARI Link",
@@ -10065,10 +10217,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Vertex AI",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -10475,7 +10631,7 @@
       "entry_order": 155,
       "project_name": "【朗報】ずんだもん、野菜になる。小学生のやしい植物教育を目指して。",
       "project_description": "子どもがアサガオを育てながらもスマホに気を取られている、そんな体験から着想したのが、本プロジェクトの植物と会話できるIoT教育デバイスです。文部科学省も重視する自然体験の価値を踏まえ、温湿度や土壌センサーのデータをもとに植物キャラクターが声で反応し、世話への関心を高めます。ハードはRaspberry Pi Foundation系デバイス、音声AIはGoogle Cloudを活用し、教育現場や家庭でも導入可能な構成です。デジタルの即時報酬と自然の成長体験をつなぎ、子どもの主体的な学びを促す仕組みを目指しています。",
-      "article_title": null,
+      "article_title": "【朗報】ずんだもん、野菜になる。小学生のやさしい植物教育を目指して。",
       "article_url": "https://zenn.dev/rebun/articles/e07bea98f14c7d",
       "participant_type": "individual",
       "participant_name": null,
@@ -10485,10 +10641,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Compute Engine",
+        "Gemma"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -10838,7 +10998,7 @@
       "entry_order": 174,
       "project_name": "ARTESTERISM",
       "project_description": "ARTESTERISMは、美術館と来場者をAIとデータでつなぎ、鑑賞体験と美術館運営の双方を支援するプラットフォームです。Geminiによるレベル別・多言語の作品解説生成と、BigQueryのエンベディングを活用した作品レコメンドにより、来場者には自分の興味度に合った鑑賞体験を提供します。同時に、作品単位のフィードバックデータを可視化・分析することで、美術館の展示改善や経営判断を支援します。大規模美術館から中小規模美術館への回遊を促進し、日本の美術館体験の持続的な発展を目指します。",
-      "article_title": null,
+      "article_title": "【ARTESTERISM】-美術館体験を「点」から「面」に- 来場者と美術館の双方に新しい価値を届ける次世代プラットフォーム",
       "article_url": "https://zenn.dev/akakura16/articles/9437cc784031c5",
       "participant_type": "team",
       "participant_name": "Akakura",
@@ -10848,10 +11008,13 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Run",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -10897,7 +11060,7 @@
       "entry_order": 177,
       "project_name": "COCO",
       "project_description": "「あれ、リモコンどこ？」人生で146日も費やす探し物の時間。CoCoはそんな日常の課題を解決し、実世界に干渉できるAIパートナーです。 Geminiの映像理解とVertex AIで部屋の状況を記憶し、ADKを用いたマルチエージェント構成で高度な推論を実行。「鍵どこ？」への即答や、カレンダーから「ジムバッグかも？」と提案します。 さらにobnizと連携し、自律的に視線を動かして死角を探索。常に傍に寄り添い、人とAIがシームレスに共存する未来を描きます。",
-      "article_title": null,
+      "article_title": "【COCO】「ドコ？のヒントはココにある」お部屋の探し物AIパートナー",
       "article_url": "https://zenn.dev/takoeno/articles/ae8e042de0fb62",
       "participant_type": "team",
       "participant_name": "CAPEPOINT",
@@ -10905,12 +11068,19 @@
         "奨励賞"
       ],
       "is_finalist": null,
-      "github_urls": [],
+      "github_urls": [
+        "https://github.com/h4ckberry/coco-gcaihack4"
+      ],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Functions",
+        "Vertex AI",
+        "ADK",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
@@ -11184,7 +11354,7 @@
       "entry_order": 192,
       "project_name": "BrickQuest",
       "project_description": "家にLEGO好きの子供が2人。遊ぶうちに説明書はなくなり、パーツだけが残っていきます。「捨てるのはもったいない、何か作れないか」から始めたプロジェクトです。主な機能が2つあります。「マイブリック」ではブロックを撮影・アップロードするとAIがパーツを自動認識しコレクションとして管理、そこからGemini AIが組み立て手順を生成します。「デザイン」では参考画像からLEGO正射投影ビューを生成し、承認後に組み立て手順へ変換します。いずれも3Dワークスペースでステップごとに回転・拡大しながら確認でき、足りないパーツはBrickLink購入リストとして出力可能です。家に眠るブロックにもう一度遊ぶ理由を作りたいアプリです。",
-      "article_title": null,
+      "article_title": "LEGOの組み立て説明書をAIが自動生成 — 物理エンジンで「やり直し」させるAgentic AIの仕組み",
       "article_url": "https://zenn.dev/parklab/articles/33f9058ea00231",
       "participant_type": "individual",
       "participant_name": null,
@@ -11194,10 +11364,14 @@
       "is_finalist": null,
       "github_urls": [],
       "demo_urls": [],
-      "technologies": [],
+      "technologies": [
+        "Cloud Functions",
+        "Gemini API",
+        "Firebase"
+      ],
       "source_url": "https://zenn.dev/hackathons/google-cloud-japan-ai-hackathon-vol4?tab=projects",
       "checked_at": "2026-09-10",
-      "verification_status": "official-list-only",
+      "verification_status": "article-checked",
       "notes": null
     },
     {
