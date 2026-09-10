@@ -244,10 +244,7 @@
       ],
       "is_finalist": null,
       "github_urls": [
-        "https://github.com/KoheiKanagu/zenn-content/blob/master/articles/a36196c5c66171.md",
-        "https://github.com/KoheiKanagu/zenn-content",
-        "https://github.com/KoheiKanagu/blooms/blob/v1.0.1/firebase/functions/src/features/condition/application/setupGenerativeModel.ts",
-        "https://github.com/KoheiKanagu/blooms/tree/v1.0.1"
+        "https://github.com/KoheiKanagu/blooms"
       ],
       "demo_urls": [],
       "technologies": [
@@ -447,12 +444,7 @@
       ],
       "is_finalist": null,
       "github_urls": [
-        "https://github.com/takesei/namapn-council/blob/master/webcli/genai/models/txt2sql.py",
-        "https://github.com/takesei/namapn-council/blob/master/webcli/genai/models/organizer.py",
-        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/sample_strategy.json",
-        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/strategy.md",
-        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/schema_strategy.json",
-        "https://github.com/takesei/namapn-council/blob/master/webcli/templates/workflow_strategy.md"
+        "https://github.com/takesei/namapn-council"
       ],
       "demo_urls": [],
       "technologies": [],
@@ -1667,10 +1659,7 @@
         "🥈 2位"
       ],
       "is_finalist": null,
-      "github_urls": [
-        "https://github.com/CoCo9122/zenn-contents/blob/main/articles/manabiya-ai-coco9122.md",
-        "https://github.com/CoCo9122/zenn-contents"
-      ],
+      "github_urls": [],
       "demo_urls": [],
       "technologies": [
         "Cloud Run",
@@ -2165,9 +2154,7 @@
         "🥉 3位"
       ],
       "is_finalist": null,
-      "github_urls": [
-        "https://github.com/qodo-ai/pr-agent"
-      ],
+      "github_urls": [],
       "demo_urls": [],
       "technologies": [
         "Cloud Run",
@@ -3960,7 +3947,7 @@
       ],
       "is_finalist": null,
       "github_urls": [
-        "https://github.com/marcosanyo/AIMeeBo.git"
+        "https://github.com/marcosanyo/AIMeeBo"
       ],
       "demo_urls": [
         "https://aimeebo-demo.web.app/"
@@ -7706,23 +7693,7 @@
       ],
       "is_finalist": null,
       "github_urls": [
-        "https://github.com/Mameta29/zenn-content/blob/main/articles/325569b451b2a0.md",
-        "https://github.com/Mameta29/zenn-content",
-        "https://github.com/Mameta29/Agentic-Traffic-Market",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/vertex-ai.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/.github/workflows/deploy-cloud-run.yml",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/services/traffic-simulation.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/app/agent/page.tsx",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/services/ai-to-ai-negotiation.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/mcp-server/index.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/actions/agent.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/types/agent-context.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/eip-7702-correct.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/authorization-store.ts",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/TrafficAgentContract.sol",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/TrafficAgentContractV2.sol",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/contracts/src/AgentIdentityRegistry.sol",
-        "https://github.com/Mameta29/Agentic-Traffic-Market/blob/main/src/server/lib/agent-context.ts"
+        "https://github.com/Mameta29/Agentic-Traffic-Market"
       ],
       "demo_urls": [
         "https://agentic-traffic-market-jgdosuuqxa-uc.a.run.app/agent"

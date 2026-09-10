@@ -179,6 +179,23 @@ test("公開アプリ用ホストのURLをデモとして扱う", () => {
   ]);
 });
 
+test("GitHub URLをプロジェクトリポジトリrootへ絞る", () => {
+  const article = {
+    githubUrls: ["https://github.com/author/zenn-content"],
+    bodyHtml: [
+      '<p><a href="https://github.com/example/project/blob/main/app.js">実装</a></p>',
+      '<p><a href="https://github.com/example/project/tree/main/functions">functions</a></p>',
+      '<p>レビューには<a href="https://github.com/qodo-ai/pr-agent">PR-Agent</a>を利用</p>',
+      '<p><a href="https://github.com/owner/explicit">GitHubリポジトリ</a></p>',
+    ].join(""),
+  };
+
+  assert.deepEqual(classifyLinks(article).githubUrls, [
+    "https://github.com/example/project",
+    "https://github.com/owner/explicit",
+  ]);
+});
+
 test("本文に明示された許可技術だけを抽出する", () => {
   const text = "Cloud Run と Gemini API、Firebase を利用。React も使用。";
 
