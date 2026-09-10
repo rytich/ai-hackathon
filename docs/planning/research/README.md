@@ -19,4 +19,5 @@
 
 ## 最新の調査
 
+- [第1〜4回 AI Agent Hackathon 提出・受賞プロジェクト](hackathons/README.md) - 公式提出589件、受賞32件、構造化データ。
 - [context7導入調査](2026-08-14-context7.md) - Codex / Claude Code導入、認証、tool contract、routing境界。
