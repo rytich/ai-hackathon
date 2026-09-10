@@ -9,6 +9,8 @@
 | [research/](research/) | 調査メモ（情報ソース付き） |
 | [requirements/](requirements/) | 要件定義 |
 
+現在の調査成果: [第1〜4回 AI Agent Hackathon 提出・受賞プロジェクト](research/hackathons/README.md)
+
 ## 流れ
 
 ```
