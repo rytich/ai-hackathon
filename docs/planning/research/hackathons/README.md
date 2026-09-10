@@ -25,8 +25,8 @@ Zenn主催「AI Agent / Agentic AI Hackathon with Google Cloud」の第1〜4回�
 - [第2回](vol-2.md)（158件、受賞9件）
 - [第3回](vol-3.md)（108件、受賞6件）
 - [第4回](vol-4.md)（195件、受賞9件）
-- [設計](../../../superpowers/specs/2026-09-10-hackathon-history-research-design.md)
-- [実行計画](../../../superpowers/plans/2026-09-10-hackathon-history-research.md)
+- [設計](../../requirements/2026-09-10-hackathon-history-research-design.md)
+- [実行計画](../../implementation/2026-09-10-hackathon-history-research.md)
 
 ## データの読み方
 
@@ -55,13 +55,13 @@ Zenn主催「AI Agent / Agentic AI Hackathon with Google Cloud」の第1〜4回�
 1. 公式projectsタブの `__NEXT_DATA__` 内 `hackathon.projects` を掲載順のまま取得した。
 2. 同じデータの `resultMarkdown` にある賞見出しとZenn記事URLを、提出一覧の記事URLへ対応付けた。
 3. 受賞32件のみ提出記事本文を確認し、タイトル、GitHub、デモ、主要技術を補足した。
-4. JSON/CSVの件数、キー、必須項目、受賞URL対応をスクリプトで検証した。
+4. JSON/CSVの全17列、回別件数、掲載順、必須項目、受賞名をスクリプトで検証した。
 
 再取得コマンド:
 
 ```bash
 node scripts/research/collect-hackathon-data.mjs \
-  --checked-at 2026-09-10 \
+  --checked-at "$(date +%F)" \
   --output data/hackathons/projects.json \
   --csv-output data/hackathons/projects.csv
 node scripts/research/collect-hackathon-data.mjs \
@@ -69,6 +69,13 @@ node scripts/research/collect-hackathon-data.mjs \
   --csv-output data/hackathons/projects.csv
 node scripts/research/validate-hackathon-data.mjs \
   data/hackathons/projects.json data/hackathons/projects.csv
+```
+
+通常実行は公式ページを再取得してキャッシュを更新する。`--checked-at` には実行日を指定する。既存キャッシュを使う場合だけ `--offline-cache` を指定し、各回のキャッシュメタデータに保存された確認日を採用する。受賞記事キャッシュも同じ確認日のメタデータを持ち、datasetと日付が違う場合はenrichmentを停止する。受賞情報の再照合は次で行う。
+
+```bash
+node scripts/research/collect-hackathon-data.mjs \
+  --report-award-mismatches data/hackathons/projects.json
 ```
 
 ## 確認境界
