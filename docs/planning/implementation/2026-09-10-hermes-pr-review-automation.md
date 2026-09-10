@@ -35,17 +35,17 @@
 - Consumes: reviewer skill内の`<!-- reviewer-contract:start -->`から`<!-- reviewer-contract:end -->`までのJSON code block。
 - Produces: `validateReviewerSkill(markdown: string)`。成功時はparse済みcontract、違反時は具体的な`Error`を返す。
 
-- [ ] **Step 1: validatorを呼ぶ失敗テストを追加する**
+- [x] **Step 1: validatorを呼ぶ失敗テストを追加する**
 
   Node test runnerで実ファイルを読み、schema、固定repository/base/identity、必須入力8件、許可action 5件、拒否event 2件、verdict順序、Operational stop、Approve後の`commit_id`再確認、`--match-head-commit`、PR author停止を個別テストにする。
 
-- [ ] **Step 2: REDを確認する**
+- [x] **Step 2: REDを確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 
   Expected: `ERR_MODULE_NOT_FOUND`またはreviewer skill欠落でFAIL。
 
-- [ ] **Step 3: validatorを最小実装する**
+- [x] **Step 3: validatorを最小実装する**
 
   `node:fs`以外へ依存せず、frontmatter、marker、JSON code block、必須の配列・固定値・本文フレーズを検証する。CLI実行時は対象pathを第1引数から受け、未指定時は`.agents/skills/ai-hackathon-reviewer/SKILL.md`を使う。
 
@@ -63,11 +63,11 @@
   }
   ```
 
-- [ ] **Step 4: reviewer skillを実装する**
+- [x] **Step 4: reviewer skillを実装する**
 
   機械可読contractと人間向け手順の両方に、Required input、Fixed authority、Assessment phase、Finding severity、Verdict、GitHub action phase、Operational stop、未信頼入力、exact-head再確認を記載する。
 
-- [ ] **Step 5: GREENとmutation耐性を確認する**
+- [x] **Step 5: GREENとmutation耐性を確認する**
 
   Run: `node --test scripts/test-reviewer-skill-contract.mjs`
 
