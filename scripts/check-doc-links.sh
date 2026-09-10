@@ -60,6 +60,9 @@ for s in sorted(set(sources)):
         path = raw.split("#", 1)[0]
         if not path:
             continue
+        if os.path.isabs(path) and path.endswith(".md"):
+            broken.append((s, raw))
+            continue
         tgt = os.path.normpath(path if os.path.isabs(path) else os.path.join(d, path))
         if tgt.endswith(".md"):
             if tgt in all_docs:

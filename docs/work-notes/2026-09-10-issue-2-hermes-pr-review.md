@@ -23,6 +23,8 @@
 - Workflow GREEN: read-only permission、許可action、credential非永続化、共通verify commandを検証。
 - Documentation RED: validator export、ADR、work noteが存在せず失敗。
 - Documentation GREEN: reviewer contract、workflow、運用文書の安全境界をmutation testで検証。
+- CI portability RED: 初回GitHub ActionsでREADMEの開発者ローカル絶対リンク3件がbrokenとなり失敗。既存checkerはリンク先がローカルに存在すると受理していた。
+- CI portability GREEN: repository外の絶対`.md`リンクを常に拒否する回帰テストを追加し、READMEをrepository相対リンクへ修正。
 
 ## 実装内容
 

@@ -52,8 +52,8 @@ templates/project/                           # bootstrap で配布される雛�
   .github/CODEOWNERS                         #   承認必須pathのowner template（導入後に置換）
 ```
 
-docs 全体の運用規約は [docs/README.md](/Users/ichie/github/agentic-framework/docs/README.md)、
-知識ベースの構造と維持ルールは [docs/framework/knowledge-base.md](/Users/ichie/github/agentic-framework/docs/framework/knowledge-base.md) を参照してください。
+docs 全体の運用規約は [docs/README.md](docs/README.md)、
+知識ベースの構造と維持ルールは [docs/framework/knowledge-base.md](docs/framework/knowledge-base.md) を参照してください。
 
 ## クイックスタート
 
@@ -136,7 +136,7 @@ Issue ready
   -> Required checks 成功後に merge
 ```
 
-詳細は [docs/framework/ai-execution-framework.md](/Users/ichie/github/agentic-framework/docs/framework/ai-execution-framework.md) を参照してください。
+詳細は [docs/framework/ai-execution-framework.md](docs/framework/ai-execution-framework.md) を参照してください。
 
 ## License
 
