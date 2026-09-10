@@ -36,6 +36,127 @@ export function extractNextData(html) {
   return hackathon;
 }
 
+function extractNextPayload(html) {
+  const match = html.match(
+    /<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/,
+  );
+  if (!match) throw new Error("script#__NEXT_DATA__ was not found");
+  return JSON.parse(match[1]);
+}
+
+function unique(values) {
+  return [...new Set(values.filter(Boolean))];
+}
+
+export function extractArticleData(html) {
+  const pageProps = extractNextPayload(html)?.props?.pageProps;
+  const article = pageProps?.article;
+  if (!article?.title || typeof article.bodyHtml !== "string") {
+    throw new Error("props.pageProps.article was not found");
+  }
+  return {
+    title: article.title,
+    bodyHtml: article.bodyHtml,
+    githubUrls: unique(
+      [pageProps.githubUrl, pageProps.githubRepository?.htmlUrl]
+        .filter((value) => typeof value === "string")
+        .map(normalizeUrl),
+    ),
+  };
+}
+
+function plainText(html) {
+  return html
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function isExcludedDemoHost(hostname) {
+  return (
+    hostname === "zenn.dev" ||
+    hostname === "github.com" ||
+    hostname === "www.github.com" ||
+    hostname === "youtube.com" ||
+    hostname === "www.youtube.com" ||
+    hostname === "youtu.be" ||
+    hostname === "x.com" ||
+    hostname === "twitter.com"
+  );
+}
+
+function isKnownDeploymentHost(hostname) {
+  return [
+    ".run.app",
+    ".web.app",
+    ".firebaseapp.com",
+    ".vercel.app",
+    ".appspot.com",
+    ".streamlit.app",
+    ".onrender.com",
+  ].some((suffix) => hostname.endsWith(suffix));
+}
+
+export function classifyLinks(article) {
+  const githubUrls = [...article.githubUrls];
+  const demoUrls = [];
+  const anchorPattern = /<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi;
+  for (const match of article.bodyHtml.matchAll(anchorPattern)) {
+    const rawUrl = match[1].replaceAll("&amp;", "&");
+    const url = new URL(rawUrl);
+    if (url.hostname === "github.com" || url.hostname === "www.github.com") {
+      githubUrls.push(normalizeUrl(rawUrl));
+      continue;
+    }
+    const start = Math.max(0, match.index - 120);
+    const prefix = plainText(article.bodyHtml.slice(start, match.index));
+    const linkText = plainText(match[2]);
+    const explicitLinkText =
+      /(デモ|アプリを試す|試す|公開URL|サービスURL|動作確認)/i.test(linkText);
+    const explicitPrefix =
+      /(デモ|公開URL|サービスURL|動作確認)\s*[:：]?\s*$/i.test(prefix);
+    if (
+      !isExcludedDemoHost(url.hostname) &&
+      (isKnownDeploymentHost(url.hostname) || explicitLinkText || explicitPrefix)
+    ) {
+      demoUrls.push(normalizeUrl(rawUrl));
+    }
+  }
+  return {
+    githubUrls: unique(githubUrls),
+    demoUrls: unique(demoUrls),
+  };
+}
+
+const TECHNOLOGIES = [
+  "Cloud Run",
+  "Cloud Functions",
+  "App Engine",
+  "GKE",
+  "Compute Engine",
+  "Vertex AI",
+  "Gemini API",
+  "Gemma",
+  "Imagen",
+  "Veo",
+  "ADK",
+  "Firebase",
+  "Flutter",
+];
+
+export function extractExplicitTechnologies(value) {
+  const text = plainText(value);
+  return TECHNOLOGIES.filter((technology) => {
+    const escaped = technology.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(^|[^A-Za-z])${escaped}([^A-Za-z]|$)`).test(text);
+  });
+}
+
 function normalizeUrl(value) {
   const url = new URL(value);
   url.hash = "";
@@ -177,6 +298,7 @@ function parseOptions(args) {
     output: null,
     csvOutput: null,
     reportAwardMismatches: null,
+    enrichAwards: null,
     cacheDirectory: ".cache/hackathons",
   };
   for (let index = 0; index < args.length; index += 1) {
@@ -187,9 +309,50 @@ function parseOptions(args) {
     else if (value === "--cache-directory") options.cacheDirectory = args[++index];
     else if (value === "--report-award-mismatches") {
       options.reportAwardMismatches = args[++index];
+    } else if (value === "--enrich-awards") {
+      options.enrichAwards = args[++index];
     } else throw new Error(`Unknown argument: ${value}`);
   }
   return options;
+}
+
+async function enrichAwardProjects(datasetPath, csvOutput, cacheDirectory) {
+  if (!csvOutput) throw new Error("--enrich-awards requires --csv-output");
+  const dataset = JSON.parse(fs.readFileSync(datasetPath, "utf8"));
+  const winners = dataset.projects.filter((project) => project.awards.length > 0);
+  const articleCache = path.join(cacheDirectory, "articles");
+  fs.mkdirSync(articleCache, { recursive: true });
+  let checked = 0;
+  let failed = 0;
+  for (const [index, project] of winners.entries()) {
+    const cachePath = path.join(
+      articleCache,
+      `vol-${project.edition}-entry-${project.entry_order}.html`,
+    );
+    try {
+      if (!fs.existsSync(cachePath)) {
+        fs.writeFileSync(cachePath, await fetchText(project.article_url));
+      }
+      const article = extractArticleData(fs.readFileSync(cachePath, "utf8"));
+      const links = classifyLinks(article);
+      project.article_title = article.title;
+      project.github_urls = links.githubUrls;
+      project.demo_urls = links.demoUrls;
+      project.technologies = extractExplicitTechnologies(article.bodyHtml);
+      project.verification_status = "article-checked";
+      checked += 1;
+    } catch (error) {
+      const note = `受賞記事を取得・解析できず: ${error.message}`;
+      project.notes = project.notes ? `${project.notes}; ${note}` : note;
+      failed += 1;
+    }
+    if (index < winners.length - 1) await sleep(500);
+  }
+  fs.writeFileSync(datasetPath, `${JSON.stringify(dataset, null, 2)}\n`);
+  fs.writeFileSync(csvOutput, toCsv(dataset.projects));
+  console.log(`award articles checked: ${checked}`);
+  console.log(`award articles failed: ${failed}`);
+  if (failed > 0) process.exitCode = 1;
 }
 
 async function reportAwardMismatches(datasetPath, cacheDirectory) {
@@ -209,6 +372,14 @@ async function reportAwardMismatches(datasetPath, cacheDirectory) {
 
 async function main() {
   const options = parseOptions(process.argv.slice(2));
+  if (options.enrichAwards) {
+    await enrichAwardProjects(
+      options.enrichAwards,
+      options.csvOutput,
+      options.cacheDirectory,
+    );
+    return;
+  }
   if (options.reportAwardMismatches) {
     await reportAwardMismatches(
       options.reportAwardMismatches,
