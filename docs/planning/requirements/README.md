@@ -19,7 +19,7 @@
 
 ## Drafts
 
-現在なし。
+- [Hermes/WakuによるPR即時レビュー・自動Merge](2026-09-10-hermes-pr-review-automation.md) - `ai-hackathon`専用Webhook Route、exact-headレビュー、条件付きApprove・Merge、CI・Rulesetの導入要件。
 
 ## Approved
 

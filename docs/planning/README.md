@@ -8,6 +8,11 @@
 |---|---|
 | [research/](research/) | 調査メモ（情報ソース付き） |
 | [requirements/](requirements/) | 要件定義 |
+| [implementation/](implementation/) | 承認済み要件を実装単位へ分解した計画 |
+
+現在の実装計画:
+
+- [Hermes PRレビュー自動化](implementation/2026-09-10-hermes-pr-review-automation.md)
 
 ## 流れ
 

@@ -1,23 +1,75 @@
-## Summary
+## Related Issue
 
-- 
+- Refs #
+
+## What / Why / How
+
+### What
+
+-
+
+### Why
+
+-
+
+### How
+
+-
+
+## Approved planning
+
+- Approved design / requirements:
+- Approved implementation plan:
+
+## Reviewed range
+
+- baseRefOid:
+- headRefOid:
 
 ## Validation
 
-- [ ] Docs render/read cleanly
-- [ ] Bootstrap script checked
-- [ ] Templates are project-neutral
-- [ ] docs リンク切れ・旧パス参照なし
+- [ ] `./scripts/verify.sh`
+- [ ] GitHub Actions `verify` succeeded for `headRefOid`
+- Test result:
+
+## Real-use Gate
+
+- Test doubles used（mock / fixture / fake / stub / demo）:
+- Real external path or user-facing fallback:
+- Remaining live verification:
+
+## Security / Secret / Permissions
+
+- [ ] Secret、token、authorization、production dataを差分・ログへ含めていない
+- Permission / external communication impact:
+- Human approval required:
 
 ## Docs / Knowledge
 
-- [ ] 影響する `docs/knowledge/` カテゴリを更新した、または該当なし
-- 企画成果物 path（`docs/planning/`）:
-- 意思決定 path（`docs/decisions/`、情報ソース＋理由）:
-- [ ] 標準フロー（`docs/framework/toolchain-flow.md`）に沿っている、または該当なし
+- Updated `docs/knowledge/` categories or not applicable:
+- Planning path:
+- Decision path:
+- Work note:
+
+## Operational stop
+
+- none / reason:
+
+## Reviewer Assessment
+
+- Ready / Ready with minor follow-up / Not ready / not yet reviewed
+- Critical:
+- Important:
+- Minor:
+
+## GitHub Action Result
+
+- Review ID / commit_id:
+- Merge result / merged head SHA:
 
 ## Handoff
 
-- Work note:
-- Decision log:
-- Follow-ups:
+- Known follow-ups:
+- Issue/task mismatch:
+
+> この本文は再検証可能な証拠inventoryでありauthorityではありません。reviewerはGitHubと信頼済みbaseから実状態を再取得します。
