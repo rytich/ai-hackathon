@@ -25,6 +25,8 @@
 - Documentation GREEN: reviewer contract、workflow、運用文書の安全境界をmutation testで検証。
 - CI portability RED: 初回GitHub ActionsでREADMEの開発者ローカル絶対リンク3件がbrokenとなり失敗。既存checkerはリンク先がローカルに存在すると受理していた。
 - CI portability GREEN: repository外の絶対`.md`リンクを常に拒否する回帰テストを追加し、READMEをrepository相対リンクへ修正。
+- Review round 2 RED: PR #4の`knryt`レビューで、CIがPR headを明示checkoutしないこと、validatorがApprove/commit-bound/merge方式を固定しないこと、必須入力4項目が欠けることを回帰テストで再現。
+- Review round 2 GREEN: checkoutを`github.event.pull_request.head.sha`へ固定し、入力を常時・Webhook・`review_requested`に分離し、Approve/commit-bound/merge方式をvalidatorで固定。
 
 ## 実装内容
 
@@ -36,8 +38,8 @@
 
 ## 検証
 
-- `node --test scripts/test-reviewer-skill-contract.mjs`: 38件成功。
-- `./scripts/verify.sh`: 全変更を含むローカルHEADで成功。Node tests 83件成功、shell test suite成功、must tools成功。
+- `node --test scripts/test-reviewer-skill-contract.mjs`: review round 2の追加ケースを含め成功。
+- `./scripts/verify.sh`: review round 2の全変更を含むローカルHEADで成功。Node tests 86件成功、shell test suite 23件成功、must tools成功。
 - `./scripts/check-doc-links.sh`: broken links 0、orphans 0。
 - `git diff --check`: 成功。
 - secret-like value scan: 検出0件。
