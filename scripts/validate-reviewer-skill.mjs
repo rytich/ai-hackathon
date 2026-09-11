@@ -12,16 +12,25 @@ const EXPECTED = {
     verificationCommand: "./scripts/verify.sh",
     skillPath: ".agents/skills/ai-hackathon-reviewer/SKILL.md",
   },
-  requiredInputs: [
-    "deliveryId",
-    "webhookEvent",
-    "webhookAction",
-    "requestedReviewerLogin",
-    "repository",
-    "pullRequestNumber",
-    "baseSha",
-    "headSha",
-  ],
+  requiredInputs: {
+    always: [
+      "baseSha",
+      "headSha",
+      "pullRequestNumber",
+      "taskSummary",
+      "approvedDesignPath",
+      "approvedPlanPath",
+      "reviewRound",
+    ],
+    webhookTriggered: [
+      "deliveryId",
+      "webhookEvent",
+      "webhookAction",
+      "repository",
+    ],
+    reviewRequested: ["requestedReviewerLogin"],
+  },
+  reviewRounds: ["initial", "re-review"],
   allowedActions: [
     "opened",
     "synchronize",
@@ -79,7 +88,8 @@ export function validateReviewerSkill(markdown) {
     fail("unexpected reviewer contract schema");
   }
   requireDeepEqual(contract.authority, EXPECTED.authority, "repository, base branch, or reviewer authority is invalid");
-  requireDeepEqual(contract.requiredInputs?.always, EXPECTED.requiredInputs, "required input contract is invalid");
+  requireDeepEqual(contract.requiredInputs, EXPECTED.requiredInputs, "required input contract is invalid");
+  requireDeepEqual(contract.reviewRounds, EXPECTED.reviewRounds, "review round contract is invalid");
   if (contract.webhook?.event !== "pull_request") fail("webhook event must be pull_request");
   requireDeepEqual(contract.webhook?.allowedActions, EXPECTED.allowedActions, "allowed action contract is invalid");
   if (contract.webhook?.reviewRequestedReviewer !== "knryt") {
@@ -94,6 +104,12 @@ export function validateReviewerSkill(markdown) {
   if (contract.operationalStop?.whenOnlyBlocker !== "no-pr-write") {
     fail("operational stop must prevent PR writes");
   }
+  if (contract.approval?.event !== "APPROVE") {
+    fail("approval event must be APPROVE");
+  }
+  if (contract.approval?.commitBound !== true) {
+    fail("approval must be commit-bound");
+  }
   if (contract.approval?.verifyReturnedCommitId !== true) {
     fail("approval must verify returned commit_id");
   }
@@ -102,6 +118,9 @@ export function validateReviewerSkill(markdown) {
   }
   if (contract.merge?.matchHeadCommit !== true) {
     fail("merge must be bound to the reviewed head");
+  }
+  if (contract.merge?.method !== "merge") {
+    fail("merge method must be merge");
   }
 
   return contract;

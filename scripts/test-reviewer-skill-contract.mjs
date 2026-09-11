@@ -63,6 +63,25 @@ test("accepts the canonical ai-hackathon reviewer contract", () => {
     verificationCommand: "./scripts/verify.sh",
     skillPath: ".agents/skills/ai-hackathon-reviewer/SKILL.md",
   });
+  assert.deepEqual(contract.requiredInputs, {
+    always: [
+      "baseSha",
+      "headSha",
+      "pullRequestNumber",
+      "taskSummary",
+      "approvedDesignPath",
+      "approvedPlanPath",
+      "reviewRound",
+    ],
+    webhookTriggered: [
+      "deliveryId",
+      "webhookEvent",
+      "webhookAction",
+      "repository",
+    ],
+    reviewRequested: ["requestedReviewerLogin"],
+  });
+  assert.deepEqual(contract.reviewRounds, ["initial", "re-review"]);
 });
 
 const unsafeMutations = [
@@ -76,8 +95,8 @@ const unsafeMutations = [
   ["review identity", '"reviewerLogin": "knryt"', '"reviewerLogin": "rytich"', /reviewer/],
   [
     "required delivery header",
-    '"deliveryId",',
-    '"omittedDeliveryId",',
+    '"deliveryId"',
+    '"omittedDeliveryId"',
     /required input/,
   ],
   [
@@ -111,6 +130,18 @@ const unsafeMutations = [
     /approval/,
   ],
   [
+    "approval event",
+    '"event": "APPROVE"',
+    '"event": "COMMENT"',
+    /approval event/,
+  ],
+  [
+    "approval commit-bound declaration",
+    '"commitBound": true',
+    '"commitBound": false',
+    /commit-bound/,
+  ],
+  [
     "self approval guard",
     '"denyReviewerAuthoredPullRequest": true',
     '"denyReviewerAuthoredPullRequest": false',
@@ -121,6 +152,12 @@ const unsafeMutations = [
     '"matchHeadCommit": true',
     '"matchHeadCommit": false',
     /merge/,
+  ],
+  [
+    "merge method",
+    '"method": "merge"',
+    '"method": "squash"',
+    /merge method/,
   ],
 ];
 
@@ -155,6 +192,10 @@ test("runs verify for the four allowed pull request actions with read-only permi
   assert.doesNotMatch(workflow, /^\s+\w[\w-]*: write$/m);
   assert.match(workflow, /^  verify:$/m);
   assert.match(workflow, /uses: actions\/checkout@v7/);
+  assert.match(
+    workflow,
+    /ref: \$\{\{ github\.event\.pull_request\.head\.sha \}\}/,
+  );
   assert.match(workflow, /persist-credentials: false/);
   assert.match(workflow, /AF_VERIFY_PROFILE: generic/);
   assert.match(workflow, /run: \.\/scripts\/verify\.sh/);

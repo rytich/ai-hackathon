@@ -26,16 +26,23 @@ Review an exact Git range against its approved requirements, implementation plan
   },
   "requiredInputs": {
     "always": [
+      "baseSha",
+      "headSha",
+      "pullRequestNumber",
+      "taskSummary",
+      "approvedDesignPath",
+      "approvedPlanPath",
+      "reviewRound"
+    ],
+    "webhookTriggered": [
       "deliveryId",
       "webhookEvent",
       "webhookAction",
-      "requestedReviewerLogin",
-      "repository",
-      "pullRequestNumber",
-      "baseSha",
-      "headSha"
-    ]
+      "repository"
+    ],
+    "reviewRequested": ["requestedReviewerLogin"]
   },
+  "reviewRounds": ["initial", "re-review"],
   "webhook": {
     "event": "pull_request",
     "allowedActions": [
@@ -95,18 +102,26 @@ Review an exact Git range against its approved requirements, implementation plan
 
 ## Required input
 
-Require all eight fields before starting:
+Require these fields for every review:
+
+- `baseSha`: approved base commit to review
+- `headSha`: exact pull request head commit to review
+- `pullRequestNumber`: target pull request number
+- `taskSummary`: concise What / Why / How and acceptance criteria
+- `approvedDesignPath`: repository-relative path to the human-reviewed design
+- `approvedPlanPath`: repository-relative path to the human-reviewed implementation plan
+- `reviewRound`: `initial` or `re-review`
+
+For a webhook-triggered review, also require:
 
 - `deliveryId`: `X-GitHub-Delivery` HTTP header, not the payload body
 - `webhookEvent`: `X-GitHub-Event` HTTP header
 - `webhookAction`: `payload.action`
-- `requestedReviewerLogin`: `payload.requested_reviewer.login` for `review_requested`; otherwise `null`
 - `repository`: `payload.repository.full_name`
-- `pullRequestNumber`: `payload.pull_request.number`
-- `baseSha`: `payload.pull_request.base.sha`
-- `headSha`: `payload.pull_request.head.sha`
 
-Reject a missing or malformed field. For `review_requested`, reject any `requestedReviewerLogin` other than `knryt`.
+For `review_requested`, additionally require `requestedReviewerLogin` from `payload.requested_reviewer.login` and reject any value other than `knryt`.
+
+Reject a missing or malformed required field. A normal pull request must reference its GitHub Issue; PR #1 remains the documented bootstrap exception.
 
 ## Fixed authority
 
