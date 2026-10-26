@@ -9,7 +9,7 @@
 
 ## 原因
 
-`scripts/build-public-archive.sh` の既定sanitizeは導入先・顧客名、除外path、secret-like patternを扱っていたが、公開元owner `rytich`と生成環境由来のuser-home pathを正規化していなかった。そのため、Issue/PR URLにowner名が13箇所、`/Users/ichie/...`が6箇所残るZIPを生成できた。
+`scripts/build-public-archive.sh` の既定sanitizeは導入先・顧客名、除外path、secret-like patternを扱っていたが、公開元owner `rytich`と生成環境由来のuser-home pathを正規化していなかった。そのため、Issue/PR URLにowner名が13箇所、`/Users/<user>/...`が6箇所残るZIPを生成できた。
 
 ## 変更
 

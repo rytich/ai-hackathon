@@ -245,7 +245,7 @@ scripts/build-public-archive.sh v0.2.4 "$ASSET_DIR/agentic-framework-v0.2.4-publ
 (cd "$ASSET_DIR" && shasum -a 256 agentic-framework-v0.2.4-public.zip > agentic-framework-v0.2.4-public.zip.sha256)
 ```
 
-Repeat every candidate inspection from Task 3, then copy the two verified files to `/Users/ichie/github/agentic-framework/outputs/`.
+Repeat every candidate inspection from Task 3, then copy the two verified files to `outputs/`.
 
 - [ ] **Step 3: Create the GitHub Release**
 

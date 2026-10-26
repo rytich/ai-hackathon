@@ -6,7 +6,7 @@
 ## 背景 / 課題
 
 - [2026-08-01-tool-requirements.md](2026-08-01-tool-requirements.md) は `context-mode` を「Codex プラグイン」と前提し、対象 profile を `codex` / `codex-claude` に限定した。`claude` profile には縮退先が無いとして、`claude` の entrypoint（`CLAUDE.md`）からは context-mode の記述を外し、代わりに「大量出力・ログ・広域検索は script かサブエージェントで要約してから判断する」という文言に差し替えていた。
-- この前提は事実誤りだった。発覚の経緯: Task 6（`tools.tsv` の `docs` 列を context7 のライブラリ ID に置き換える残タスク）に着手し、`context-mode` の `docs` 列を解決するためインストール済みプラグインの実体を確認したところ、`/Users/ichie/.codex/plugins/cache/context-mode/context-mode/1.0.169/package.json` の `description` に "Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI." とあり、Codex 専用ではないことが判明した。README にも Claude Code 向けの導入手順が 2 通り（プラグインマーケットプレイス経由、MCP 直接登録）明記されている。
+- この前提は事実誤りだった。発覚の経緯: Task 6（`tools.tsv` の `docs` 列を context7 のライブラリ ID に置き換える残タスク）に着手し、`context-mode` の `docs` 列を解決するためインストール済みプラグインの実体を確認したところ、`~/.codex/plugins/cache/context-mode/context-mode/1.0.169/package.json` の `description` に "Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI." とあり、Codex 専用ではないことが判明した。README にも Claude Code 向けの導入手順が 2 通り（プラグインマーケットプレイス経由、MCP 直接登録）明記されている。
 - つまり `claude` profile が縮退先（script/サブエージェントによる要約）を持っていたのは、「context-mode が Claude Code から使えない」という誤った前提の産物であり、正しい前提の下では縮退先ではなく単なる代替不能な省略だった。
 
 ## 選択肢
@@ -33,7 +33,7 @@
 
 ## 情報ソース
 
-- `/Users/ichie/.codex/plugins/cache/context-mode/context-mode/1.0.169/package.json`（`repository.url`: `https://github.com/mksglu/context-mode`、`version`: `1.0.169`、`description`: "MCP plugin that saves 98% of your context window. Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI. ..."）
+- `~/.codex/plugins/cache/context-mode/context-mode/1.0.169/package.json`（`repository.url`: `https://github.com/mksglu/context-mode`、`version`: `1.0.169`、`description`: "MCP plugin that saves 98% of your context window. Works with Claude Code, Gemini CLI, VS Code Copilot, OpenCode, and Codex CLI. ..."）
 - README（同パッケージに同梱）が示す Claude Code 向け導入手順 2 通り:
   - プラグインマーケットプレイス経由（推奨）: `/plugin marketplace add mksglu/context-mode` → `/plugin install context-mode@context-mode`（`claude plugin list` に現れる）
   - MCP 直接登録: `claude mcp add context-mode -- npx -y context-mode`（`claude mcp list` に現れる）

@@ -10,7 +10,7 @@ requirements: ../../planning/requirements/2026-08-14-v024-release-sanitization.m
 
 ## 背景
 
-`v0.2.4` のソースタグは `4fd1ae4edd2ffd541d7cff058d551195bb3a33d0` にあり、`VERSION` と CHANGELOG は同版で整合している。一方、生成済み公開 ZIP には公開 owner 名 `rytich` と個人環境の絶対パス `/Users/ichie/...` が残っている。既存の `build-public-archive.sh` は顧客・導入先名と秘密情報を検査するが、公開元 owner とホームディレクトリ由来のパスを正規化していない。
+`v0.2.4` のソースタグは `4fd1ae4edd2ffd541d7cff058d551195bb3a33d0` にあり、`VERSION` と CHANGELOG は同版で整合している。一方、生成済み公開 ZIP には公開 owner 名 `rytich` と個人環境の絶対パス `/Users/<user>/...` が残っている。既存の `build-public-archive.sh` は顧客・導入先名と秘密情報を検査するが、公開元 owner とホームディレクトリ由来のパスを正規化していない。
 
 GitHub Release `v0.2.4` はまだ存在しない。既存タグを移動せず、サニタイズ処理を後続コミットで修正したうえで、同タグのソースから公開成果物を再生成して Release asset とする。
 

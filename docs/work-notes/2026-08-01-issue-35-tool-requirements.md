@@ -74,7 +74,7 @@ $ ls templates/project/.ai/profiles/*/tools.tsv | wc -l
 ```
 $ ./scripts/check-agent-tools.sh --profile codex-claude; echo "exit=$?"
 profile: codex-claude
-tools:   /Users/ichie/github/agentic-framework/templates/project/.ai/profiles/codex-claude/tools.tsv
+tools:   templates/project/.ai/profiles/codex-claude/tools.tsv
 
   OK        git            must
   OK        gh             must
