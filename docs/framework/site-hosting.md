@@ -97,6 +97,8 @@ scripts/deploy-site.sh vX.Y.Z
 
 ## 公開されるもの
 
+以下は説明サイトへ配信する範囲である。この repository は公開されているため、`site/` への配信の有無にかかわらず、repository 内のファイルと Git 履歴も閲覧できる。配布用 ZIP の sanitize だけでは、repository 自体の公開内容は変わらない。
+
 `site/` の中身がそのまま公開される。**ここに置いたものは全て世界中から見える。**
 
 | ファイル | 内容 |
