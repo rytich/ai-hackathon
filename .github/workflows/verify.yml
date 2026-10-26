@@ -1,0 +1,23 @@
+name: verify
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      AF_VERIFY_PROFILE: generic
+    steps:
+      - name: Check out pull request head
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Run repository verification
+        run: ./scripts/verify.sh

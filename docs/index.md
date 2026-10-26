@@ -16,8 +16,10 @@
 | どの AI にどのタスクを任せるか決める | [framework/ai-environment-profiles.md](framework/ai-environment-profiles.md) |
 | 指示の書き方（What/Why/How）を知る | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
 | 企画・差分にレビューを返す | [framework/collaboration-rules.md](framework/collaboration-rules.md) |
+| HermesによるPRレビュー手順を知る | [development/workflow.md](development/workflow.md) |
 | 調査メモを残す / 読む（情報ソース付き） | [planning/research/](planning/research/) |
 | 要件定義を残す / 読む | [planning/requirements/](planning/requirements/) |
+| 承認済み実装計画を残す / 読む | [planning/implementation/](planning/implementation/) |
 | なぜそう決めたかを残す / 読む | [decisions/](decisions/) |
 | 作業サマリーを残す / 読む | [work-notes/](work-notes/) |
 | プロダクト仕様・ロードマップ | [knowledge/product/](knowledge/product/) |
