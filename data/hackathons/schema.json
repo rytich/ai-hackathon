@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rytich/ai-hackathon/data/hackathons/schema.json",
+  "title": "AI Agent Hackathon projects dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "checked_at", "projects"],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "checked_at": { "type": "string", "format": "date" },
+    "projects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/project" }
+    }
+  },
+  "$defs": {
+    "nullableString": { "type": ["string", "null"] },
+    "stringArray": {
+      "type": "array",
+      "items": { "type": "string" },
+      "uniqueItems": true
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "edition",
+        "entry_order",
+        "project_name",
+        "project_description",
+        "article_title",
+        "article_url",
+        "participant_type",
+        "participant_name",
+        "awards",
+        "is_finalist",
+        "github_urls",
+        "demo_urls",
+        "technologies",
+        "source_url",
+        "checked_at",
+        "verification_status",
+        "notes"
+      ],
+      "properties": {
+        "edition": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "entry_order": { "type": "integer", "minimum": 1 },
+        "project_name": { "type": "string", "minLength": 1 },
+        "project_description": { "$ref": "#/$defs/nullableString" },
+        "article_title": { "$ref": "#/$defs/nullableString" },
+        "article_url": { "type": "string", "format": "uri" },
+        "participant_type": {
+          "enum": ["individual", "team", "unknown"]
+        },
+        "participant_name": { "$ref": "#/$defs/nullableString" },
+        "awards": { "$ref": "#/$defs/stringArray" },
+        "is_finalist": { "type": ["boolean", "null"] },
+        "github_urls": { "$ref": "#/$defs/stringArray" },
+        "demo_urls": { "$ref": "#/$defs/stringArray" },
+        "technologies": { "$ref": "#/$defs/stringArray" },
+        "source_url": { "type": "string", "format": "uri" },
+        "checked_at": { "type": "string", "format": "date" },
+        "verification_status": {
+          "enum": ["official-list-only", "article-checked"]
+        },
+        "notes": { "$ref": "#/$defs/nullableString" }
+      }
+    }
+  }
+}
